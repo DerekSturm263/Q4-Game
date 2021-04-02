@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Climbable
   - Ground
+  - Wall
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - 
   - Background
   - Ground
-  - 
+  - Wall
   - 
   - 
   - 
@@ -43,18 +45,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 1138782119
-    locked: 0
-  - name: Particles
-    uniqueID: 30504801
+  - name: Background
+    uniqueID: 2630656489
     locked: 0
   - name: Ground
     uniqueID: 3628911999
     locked: 0
-  - name: Background
-    uniqueID: 2630656489
+  - name: Particles
+    uniqueID: 30504801
     locked: 0
   - name: Player
     uniqueID: 3651334409
+    locked: 0
+  - name: Foreground
+    uniqueID: 2821163227
+    locked: 0
+  - name: UI
+    uniqueID: 1138782119
     locked: 0
