@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
 public class PlayerMovement : MonoBehaviour
 {
     public enum MovementState
@@ -31,16 +31,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpDecreaseTime; // The speed at which the extraJumpForce goes away.
     [SerializeField] private float aerialTurnAroundSpeed; // The speed the player turns around in the air.
 
+    [Header("Climbing Settings")]
+    [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
+    [SerializeField] private float climbSpeed; // Speed the player can climb at.
+    [SerializeField] private float climbingTurnAroundSpeed; // Speed the player turns around while climbing.
+
     [Header("Swim Settings")]
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed; // Speed the player can swim at.
     [SerializeField] private float swimDashForce; // Force added when the player uses a swim dash (jump while swimming).
     [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
-
-    [Header("Climbing Settings")]
-    [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
-    [SerializeField] private float climbSpeed; // Speed the player can climb at.
-    [SerializeField] private float climbingTurnAroundSpeed; // Speed the player turns around while climbing.
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool showDebugs;
 
     private float currentSpeed;
+    private float currentTurnAroundSpeed;
 
     private Vector2 moveVel;
     private Vector2 jumpVel;
@@ -63,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     {
         controls = new Controls();
         currentSpeed = walkSpeed;
+        currentTurnAroundSpeed = walkTurnAroundSpeed;
 
         anim = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
@@ -71,32 +73,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        #region Movement Lerping
+        Move(controls.Player.Move.ReadValue<Vector2>());
+        Run(controls.Player.Run.ReadValue<float>());
+        Jump(controls.Player.Jump.ReadValue<float>());
+        Crouch(controls.Player.Crouch.ReadValue<float>());
+        LookUp(controls.Player.LookUp.ReadValue<float>());
 
-        float turnAroundSpeed;
-        if (IsGrounded())
+        if (controls.Player.BeginClimb.ReadValue<float>() == 1f)
         {
-            switch (moveState)
-            {
-                case MovementState.Wall:
-                    turnAroundSpeed = climbingTurnAroundSpeed;
-                    break;
-                case MovementState.Water:
-                    turnAroundSpeed = swimTurnAroundSpeed;
-                    break;
-                default: // Walking/Running/Water/Air.
-                    turnAroundSpeed = currentSpeed == walkSpeed ? walkTurnAroundSpeed : currentSpeed == runSpeed ? runTurnAroundSpeed : crawlTurnAroundSpeed;
-                    break;
-            }
-            
-        }
-        else
-        {
-            turnAroundSpeed = aerialTurnAroundSpeed;
+            BeginClimb();
         }
 
-        #endregion
+        if (controls.Player.Pounce.ReadValue<float>() == 1f)
+        {
+            Pounce();
+        }
 
+        if (isPouncing && IsGrounded())
+        {
+            EndPounce();
+        }
+    }
+
+    private void FixedUpdate()
+    {
         #region Jumping
 
         if (controls.Player.Jump.ReadValue<float>() == 1f && jumpLeft > 0f)
@@ -112,21 +112,28 @@ public class PlayerMovement : MonoBehaviour
 
         #endregion
 
-        if (isPouncing && IsGrounded())
-        {
-            CancelPounce();
-        }
-
         Vector2 targetVel = Vector2.zero;
 
-        targetVel += moveVel * currentSpeed; // Adds proper movement force.
-        targetVel += jumpVel; // Adds the proper jump force and pounce force.
-        targetVel += pounceVel; // Adds the proper jump force and pounce force.
+        targetVel += moveVel * currentSpeed; // Adds movement force.
+        targetVel += jumpVel; // Adds jump force.
+        targetVel += pounceVel; // Adds pounce force.
 
         rb2D.velocity = targetVel;
     }
 
+    // For use with new input system.
     public void Move(InputAction.CallbackContext ctx)
+    {
+        ApplyMove(ctx.ReadValue<Vector2>());
+    }
+
+    // For use with old input system.
+    public void Move(Vector2 moveVal)
+    {
+        ApplyMove(moveVal);
+    }
+
+    public void ApplyMove(Vector2 moveVal)
     {
         // Moving while on the ground only uses the left and right buttons.
         // Moving while swimming can move in all directions.
@@ -137,13 +144,13 @@ public class PlayerMovement : MonoBehaviour
         switch (moveState)
         {
             case MovementState.Wall:
-                moveVel = ctx.ReadValue<Vector2>();
+                moveVel = moveVal;
                 break;
             case MovementState.Water:
-                
+                moveVel = moveVal;
                 break;
             default: // Walking/Running/Water/Air.
-                moveVel = new Vector2(ctx.ReadValue<Vector2>().x, 0f);
+                moveVel = new Vector2(moveVal.x, 0f);
                 break;
         }
 
@@ -153,11 +160,41 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // For use with new input system.
     public void Run(InputAction.CallbackContext ctx)
+    {
+        ApplyRun(ctx.ReadValue<float>() == 1f);
+    }
+
+    // For use with old input system.
+    public void Run(float runVal)
+    {
+        ApplyRun(runVal == 1f);
+    }
+
+    public void ApplyRun(bool isRunning)
     {
         // Pressing run while grounded will allow you to run.
 
-        currentSpeed = ctx.ReadValue<float>() == 1f ? runSpeed : walkSpeed;
+        if (!IsGrounded())
+            return;
+
+        switch (moveState)
+        {
+            case MovementState.Wall:
+                currentSpeed = climbSpeed;
+                currentTurnAroundSpeed = climbingTurnAroundSpeed;
+                break;
+            case MovementState.Water:
+                currentSpeed = swimSpeed;
+                currentTurnAroundSpeed = swimTurnAroundSpeed;
+                break;
+            default:
+                currentSpeed = isRunning ? runSpeed : walkSpeed;
+                currentTurnAroundSpeed = currentSpeed == runSpeed ? runTurnAroundSpeed : walkTurnAroundSpeed;
+                break;
+        }
+
 
         if (showDebugs)
         {
@@ -165,7 +202,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // For use with new input system.
     public void Jump(InputAction.CallbackContext ctx)
+    {
+        ApplyJump(ctx.ReadValue<float>() == 1f);
+    }
+
+    // For use with old input system.
+    public void Jump(float jumpVal)
+    {
+        ApplyJump(jumpVal == 1f);
+    }
+
+    public void ApplyJump(bool isJumping)
     {
         // Pressing jump while grounded will perform a jump.
         // Pressing jump while swimming will cause you to swim forwards faster.
@@ -180,25 +229,34 @@ public class PlayerMovement : MonoBehaviour
                 return;
         }
 
-        if (ctx.ReadValue<float>() == 1f)
+        switch (moveState)
         {
-            jumpLeft = extraJumpForce;
-            jumpVel = new Vector2(0f, jumpForce);
+            case MovementState.Ground:
+                if (isJumping)
+                {
+                    jumpLeft = extraJumpForce;
+                    jumpVel = new Vector2(0f, jumpForce);
+                    currentTurnAroundSpeed = aerialTurnAroundSpeed;
 
-            if (showDebugs)
-            {
-                Debug.Log("Player Started Jumping");
-            }
-        }
-        else
-        {
-            jumpLeft = 0f;
-            jumpVel = Vector2.zero;
+                    if (showDebugs)
+                    {
+                        Debug.Log("Player Started Jumping");
+                    }
+                }
+                else
+                {
+                    jumpLeft = 0f;
+                    jumpVel = Vector2.zero;
 
-            if (showDebugs)
-            {
-                Debug.Log("Player Stopped Jumping");
-            }
+                    if (showDebugs)
+                    {
+                        Debug.Log("Player Stopped Jumping");
+                    }
+                }
+                break;
+            default: // Swimming.
+
+                break;
         }
     }
 
@@ -219,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void CancelPounce()
+    private void EndPounce()
     {
         pounceVel = Vector2.zero;
         moveVel = Vector2.zero;
@@ -263,14 +321,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // For use with new input system.
     public void Crouch(InputAction.CallbackContext ctx)
+    {
+        ApplyCrouch(ctx.ReadValue<float>() == 1f);
+    }
+
+    // For use with old input system.
+    public void Crouch(float crouchVal)
+    {
+        ApplyCrouch(crouchVal == 1f);
+    }
+
+    public void ApplyCrouch(bool isCrouching)
     {
         // Crouching will allow the player to duck and move slowly.
 
         if (moveState != MovementState.Ground || !IsGrounded())
             return;
 
-        currentSpeed = ctx.ReadValue<float>() == 1f ? crawlSpeed : walkSpeed;
+        currentSpeed = isCrouching ? crawlSpeed : walkSpeed;
+        currentTurnAroundSpeed = currentSpeed == crawlSpeed ? crawlTurnAroundSpeed : walkTurnAroundSpeed;
 
         if (showDebugs)
         {
@@ -278,7 +349,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // For use with new input system.
     public void LookUp(InputAction.CallbackContext ctx)
+    {
+        ApplyLookUp(ctx.ReadValue<float>() == 1f);
+    }
+
+    // For use with old input system.
+    public void LookUp(float lookUpVal)
+    {
+        ApplyLookUp(lookUpVal == 1f);
+    }
+
+    public void ApplyLookUp(bool isLookingUp)
     {
         // Player can only look up when grounded.
 
@@ -291,23 +374,44 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void EnterWater()
+    {
+        moveState = MovementState.Water;
+
+        rb2D.gravityScale = 0.5f;
+    }
+
+    private void ExitWater()
+    {
+        moveState = MovementState.Ground;
+
+        rb2D.gravityScale = 2f;
+    }
+
     private bool IsGrounded()
     {
-        bool isGrounded = Physics2D.BoxCast((Vector2)transform.position - boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position - boxOffset, boxSize, transform.rotation.z, Vector2.down, 0f, ground);
+        bool isGrounded = hit && rb2D.velocity.y <= 0f;
+
+        if (isGrounded)
+        {
+            currentTurnAroundSpeed = walkTurnAroundSpeed;
+            transform.up = hit.normal;
+        }
 
         if (showDebugs)
         {
             Debug.Log("Grounded: " + isGrounded);
         }
 
-        return isGrounded;
+        return isGrounded && moveState != MovementState.Water;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Water"))
         {
-            moveState = MovementState.Water;
+            EnterWater();
         }
         else if (collision.CompareTag("Wall"))
         {
@@ -324,7 +428,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.CompareTag("Water"))
         {
-            moveState = MovementState.Ground;
+            ExitWater();
         }
         else if (collision.CompareTag("Wall"))
         {
