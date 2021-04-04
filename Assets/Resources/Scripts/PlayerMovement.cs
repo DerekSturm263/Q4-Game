@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
 public class PlayerMovement : MonoBehaviour
 {
-    public enum MovementState
+    public enum MoveState
     {
         Ground, Water, Wall
     }
-    private MovementState moveState;
+    private MoveState moveState;
 
     private Controls controls;
 
@@ -39,12 +39,22 @@ public class PlayerMovement : MonoBehaviour
     [Header("Swim Settings")]
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed; // Speed the player can swim at.
-    [SerializeField] private float swimDashForce; // Force added when the player uses a swim dash (jump while swimming).
+    [SerializeField] private float swimJumpForce; // Force added when the player jumps while underwater.
     [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
     [SerializeField] private Vector2 boxSize; // Size for the grounded boxcast collision.
+    [SerializeField] private Vector2 wallBoxOffset; // Size for the grounded boxcast collision.
+    [SerializeField] private Vector2 wallBoxSize; // Size for the grounded boxcast collision.
+
+    [Header("Particle Settings")]
+    [SerializeField] private ParticleSystem jumpParticles; // Particles for when the player jumps.
+    [SerializeField] private ParticleSystem landParticles; // Particles for when the player lands.
+    [SerializeField] private ParticleSystem walkParticles; // Particles for when the player walks.
+    [SerializeField] private ParticleSystem runParticles; // Particles for when the player runs.
+    [SerializeField] private ParticleSystem breathingParticles; // Particles for when the player is breathing and not underwater.
+    [SerializeField] private ParticleSystem underwaterParticles; // Particles for when the player is breathing underwater.
 
     [Header("Miscellaneous")]
     [SerializeField] private bool showDebugs;
@@ -104,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
             jumpVel += new Vector2(0f, jumpLeft);
             jumpLeft -= Time.deltaTime * jumpDecreaseTime;
         }
-        else if (moveState == MovementState.Ground)
+        else if (moveState == MoveState.Ground)
         {
             jumpVel = new Vector2(0f, rb2D.velocity.y);
             jumpLeft = 0f;
@@ -143,14 +153,17 @@ public class PlayerMovement : MonoBehaviour
 
         switch (moveState)
         {
-            case MovementState.Wall:
-                moveVel = moveVal;
+            case MoveState.Wall:
+                if (CheckWall(moveVal))
+                {
+                    moveVel = moveVal;
+                }
                 break;
-            case MovementState.Water:
+            case MoveState.Water:
                 moveVel = moveVal;
                 break;
             default: // Walking/Running/Water/Air.
-                moveVel = new Vector2(moveVal.x, 0f);
+                moveVel = Vector2.Lerp(moveVel, new Vector2(moveVal.x, 0f), Time.deltaTime * currentTUrnAroundSpeed);
                 break;
         }
 
@@ -181,11 +194,11 @@ public class PlayerMovement : MonoBehaviour
 
         switch (moveState)
         {
-            case MovementState.Wall:
+            case MoveState.Wall:
                 currentSpeed = climbSpeed;
                 currentTurnAroundSpeed = climbingTurnAroundSpeed;
                 break;
-            case MovementState.Water:
+            case MoveState.Water:
                 currentSpeed = swimSpeed;
                 currentTurnAroundSpeed = swimTurnAroundSpeed;
                 break;
@@ -219,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
         // Pressing jump while grounded will perform a jump.
         // Pressing jump while swimming will cause you to swim forwards faster.
 
-        if (moveState == MovementState.Wall)
+        if (moveState == MoveState.Wall)
         {
             EndClimb();
         }
@@ -228,35 +241,35 @@ public class PlayerMovement : MonoBehaviour
             if (!IsGrounded())
                 return;
         }
-
-        switch (moveState)
+        
+        if (isJumping)
         {
-            case MovementState.Ground:
-                if (isJumping)
-                {
-                    jumpLeft = extraJumpForce;
-                    jumpVel = new Vector2(0f, jumpForce);
-                    currentTurnAroundSpeed = aerialTurnAroundSpeed;
+            if (moveState == MoveState.Ground)
+            {
+                jumpLeft = extraJumpForce;
+                jumpVel = new Vector2(0f, jumpForce);
+                currentTurnAroundSpeed = aerialTurnAroundSpeed;
+            }
+            else
+            {
+                jumpLeft = 0f;
+                jumpVel = new Vector2(0f, swimJumpForce);
+            }
 
-                    if (showDebugs)
-                    {
-                        Debug.Log("Player Started Jumping");
-                    }
-                }
-                else
-                {
-                    jumpLeft = 0f;
-                    jumpVel = Vector2.zero;
+            if (showDebugs)
+            {
+                Debug.Log("Player Started Jumping");
+            }
+        }
+        else
+        {
+            jumpLeft = 0f;
+            jumpVel = Vector2.zero;
 
-                    if (showDebugs)
-                    {
-                        Debug.Log("Player Stopped Jumping");
-                    }
-                }
-                break;
-            default: // Swimming.
-
-                break;
+            if (showDebugs)
+            {
+                Debug.Log("Player Stopped Jumping");
+            }
         }
     }
 
@@ -264,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Pouncing is only allowed in mid-air.
 
-        if (IsGrounded() || moveVel.x == 0f || moveState != MovementState.Ground)
+        if (IsGrounded() || moveState != MoveState.Ground || rb2D.velocity.y > 0f)
             return;
 
         jumpVel = Vector2.zero;
@@ -293,10 +306,11 @@ public class PlayerMovement : MonoBehaviour
     {
         // Beginning a climb can only happen when grounded and on land.
 
-        if (!nextToWall || moveState != MovementState.Ground)
+        if (!nextToWall || moveState != MoveState.Ground)
             return;
 
-        moveState = MovementState.Wall;
+        EndPounce();
+        moveState = MoveState.Wall;
         rb2D.gravityScale = 0f;
 
         jumpVel = Vector2.zero;
@@ -312,7 +326,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Ending a climb can happen while jumping and climbing a wall or by lowering yourself to the ground.
 
-        moveState = MovementState.Ground;
+        moveState = MoveState.Ground;
         rb2D.gravityScale = 2f;
 
         if (showDebugs)
@@ -337,7 +351,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Crouching will allow the player to duck and move slowly.
 
-        if (moveState != MovementState.Ground || !IsGrounded())
+        if (moveState != MoveState.Ground || !IsGrounded())
             return;
 
         currentSpeed = isCrouching ? crawlSpeed : walkSpeed;
@@ -365,7 +379,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Player can only look up when grounded.
 
-        if (moveState != MovementState.Ground || !IsGrounded())
+        if (moveState != MoveState.Ground || !IsGrounded())
             return;
 
         if (showDebugs)
@@ -376,27 +390,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void EnterWater()
     {
-        moveState = MovementState.Water;
+        moveState = MoveState.Water;
 
         rb2D.gravityScale = 0.5f;
     }
 
     private void ExitWater()
     {
-        moveState = MovementState.Ground;
+        moveState = MoveState.Ground;
 
         rb2D.gravityScale = 2f;
     }
 
+    // Checks if the player is grounded or not. Automatically set to true if the player is underwater.
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position - boxOffset, boxSize, transform.rotation.z, Vector2.down, 0f, ground);
-        bool isGrounded = hit && rb2D.velocity.y <= 0f;
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position - boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
+        bool isGrounded = hit && rb2D.velocity.y <= 0f || moveState == MoveState.Water;
 
         if (isGrounded)
         {
             currentTurnAroundSpeed = walkTurnAroundSpeed;
-            transform.up = hit.normal;
         }
 
         if (showDebugs)
@@ -404,7 +418,21 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Grounded: " + isGrounded);
         }
 
-        return isGrounded && moveState != MovementState.Water;
+        return isGrounded;
+    }
+    
+    // Checks if there is a climbable wall in any direction of the player.
+    private bool CheckWall(Vector2 dir)
+    {
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position - wallBoxOffset, wallBoxSize, 0f, dir, 0f, wall);
+        bool isWall = hit;
+        
+        if (showDebugs)
+        {
+            Debug.Log("Wall: " + isWall);
+        }
+        
+        return isWall;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
