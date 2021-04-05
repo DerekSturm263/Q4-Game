@@ -73,6 +73,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4c7da43-4c78-4e79-b05e-3409d1e75afd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -427,6 +435,28 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3c170a0-e9bd-4669-88eb-31becf1dcd4c"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8efd7660-4b2a-4ccc-b7fa-40231dffba45"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -465,6 +495,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Player_BeginClimb = m_Player.FindAction("Begin Climb", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_LookUp = m_Player.FindAction("Look Up", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -521,6 +552,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_BeginClimb;
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_LookUp;
+    private readonly InputAction m_Player_Use;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -532,6 +564,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @BeginClimb => m_Wrapper.m_Player_BeginClimb;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @LookUp => m_Wrapper.m_Player_LookUp;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -562,6 +595,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @LookUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookUp;
                 @LookUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookUp;
                 @LookUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookUp;
+                @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -587,6 +623,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @LookUp.started += instance.OnLookUp;
                 @LookUp.performed += instance.OnLookUp;
                 @LookUp.canceled += instance.OnLookUp;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -618,5 +657,6 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnBeginClimb(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnLookUp(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }

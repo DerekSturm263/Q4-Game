@@ -34,13 +34,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Climbing Settings")]
     [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
     [SerializeField] private float climbSpeed; // Speed the player can climb at.
-    [SerializeField] private float climbingTurnAroundSpeed; // Speed the player turns around while climbing.
+    [SerializeField] private float climbRunSpeed; // Speed the player can climb at.
+    [SerializeField] private float climbTurnAroundSpeed; // Speed the player turns around while climbing.
 
     [Header("Swim Settings")]
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed; // Speed the player can swim at.
     [SerializeField] private float swimJumpForce; // Force added when the player jumps while underwater.
     [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
+    [SerializeField] private float underwaterGravity; // Gravity for underwater.
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
@@ -59,15 +61,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Miscellaneous")]
     [SerializeField] private bool showDebugs;
     public byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
-    // 0000 0001: Wall Climb
-    // 0000 0010: Night Vision
-    // 0000 0100: 
+    private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has.
+    private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has.
+    private readonly byte undecided = 0b_0000_0100; // Byte value representing unlocked abilities that the player has.
 
-    public float throwForce;
+    [SerializeField] private float throwForce;
 
     public GameObject overlappingItem;
     public GameObject heldItem;
 
+    private float aboveGroundGravity;
     private bool isNightVisionActive;
 
     private float currentSpeed;
@@ -90,6 +93,12 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
+
+        controls.Player.BeginClimb.performed += ctx => BeginClimb();
+        controls.Player.Pounce.performed += ctx => Pounce();
+        controls.Player.Use.performed += ctx => Use();
+
+        aboveGroundGravity = rb2D.gravityScale;
     }
 
     private void Update()
@@ -100,19 +109,19 @@ public class PlayerMovement : MonoBehaviour
         Crouch(controls.Player.Crouch.ReadValue<float>());
         LookUp(controls.Player.LookUp.ReadValue<float>());
 
-        if (controls.Player.BeginClimb.ReadValue<float>() == 1f)
-        {
-            BeginClimb();
-        }
-
-        if (controls.Player.Pounce.ReadValue<float>() == 1f)
-        {
-            Pounce();
-        }
-
         if (isPouncing && IsGrounded())
         {
             EndPounce();
+        }
+
+        if (rb2D.velocity.x != 0f)
+        {
+            sprtRndr.flipX = rb2D.velocity.x < 0f;
+        }
+
+        if (heldItem != null)
+        {
+            heldItem.transform.position = transform.position; // Temporary. Replace with better code later that goes on the item itself.
         }
     }
 
@@ -125,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
             jumpVel += new Vector2(0f, jumpLeft);
             jumpLeft -= Time.deltaTime * jumpDecreaseTime;
         }
-        else if (moveState == MoveState.Ground)
+        else if (moveState != MoveState.Wall)
         {
             jumpVel = new Vector2(0f, rb2D.velocity.y);
             jumpLeft = 0f;
@@ -165,16 +174,17 @@ public class PlayerMovement : MonoBehaviour
         switch (moveState)
         {
             case MoveState.Wall:
-                if (CheckWall(moveVal))
+                if (CheckWall(moveVal * 2f))
                 {
-                    moveVel = moveVal;
+                    moveVel = Vector2.Lerp(moveVel, moveVal, Time.deltaTime * currentTurnAroundSpeed);
+                }
+                else
+                {
+                    moveVel = Vector2.zero;
                 }
                 break;
-            case MoveState.Water:
-                moveVel = moveVal;
-                break;
             default: // Walking/Running/Water/Air.
-                moveVel = Vector2.Lerp(moveVel, new Vector2(moveVal.x, 0f), Time.deltaTime * currentTUrnAroundSpeed);
+                moveVel = Vector2.Lerp(moveVel, new Vector2(moveVal.x, 0f), Time.deltaTime * currentTurnAroundSpeed);
                 break;
         }
 
@@ -200,14 +210,14 @@ public class PlayerMovement : MonoBehaviour
     {
         // Pressing run while grounded will allow you to run.
 
-        if (!IsGrounded())
+        if (!IsGrounded() && moveState != MoveState.Wall)
             return;
 
         switch (moveState)
         {
             case MoveState.Wall:
-                currentSpeed = climbSpeed;
-                currentTurnAroundSpeed = climbingTurnAroundSpeed;
+                currentSpeed = isRunning ? climbRunSpeed : climbSpeed;
+                currentTurnAroundSpeed = climbTurnAroundSpeed;
                 break;
             case MoveState.Water:
                 currentSpeed = swimSpeed;
@@ -215,7 +225,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             default:
                 currentSpeed = isRunning ? runSpeed : walkSpeed;
-                currentTurnAroundSpeed = currentSpeed == runSpeed ? runTurnAroundSpeed : walkTurnAroundSpeed;
+                currentTurnAroundSpeed = isRunning ? runTurnAroundSpeed : walkTurnAroundSpeed;
                 break;
         }
 
@@ -242,26 +252,26 @@ public class PlayerMovement : MonoBehaviour
         // Pressing jump while grounded will perform a jump.
         // Pressing jump while swimming will cause you to swim forwards faster.
 
-        if (moveState == MoveState.Wall)
+        if (moveState == MoveState.Wall && isJumping)
         {
             EndClimb();
         }
         else
         {
-            if (!IsGrounded())
+            if (!IsGrounded() && moveState != MoveState.Water)
                 return;
         }
         
         ActivateParticles(jumpParticles);
         if (isJumping)
         {
-            if (moveState == MoveState.Ground)
+            if (moveState == MoveState.Ground || moveState == MoveState.Wall)
             {
                 jumpLeft = extraJumpForce;
                 jumpVel = new Vector2(0f, jumpForce);
                 currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
-            else
+            else 
             {
                 jumpLeft = 0f;
                 jumpVel = new Vector2(0f, swimJumpForce);
@@ -315,12 +325,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void BeginClimb()
     {
-        // Beginning a climb can only happen when grounded and on land.
+        // Beginning a climb can only happen when on land and when there's a climbable wall nearby.
 
-        if (!nextToWall || moveState != MoveState.Ground || !(abilites & 0b_0000_0001))
+        if (!nextToWall || moveState != MoveState.Ground) // Make it so you need the ability for it to work.
             return;
 
-        EndPounce();
         moveState = MoveState.Wall;
         rb2D.gravityScale = 0f;
 
@@ -362,11 +371,15 @@ public class PlayerMovement : MonoBehaviour
     {
         // Crouching will allow the player to duck and move slowly.
 
-        if (moveState != MoveState.Ground || !IsGrounded())
+        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed)
             return;
 
         currentSpeed = isCrouching ? crawlSpeed : walkSpeed;
-        currentTurnAroundSpeed = currentSpeed == crawlSpeed ? crawlTurnAroundSpeed : walkTurnAroundSpeed;
+
+        if (isCrouching)
+        {
+            currentTurnAroundSpeed = currentSpeed == crawlSpeed ? crawlTurnAroundSpeed : walkTurnAroundSpeed;
+        }
 
         if (showDebugs)
         {
@@ -401,20 +414,20 @@ public class PlayerMovement : MonoBehaviour
 
     public void Use()
     {
-        if (heldItem == null) // Pick Up
+        if (heldItem == null) // Pick Up.
         {
             if (overlappingItem != null && overlappingItem.CompareTag("HeldItem")) // Pickup Item.
             {
                 heldItem = overlappingItem;
             }
-            else if (overlappingItem.CompareTag("Interactable)) // Interact with Object.
+            else if (overlappingItem.CompareTag("Interactable")) // Interact with Object.
             {
-                overlappingItem.GetComponent<Interactable>.Effect.Invoke();
+                overlappingItem.GetComponent<Interactable>().effect.Invoke();
             }
         }
-        else // Throw
+        else // Throw.
         {
-            heldItem.AddForce(transform.forward * throwForce);
+            heldItem.GetComponent<Rigidbody2D>().AddForce(throwForce * new Vector2(sprtRndr.flipX ? -5f : 5f, 0f));
         }
     }
 
@@ -422,52 +435,55 @@ public class PlayerMovement : MonoBehaviour
     {
         moveState = MoveState.Water;
 
-        rb2D.gravityScale = 0.5f;
+        rb2D.gravityScale = underwaterGravity;
     }
 
     private void ExitWater()
     {
         moveState = MoveState.Ground;
 
-        rb2D.gravityScale = 2f;
+        rb2D.gravityScale = aboveGroundGravity;
     }
     
     public void ActivateNightVision()
     {
-        if (!(abilities | 0b_0000_0010))
-        {
-            isNightVisionActive = true;
-        }
+        if ((abilities & nightVision) != 0)
+            return;
+
+        isNightVisionActive = true;
     }
     
     public void DeactivateNightVision()
     {
-        if (!(abilities | 0b_0000_0000))
-        {
-            isNightVisionActive = false;
-        }
+        if ((abilities & nightVision) != 0)
+            return;
+
+        isNightVisionActive = false;
     }
     
     public void UnlockNewAbility()
     {
-        abilities << 1;
+        abilities <<= 1;
     }
     
     public void ActivateParticles(ParticleSystem particles)
     {
-        particles.Play();
+        if (particles != null)
+        {
+            particles.Play();
+        }
+    }
+
+    private bool CheckBit(byte b, int pos)
+    {
+        return (b & (1 << pos)) != 0;
     }
 
     // Checks if the player is grounded or not. Automatically set to true if the player is underwater.
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position - boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
-        bool isGrounded = hit && rb2D.velocity.y <= 0f || moveState == MoveState.Water;
-
-        if (isGrounded)
-        {
-            currentTurnAroundSpeed = walkTurnAroundSpeed;
-        }
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
+        bool isGrounded = hit && rb2D.velocity.y <= 0f;
 
         if (showDebugs)
         {
@@ -480,7 +496,7 @@ public class PlayerMovement : MonoBehaviour
     // Checks if there is a climbable wall in any direction of the player.
     private bool CheckWall(Vector2 dir)
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position - wallBoxOffset, wallBoxSize, 0f, dir, 0f, wall);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + dir, wallBoxSize, 0f, Vector2.zero, 0f, wall);
         bool isWall = hit;
         
         if (showDebugs)
@@ -532,7 +548,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawCube((Vector2) transform.position - boxOffset, boxSize);
+        Gizmos.DrawCube((Vector2) transform.position + boxOffset, boxSize);
+        Gizmos.DrawCube((Vector2) transform.position + wallBoxOffset, wallBoxSize);
     }
 
     private void OnEnable()
