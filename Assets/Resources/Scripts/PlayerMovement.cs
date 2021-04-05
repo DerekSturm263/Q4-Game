@@ -40,9 +40,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Swim Settings")]
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed; // Speed the player can swim at.
+    [SerializeField] private float swimRunSpeed; // Speed the player can swim at while running underwater.
     [SerializeField] private float swimJumpForce; // Force added when the player jumps while underwater.
     [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
     [SerializeField] private float underwaterGravity; // Gravity for underwater.
+    [SerializeField] private float maxUnderwaterBreath; // Gravity for underwater.
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
@@ -83,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     private float jumpLeft;
     private bool nextToWall;
     private bool isPouncing;
+    private float breathLeftUnderwater;
 
     private void Awake()
     {
@@ -114,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
             EndPounce();
         }
 
-        if (rb2D.velocity.x != 0f)
+        if (Mathf.Abs(rb2D.velocity.x) > 0.05f)
         {
             sprtRndr.flipX = rb2D.velocity.x < 0f;
         }
@@ -122,6 +125,11 @@ public class PlayerMovement : MonoBehaviour
         if (heldItem != null)
         {
             heldItem.transform.position = transform.position; // Temporary. Replace with better code later that goes on the item itself.
+        }
+
+        if (moveState == MoveState.Water)
+        {
+            breathLeftUnderwater -= Time.deltaTime;
         }
     }
 
@@ -220,7 +228,7 @@ public class PlayerMovement : MonoBehaviour
                 currentTurnAroundSpeed = climbTurnAroundSpeed;
                 break;
             case MoveState.Water:
-                currentSpeed = swimSpeed;
+                currentSpeed = isRunning ? swimSpeed : swimRunSpeed;
                 currentTurnAroundSpeed = swimTurnAroundSpeed;
                 break;
             default:
@@ -273,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else 
             {
-                jumpLeft = 0f;
+                jumpLeft = extraJumpForce;
                 jumpVel = new Vector2(0f, swimJumpForce);
             }
 
@@ -302,7 +310,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         jumpVel = Vector2.zero;
-        pounceVel = new Vector2(moveVel.x / Mathf.Abs(moveVel.x) * jumpForce * 5f, -jumpForce);
+        pounceVel = new Vector2(sprtRndr.flipX ? -jumpForce * 5f : jumpForce * 5f, -jumpForce);
         isPouncing = true;
 
         if (showDebugs)
@@ -416,18 +424,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (heldItem == null) // Pick Up.
         {
-            if (overlappingItem != null && overlappingItem.CompareTag("HeldItem")) // Pickup Item.
+            if (overlappingItem != null)
             {
-                heldItem = overlappingItem;
-            }
-            else if (overlappingItem.CompareTag("Interactable")) // Interact with Object.
-            {
-                overlappingItem.GetComponent<Interactable>().effect.Invoke();
+                if (overlappingItem.CompareTag("Pickup")) // Pickup Item.
+                {
+                    overlappingItem.GetComponent<Pickup>().Grab(this.gameObject);
+                    heldItem = overlappingItem;
+                }
+                else if (overlappingItem.CompareTag("Interactable")) // Interact with Object.
+                {
+                    overlappingItem.GetComponent<Interactable>().effect.Invoke();
+                }
             }
         }
         else // Throw.
         {
-            heldItem.GetComponent<Rigidbody2D>().AddForce(throwForce * new Vector2(sprtRndr.flipX ? -5f : 5f, 0f));
+            heldItem.GetComponent<Pickup>().Throw(new Vector2(sprtRndr.flipX ? -1f : 1f, 2f) * throwForce);
+            heldItem = null;
         }
     }
 
@@ -436,6 +449,7 @@ public class PlayerMovement : MonoBehaviour
         moveState = MoveState.Water;
 
         rb2D.gravityScale = underwaterGravity;
+        breathLeftUnderwater = maxUnderwaterBreath;
     }
 
     private void ExitWater()
@@ -443,6 +457,7 @@ public class PlayerMovement : MonoBehaviour
         moveState = MoveState.Ground;
 
         rb2D.gravityScale = aboveGroundGravity;
+        breathLeftUnderwater = maxUnderwaterBreath;
     }
     
     public void ActivateNightVision()
@@ -483,7 +498,7 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
-        bool isGrounded = hit && rb2D.velocity.y <= 0f;
+        bool isGrounded = hit;
 
         if (showDebugs)
         {
@@ -505,6 +520,18 @@ public class PlayerMovement : MonoBehaviour
         }
         
         return isWall;
+    }
+
+    // Sends you back to the tribe if you die.
+    public void Die()
+    {
+
+    }
+
+    // Makes you restart the day if the tribe runs out of food.
+    public void GameOver()
+    {
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -538,6 +565,10 @@ public class PlayerMovement : MonoBehaviour
         {
             nextToWall = false;
             EndClimb();
+        }
+        else if (collision.CompareTag("Pickup"))
+        {
+            overlappingItem = null;
         }
 
         if (showDebugs)

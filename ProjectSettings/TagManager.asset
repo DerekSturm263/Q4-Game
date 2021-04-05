@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Wall
   - Water
+  - Undefined
+  - Pickup
   layers:
   - Default
   - TransparentFX
@@ -20,8 +22,8 @@ TagManager:
   - Background
   - Ground
   - Wall
-  - 
-  - 
+  - Item
+  - Player
   - 
   - 
   - 

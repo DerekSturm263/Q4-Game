@@ -296,19 +296,8 @@ public class @Controls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bfcf1809-19e6-4988-88d9-451d7375f563"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Pounce"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""772aad25-fc3b-411a-ba29-e6aa7d0e7cec"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""MultiTap"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Pounce"",
