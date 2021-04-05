@@ -45,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
     [SerializeField] private Vector2 boxSize; // Size for the grounded boxcast collision.
-    [SerializeField] private Vector2 wallBoxOffset; // Size for the grounded boxcast collision.
-    [SerializeField] private Vector2 wallBoxSize; // Size for the grounded boxcast collision.
+    [SerializeField] private Vector2 wallBoxOffset; // Size for the wall boxcast collision.
+    [SerializeField] private Vector2 wallBoxSize; // Size for the wall boxcast collision.
 
     [Header("Particle Settings")]
     [SerializeField] private ParticleSystem jumpParticles; // Particles for when the player jumps.
@@ -58,6 +58,17 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Miscellaneous")]
     [SerializeField] private bool showDebugs;
+    public byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
+    // 0000 0001: Wall Climb
+    // 0000 0010: Night Vision
+    // 0000 0100: 
+
+    public float throwForce;
+
+    public GameObject overlappingItem;
+    public GameObject heldItem;
+
+    private bool isNightVisionActive;
 
     private float currentSpeed;
     private float currentTurnAroundSpeed;
@@ -208,7 +219,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-
         if (showDebugs)
         {
             Debug.Log("Player Speed: " + currentSpeed);
@@ -242,6 +252,7 @@ public class PlayerMovement : MonoBehaviour
                 return;
         }
         
+        ActivateParticles(jumpParticles);
         if (isJumping)
         {
             if (moveState == MoveState.Ground)
@@ -306,7 +317,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Beginning a climb can only happen when grounded and on land.
 
-        if (!nextToWall || moveState != MoveState.Ground)
+        if (!nextToWall || moveState != MoveState.Ground || !(abilites & 0b_0000_0001))
             return;
 
         EndPounce();
@@ -388,6 +399,25 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Use()
+    {
+        if (heldItem == null) // Pick Up
+        {
+            if (overlappingItem != null && overlappingItem.CompareTag("HeldItem")) // Pickup Item.
+            {
+                heldItem = overlappingItem;
+            }
+            else if (overlappingItem.CompareTag("Interactable)) // Interact with Object.
+            {
+                overlappingItem.GetComponent<Interactable>.Effect.Invoke();
+            }
+        }
+        else // Throw
+        {
+            heldItem.AddForce(transform.forward * throwForce);
+        }
+    }
+
     private void EnterWater()
     {
         moveState = MoveState.Water;
@@ -400,6 +430,32 @@ public class PlayerMovement : MonoBehaviour
         moveState = MoveState.Ground;
 
         rb2D.gravityScale = 2f;
+    }
+    
+    public void ActivateNightVision()
+    {
+        if (!(abilities | 0b_0000_0010))
+        {
+            isNightVisionActive = true;
+        }
+    }
+    
+    public void DeactivateNightVision()
+    {
+        if (!(abilities | 0b_0000_0000))
+        {
+            isNightVisionActive = false;
+        }
+    }
+    
+    public void UnlockNewAbility()
+    {
+        abilities << 1;
+    }
+    
+    public void ActivateParticles(ParticleSystem particles)
+    {
+        particles.Play();
     }
 
     // Checks if the player is grounded or not. Automatically set to true if the player is underwater.
@@ -420,7 +476,7 @@ public class PlayerMovement : MonoBehaviour
 
         return isGrounded;
     }
-    
+
     // Checks if there is a climbable wall in any direction of the player.
     private bool CheckWall(Vector2 dir)
     {
@@ -444,6 +500,10 @@ public class PlayerMovement : MonoBehaviour
         else if (collision.CompareTag("Wall"))
         {
             nextToWall = true;
+        }
+        else if (collision.CompareTag("Pickup"))
+        {
+            overlappingItem = collision.gameObject;
         }
 
         if (showDebugs)
