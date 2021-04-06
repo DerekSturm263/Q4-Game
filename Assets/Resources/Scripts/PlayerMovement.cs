@@ -117,11 +117,6 @@ public class PlayerMovement : MonoBehaviour
             EndPounce();
         }
 
-        if (Mathf.Abs(rb2D.velocity.x) > 0.05f)
-        {
-            sprtRndr.flipX = rb2D.velocity.x < 0f;
-        }
-
         if (moveState == MoveState.Water)
         {
             breathLeftUnderwater -= Time.deltaTime;
@@ -150,6 +145,11 @@ public class PlayerMovement : MonoBehaviour
         targetVel += moveVel * currentSpeed; // Adds movement force.
         targetVel += jumpVel; // Adds jump force.
         targetVel += pounceVel; // Adds pounce force.
+
+        if (targetVel.x != 0)
+        {
+            sprtRndr.flipX = targetVel.x < 0f;
+        }
 
         rb2D.velocity = targetVel;
     }
