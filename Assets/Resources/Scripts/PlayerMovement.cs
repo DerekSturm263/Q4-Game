@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float swimJumpForce; // Force added when the player jumps while underwater.
     [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
     [SerializeField] private float underwaterGravity; // Gravity for underwater.
-    [SerializeField] private float maxUnderwaterBreath; // Gravity for underwater.
+    [SerializeField] private float maxUnderwaterBreath; // How long (in seconds) you can breath underwater for.
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     public byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has.
-    private readonly byte undecided = 0b_0000_0100; // Byte value representing unlocked abilities that the player has.
+    private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has.
 
     [SerializeField] private float throwForce;
 
@@ -120,11 +120,6 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(rb2D.velocity.x) > 0.05f)
         {
             sprtRndr.flipX = rb2D.velocity.x < 0f;
-        }
-
-        if (heldItem != null)
-        {
-            heldItem.transform.position = transform.position; // Temporary. Replace with better code later that goes on the item itself.
         }
 
         if (moveState == MoveState.Water)
@@ -335,7 +330,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Beginning a climb can only happen when on land and when there's a climbable wall nearby.
 
-        if (!nextToWall || moveState != MoveState.Ground) // Make it so you need the ability for it to work.
+        if (!nextToWall || moveState != MoveState.Ground && (abilities & wallClimb) != 0) // Make it so you need the ability for it to work.
             return;
 
         moveState = MoveState.Wall;
@@ -462,7 +457,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void ActivateNightVision()
     {
-        if ((abilities & nightVision) != 0)
+        if ((abilities & nightVision) == 0)
             return;
 
         isNightVisionActive = true;
@@ -470,7 +465,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void DeactivateNightVision()
     {
-        if ((abilities & nightVision) != 0)
+        if ((abilities & nightVision) == 0)
             return;
 
         isNightVisionActive = false;
@@ -479,6 +474,9 @@ public class PlayerMovement : MonoBehaviour
     public void UnlockNewAbility()
     {
         abilities <<= 1;
+        
+        if ((abilities & longerUnderwater) == 0)
+            maxUnderwaterBreath *= 2f;
     }
     
     public void ActivateParticles(ParticleSystem particles)
