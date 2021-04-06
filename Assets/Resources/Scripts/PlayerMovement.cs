@@ -423,8 +423,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (overlappingItem.CompareTag("Pickup")) // Pickup Item.
                 {
-                    overlappingItem.GetComponent<Pickup>().Grab(this.gameObject);
-                    heldItem = overlappingItem;
+                    overlappingItem.GetComponent<Pickup>().Grab(this.gameObject, out new bool isSuccessful);
+                    
+                    if (isSuccessful)
+                    {
+                        heldItem = overlappingItem;
+                    }
                 }
                 else if (overlappingItem.CompareTag("Interactable")) // Interact with Object.
                 {
