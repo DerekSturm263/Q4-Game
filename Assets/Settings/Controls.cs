@@ -274,7 +274,7 @@ public class @Controls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""effe4666-f94a-4cd4-b6fc-efa23ff1d0e4"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -296,8 +296,8 @@ public class @Controls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bfcf1809-19e6-4988-88d9-451d7375f563"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": ""MultiTap"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Pounce"",

@@ -8,8 +8,8 @@ TagManager:
   - Ground
   - Wall
   - Water
-  - Undefined
   - Pickup
+  - Bubble
   layers:
   - Default
   - TransparentFX
