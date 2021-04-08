@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isPouncing && IsGrounded() || rb2D.velocity.magnitude < 0.01f)
+        if (isPouncing && IsGrounded() || rb2D.velocity == Vector2.zero)
         {
             SlowPounce();
         }
@@ -191,6 +191,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         breathMeter.fillAmount = breathLeftUnderwater / maxUnderwaterBreath;
+        anim.SetFloat("Velocity Y", rb2D.velocity.y);
     }
 
     private void FixedUpdate()
@@ -201,13 +202,21 @@ public class PlayerMovement : MonoBehaviour
         Crouch(controls.Player.Crouch.ReadValue<float>() == 1f); // Check and apply whether the player is crouching or not.
         LookUp(controls.Player.LookUp.ReadValue<float>() == 1f); // Check and apply whether the player is looking up or not.
 
-        Vector2 targetVel = Vector2.zero;
+        Vector2 targetVel;
+        if (moveState != MoveState.Wall)
+        {
+            targetVel = new Vector2(0f, rb2D.velocity.y); // Sets targetVel to be determinant on the current Y velocity.
+        }
+        else
+        {
+            targetVel = Vector2.zero; // Sets targetVel to be nothing.
+        }
 
         targetVel += moveVel * currentSpeed; // Adds movement force.
-        targetVel += jumpVel; // Adds jump force.
         targetVel += pounceVel; // Adds pounce force.
+        targetVel += jumpVel;
 
-        if (targetVel.x != 0)
+        if (targetVel.x != 0f)
         {
             sprtRndr.flipX = targetVel.x < 0f;
         }
@@ -224,6 +233,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(pounceVel.x) > 1f)
             return;
 
+        isPouncing = false;
         pounceVel = Vector2.zero;
 
         switch (moveState)
@@ -243,7 +253,12 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        if (Mathf.Abs(moveVel.x) > 0.01f && IsGrounded() && moveState == MoveState.Ground)
+        if (moveVel.magnitude < 0.01f)
+        {
+            moveVel = Vector2.zero;
+        }
+
+        if (moveVel.x != 0f && IsGrounded() && moveState == MoveState.Ground)
         {
             walkRunParticles.gameObject.SetActive(true);
         }
@@ -251,6 +266,9 @@ public class PlayerMovement : MonoBehaviour
         {
             walkRunParticles.gameObject.SetActive(false);
         }
+
+        anim.SetFloat("Move X", moveVel.x);
+        anim.SetFloat("Move Y", moveVel.y);
 
         if (showDebugs)
         {
@@ -263,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Pressing run while grounded will allow you to run.
 
-        if (!IsGrounded() && moveState != MoveState.Wall)
+        if (!IsGrounded() && moveState != MoveState.Wall && currentSpeed != crawlSpeed)
             return;
 
         switch (moveState)
@@ -281,6 +299,8 @@ public class PlayerMovement : MonoBehaviour
                 currentTurnAroundSpeed = isRunning ? runTurnAroundSpeed : walkTurnAroundSpeed;
                 break;
         }
+
+        anim.SetBool("Is Running", isRunning);
 
         if (showDebugs)
         {
@@ -302,8 +322,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpLeft = extraJumpForce;
                 currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
-
-            if (moveState == MoveState.Water)
+            else if (moveState == MoveState.Water)
             {
                 jumpLeft = extraJumpForce;
                 jumpVel = new Vector2(0f, swimJumpForce);
@@ -318,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (jumpLeft > 0f)
             {
-                jumpVel += new Vector2(0f, jumpLeft);
+                jumpVel = new Vector2(0f, jumpLeft);
 
                 if ((jumpLeft -= Time.deltaTime * jumpDecreaseTime) < 0f)
                 {
@@ -342,22 +361,29 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (jumpLeft == 0f && jumpVel.y != 0f)
+        if (jumpLeft == 0f)
         {
-            jumpVel = new Vector2(jumpVel.x, rb2D.velocity.y);
+            if (jumpVel.y > 0f)
+            {
+                jumpVel = new Vector2(jumpVel.x, 0f);
+            }
+            else if (jumpVel.y < 0f)
+            {
+                jumpVel = Vector2.zero;
+            }
         }
     }
 
     // Pounces in the middle of the air.
     public void Pounce()
     {
-        if (IsGrounded() || moveState != MoveState.Ground || isPouncing || rb2D.velocity.y > jumpForce || heldItem != null)
+        if (IsGrounded() || moveState != MoveState.Ground || isPouncing || jumpLeft != 0f || heldItem != null)
             return;
 
-        jumpVel = Vector2.zero;
-        moveVel = Vector2.zero;
         pounceVel = new Vector2(sprtRndr.flipX ? -jumpForce * 2.5f: jumpForce * 2.5f, -jumpForce * 0.5f);
         isPouncing = true;
+
+        anim.SetTrigger("Pounce");
 
         if (showDebugs)
         {
@@ -368,7 +394,7 @@ public class PlayerMovement : MonoBehaviour
     // Slows down the pounce.
     private void SlowPounce()
     {
-        if (pounceVel.x <= 0.01f)
+        if (Mathf.Abs(pounceVel.x) <= 0.01f)
         {
             pounceVel = Vector2.zero;
             isPouncing = false;
@@ -377,7 +403,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
+            pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 4f);
             rb2D.gravityScale = moveState == MoveState.Ground ? aboveGroundGravity : underwaterGravity;
         }
 
@@ -399,6 +425,8 @@ public class PlayerMovement : MonoBehaviour
         jumpVel = Vector2.zero;
         pounceVel = Vector2.zero;
 
+        anim.SetBool("Is Climbing", true);
+
         if (showDebugs)
         {
             Debug.Log("Player Began Climbing");
@@ -409,7 +437,13 @@ public class PlayerMovement : MonoBehaviour
     private void EndClimb()
     {
         moveState = MoveState.Ground;
-        rb2D.gravityScale = 2f;
+        rb2D.gravityScale = aboveGroundGravity;
+
+        moveVel = Vector2.zero;
+        jumpVel = Vector2.zero;
+        pounceVel = Vector2.zero;
+
+        anim.SetBool("Is Climbing", false);
 
         if (showDebugs)
         {
@@ -422,6 +456,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed)
             return;
+
+        anim.SetBool("Is Crouching", isCrouching);
 
         if (isCrouching)
         {
@@ -440,6 +476,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveState != MoveState.Ground || !IsGrounded())
             return;
+
+        anim.SetBool("Is Looking Up", isLookingUp);
 
         if (isLookingUp)
         {
@@ -502,6 +540,8 @@ public class PlayerMovement : MonoBehaviour
 
         rb2D.gravityScale = underwaterGravity;
         breathLeftUnderwater = maxUnderwaterBreath;
+
+        anim.SetBool("Is Underwater", true);
     }
 
     private void ExitWater()
@@ -516,6 +556,7 @@ public class PlayerMovement : MonoBehaviour
         breathLeftUnderwater = maxUnderwaterBreath;
 
         breathMeter.GetComponent<Animator>().SetTrigger("Exit");
+        anim.SetBool("Is Underwater", false);
     }
     
     public void ActivateNightVision()
@@ -552,6 +593,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Grounded: " + isGrounded);
         }
+
+        anim.SetBool("Is Grounded", isGrounded);
 
         return isGrounded;
     }
@@ -608,6 +651,8 @@ public class PlayerMovement : MonoBehaviour
     {
         fade.gameObject.SetActive(true);
         fadeAnim.SetBool("Player Drown", true);
+
+        anim.SetTrigger("Death");
     }
 
     // Sends the player and camera to the last position before dying.
@@ -615,12 +660,14 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.position = lastPosBeforeSwim;
         Camera.main.transform.position = transform.position - new Vector3(0f, 0f, 10f);
+
+        anim.SetTrigger("Respawn");
     }
 
     // Makes you restart the day if the tribe runs out of food.
     public void GameOver()
     {
-
+        anim.SetTrigger("Death");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
