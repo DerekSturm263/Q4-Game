@@ -332,7 +332,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Begin Climb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

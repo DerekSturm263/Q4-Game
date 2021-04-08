@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -34,51 +32,49 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private LayerMask ground; // Layermask for the ground that will trigger a grounded collision.
-    [SerializeField] private float walkSpeed; // Speed the player can walk at.
-    [SerializeField] private float runSpeed; // Speed the player can run at.
-    [SerializeField] private float crawlSpeed; // Speed the player can crawl at.
-    [SerializeField] private float walkTurnAroundSpeed; // Speed the player turns around while walking.
-    [SerializeField] private float runTurnAroundSpeed; // Speed the player turns around while running.
-    [SerializeField] private float crawlTurnAroundSpeed; // Speed the player turns around while crawling.
+    [SerializeField] private float walkSpeed = 7f; // Speed the player can walk at.
+    [SerializeField] private float runSpeed = 14f; // Speed the player can run at.
+    [SerializeField] private float crawlSpeed = 2f; // Speed the player can crawl at.
+    [SerializeField] private float walkTurnAroundSpeed = 10f; // Speed the player turns around while walking.
+    [SerializeField] private float runTurnAroundSpeed = 3f; // Speed the player turns around while running.
+    [SerializeField] private float crawlTurnAroundSpeed = 5f; // Speed the player turns around while crawling.
 
-    [Header("Jump Settings")]
-    [SerializeField] private float jumpForce; // Force immediately added when the player begins to jump.
-    [SerializeField] private float extraJumpForce; // Force added when the player holds down jump.
-    [SerializeField] private float jumpDecreaseTime; // The speed at which the extraJumpForce goes away.
-    [SerializeField] private float aerialTurnAroundSpeed; // The speed the player turns around in the air.
+    [Header("Jump/Aerial Settings")]
+    [SerializeField] private float jumpForce = 6f; // Force immediately added when the player begins to jump.
+    [SerializeField] private float extraJumpForce = 2.5f; // Force added when the player holds down jump.
+    [SerializeField] private float jumpDecreaseTime = 20f; // The speed at which the extraJumpForce goes away.
+    [SerializeField] private float aerialTurnAroundSpeed = 1.5f; // The speed the player turns around in the air.
 
     [Header("Climbing Settings")]
     [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
-    [SerializeField] private float climbSpeed; // Speed the player can climb at.
-    [SerializeField] private float climbRunSpeed; // Speed the player can climb at.
-    [SerializeField] private float climbTurnAroundSpeed; // Speed the player turns around while climbing.
+    [SerializeField] private float climbSpeed = 6f; // Speed the player can climb at.
+    [SerializeField] private float climbRunSpeed = 12f; // Speed the player can climb at.
+    [SerializeField] private float climbTurnAroundSpeed = 10f; // Speed the player turns around while climbing.
 
     [Header("Swim Settings")]
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
-    [SerializeField] private float swimSpeed; // Speed the player can swim at.
-    [SerializeField] private float swimRunSpeed; // Speed the player can swim at while running underwater.
-    [SerializeField] private float swimJumpForce; // Force added when the player jumps while underwater.
-    [SerializeField] private float swimTurnAroundSpeed; // Speed the player turns around while swimming.
-    [SerializeField] private float underwaterGravity; // Gravity for underwater.
-    [SerializeField] private float maxUnderwaterBreath; // How long (in seconds) you can breath underwater for.
+    [SerializeField] private float swimSpeed = 6f; // Speed the player can swim at.
+    [SerializeField] private float swimRunSpeed = 9f; // Speed the player can swim at while running underwater.
+    [SerializeField] private float swimJumpForce = 5f; // Force added when the player jumps while underwater.
+    [SerializeField] private float swimTurnAroundSpeed = 2f; // Speed the player turns around while swimming.
+    [SerializeField] private float underwaterGravity = 0.5f; // Gravity for underwater.
+    [SerializeField] private float maxUnderwaterBreath = 10f; // How long (in seconds) you can breath underwater for.
     [SerializeField] private UnityEngine.UI.Image breathMeter;
 
     [Header("Boxcast Settings")]
-    [SerializeField] private Vector2 boxOffset; // Offset for the grounded boxcast collision.
-    [SerializeField] private Vector2 boxSize; // Size for the grounded boxcast collision.
-    [SerializeField] private Vector2 wallBoxOffset; // Size for the wall boxcast collision.
-    [SerializeField] private Vector2 wallBoxSize; // Size for the wall boxcast collision.
+    [SerializeField] private Vector2 groundedBoxOffset = new Vector2(0f, -1.35f); // Offset for the grounded boxcast collision.
+    [SerializeField] private Vector2 groundedBoxSize = new Vector2(0.625f, 0.05f); // Size for the grounded boxcast collision.
+    [SerializeField] private Vector2 wallBoxOffset = new Vector2(1.5f, 0f); // Size for the wall boxcast collision.
+    [SerializeField] private Vector2 wallBoxSize = new Vector2(1f, 1f); // Size for the wall boxcast collision.
 
     [Header("Particle Settings")]
-    [SerializeField] private ParticleSystem jumpParticles; // Particles for when the player jumps.
-    [SerializeField] private ParticleSystem landParticles; // Particles for when the player lands.
-    [SerializeField] private ParticleSystem walkParticles; // Particles for when the player walks.
-    [SerializeField] private ParticleSystem runParticles; // Particles for when the player runs.
+    [SerializeField] private ParticleSystem walkRunParticles; // Particles for when the player walks.
+    [SerializeField] private ParticleSystem jumpLandParticles; // Particles for when the player jumps.
     [SerializeField] private ParticleSystem breathingParticles; // Particles for when the player is breathing and not underwater.
     [SerializeField] private ParticleSystem underwaterParticles; // Particles for when the player is breathing underwater.
 
     [Header("Miscellaneous")]
-    [SerializeField] private bool showDebugs;
+    [SerializeField] private bool showDebugs = false;
     public byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has.
@@ -86,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     public UnityEngine.UI.Image fade; // Dark overlay that appears when respawning.
     private Animator fadeAnim;
 
-    [SerializeField] private Vector2 throwVector;
+    [SerializeField] private Vector2 throwVector = new Vector2(10f, 10f); // Vector applied when throwing an item.
 
     public GameObject overlappingItem;
     public GameObject heldItem;
@@ -101,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 jumpVel;
     private Vector2 pounceVel;
 
+    // Miscellaneous.
     private float jumpLeft;
     private bool nextToWall;
     private bool isPouncing;
@@ -109,9 +106,6 @@ public class PlayerMovement : MonoBehaviour
 
     // Respawning.
     private Vector2 lastPosBeforeSwim;
-
-    // Light detection.
-    private LightmapData lightData;
 
     private void Awake()
     {
@@ -143,32 +137,27 @@ public class PlayerMovement : MonoBehaviour
 
         fadeAnim = fade.GetComponent<Animator>();
 
-        //Debug.Log(sprtRndr.lightmapIndex);
-        //lightData = LightmapSettings.lightmaps[sprtRndr.realtimeLightmapIndex];
-
         aboveGroundGravity = rb2D.gravityScale;
     }
 
     private void Update()
     {
-        Move(controls.Player.Move.ReadValue<Vector2>());
-        Run(controls.Player.Run.ReadValue<float>());
-        Jump(controls.Player.Jump.ReadValue<float>());
-        Crouch(controls.Player.Crouch.ReadValue<float>());
-        LookUp(controls.Player.LookUp.ReadValue<float>());
-
-        if (Mathf.Abs(pounceVel.x) <= 0.01f)
+        if (isPouncing && IsGrounded() || rb2D.velocity.magnitude < 0.01f)
         {
-            pounceVel = Vector2.zero;
-            isPouncing = false;
-        }
-        else if (isPouncing && IsGrounded() && Mathf.Abs(pounceVel.x) > 0.01f)
-        {
-            EndPounce();
+            SlowPounce();
         }
 
         if (moveState == MoveState.Water)
         {
+            if (!underwaterParticles.gameObject.activeSelf)
+            {
+                underwaterParticles.gameObject.SetActive(true);
+            }
+            if (breathingParticles.gameObject.activeSelf)
+            {
+                breathingParticles.gameObject.SetActive(false);
+            }
+
             vignette.intensity.value = 0.55f - (breathLeftUnderwater / maxUnderwaterBreath) * 0.35f;
 
             if ((breathLeftUnderwater -= Time.deltaTime) <= 0f)
@@ -183,6 +172,15 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            if (!breathingParticles.gameObject.activeSelf)
+            {
+                breathingParticles.gameObject.SetActive(true);
+            }
+            if (underwaterParticles.gameObject.activeSelf)
+            {
+                underwaterParticles.gameObject.SetActive(false);
+            }
+
             if (IsGrounded())
             {
                 lastPosBeforeSwim = transform.position;
@@ -193,37 +191,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         breathMeter.fillAmount = breathLeftUnderwater / maxUnderwaterBreath;
-
-        /* Color.RGBToHSV(lightData.lightmapColor.GetPixel(0, 0), out float h, out float s, out float v);
-        Debug.Log(v);
-
-        // Change to happen when the lights change, and not every frame.
-        if (v < 0.5f)
-        {
-            ActivateNightVision();
-        }
-        else
-        {
-            DeactivateNightVision();
-        } */
     }
 
     private void FixedUpdate()
     {
-        #region Jumping
-
-        if (controls.Player.Jump.ReadValue<float>() == 1f && jumpLeft > 0f)
-        {
-            jumpVel += new Vector2(0f, jumpLeft);
-            jumpLeft -= Time.deltaTime * jumpDecreaseTime;
-        }
-        else if (moveState != MoveState.Wall)
-        {
-            jumpVel = new Vector2(0f, rb2D.velocity.y);
-            jumpLeft = 0f;
-        }
-
-        #endregion
+        Move(controls.Player.Move.ReadValue<Vector2>()); // Check and apply movement.
+        Run(controls.Player.Run.ReadValue<float>() == 1f); // Check and apply whether the player is running or not.
+        Jump(controls.Player.Jump.ReadValue<float>() == 1f); // Check and apply whether the player is holding jump or not.
+        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f); // Check and apply whether the player is crouching or not.
+        LookUp(controls.Player.LookUp.ReadValue<float>() == 1f); // Check and apply whether the player is looking up or not.
 
         Vector2 targetVel = Vector2.zero;
 
@@ -239,19 +215,8 @@ public class PlayerMovement : MonoBehaviour
         rb2D.velocity = targetVel;
     }
 
-    // For use with new input system.
-    public void Move(InputAction.CallbackContext ctx)
-    {
-        ApplyMove(ctx.ReadValue<Vector2>());
-    }
-
-    // For use with old input system.
+    // Handles movement.
     public void Move(Vector2 moveVal)
-    {
-        ApplyMove(moveVal);
-    }
-
-    public void ApplyMove(Vector2 moveVal)
     {
         // Moving while on the ground only uses the left and right buttons.
         // Moving while swimming can move in all directions.
@@ -264,7 +229,7 @@ public class PlayerMovement : MonoBehaviour
         switch (moveState)
         {
             case MoveState.Wall:
-                if (CheckWall(moveVal * 1.5f))
+                if (IsBackgroundWall(moveVal * 1.5f))
                 {
                     moveVel = Vector2.Lerp(moveVel, moveVal, Time.deltaTime * currentTurnAroundSpeed);
                 }
@@ -278,25 +243,23 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
+        if (Mathf.Abs(moveVel.x) > 0.01f && IsGrounded() && moveState == MoveState.Ground)
+        {
+            walkRunParticles.gameObject.SetActive(true);
+        }
+        else
+        {
+            walkRunParticles.gameObject.SetActive(false);
+        }
+
         if (showDebugs)
         {
             Debug.Log("Player Movement" + moveVel);
         }
     }
 
-    // For use with new input system.
-    public void Run(InputAction.CallbackContext ctx)
-    {
-        ApplyRun(ctx.ReadValue<float>() == 1f);
-    }
-
-    // For use with old input system.
-    public void Run(float runVal)
-    {
-        ApplyRun(runVal == 1f);
-    }
-
-    public void ApplyRun(bool isRunning)
+    // Lets the player run.
+    public void Run(bool isRunning)
     {
         // Pressing run while grounded will allow you to run.
 
@@ -325,89 +288,76 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // For use with new input system.
-    public void Jump(InputAction.CallbackContext ctx)
+    // Jumps. Holding jump can make you jump higher.
+    public void Jump(bool isJumping)
     {
-        ApplyJump(ctx.ReadValue<float>() == 1f);
-    }
-
-    // For use with old input system.
-    public void Jump(float jumpVal)
-    {
-        ApplyJump(jumpVal == 1f);
-    }
-
-    public void ApplyJump(bool isJumping)
-    {
-        // Pressing jump while grounded will perform a jump.
-        // Pressing jump while swimming will cause you to swim forwards faster.
-
-        bool usePounce = false;
-
-        if (isPouncing)
-        {
-            usePounce = true;
-        }
-
-        if (moveState == MoveState.Wall && isJumping)
-        {
-            EndClimb();
-        }
-        else
-        {
-            if (!IsGrounded() && moveState != MoveState.Water)
-                return;
-        }
-        
-        ActivateParticles(jumpParticles);
+        // Apply upward momentum.
         if (isJumping)
         {
-            if (moveState != MoveState.Water)
+            if (moveState == MoveState.Wall)
             {
-                jumpLeft = extraJumpForce;
-                jumpVel = new Vector2(0f, jumpForce);
-                currentTurnAroundSpeed = aerialTurnAroundSpeed;
+                EndClimb();
 
-                if (usePounce)
-                {
-                    jumpVel += new Vector2(sprtRndr.flipX ? -jumpForce : jumpForce, 0f);
-                }
+                jumpVel = new Vector2(0f, jumpForce);
+                jumpLeft = extraJumpForce;
+                currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
-            else 
+
+            if (moveState == MoveState.Water)
             {
                 jumpLeft = extraJumpForce;
                 jumpVel = new Vector2(0f, swimJumpForce);
             }
+            else if (IsGrounded())
+            {
+                jumpLandParticles.Play();
+
+                jumpVel = new Vector2(0f, jumpForce);
+                jumpLeft = extraJumpForce;
+                currentTurnAroundSpeed = aerialTurnAroundSpeed;
+            }
+            else if (jumpLeft > 0f)
+            {
+                jumpVel += new Vector2(0f, jumpLeft);
+
+                if ((jumpLeft -= Time.deltaTime * jumpDecreaseTime) < 0f)
+                {
+                    jumpLeft = 0f;
+                }
+            }
 
             if (showDebugs)
             {
-                Debug.Log("Player Started Jumping");
+                Debug.Log("Player Is Jumping");
             }
         }
+        // Do not apply upward momentum.
         else
         {
             jumpLeft = 0f;
-            jumpVel = Vector2.zero;
 
             if (showDebugs)
             {
-                Debug.Log("Player Stopped Jumping");
+                Debug.Log("Player Is Not Jumping");
             }
+        }
+
+        if (jumpLeft == 0f && jumpVel.y != 0f)
+        {
+            jumpVel = new Vector2(jumpVel.x, rb2D.velocity.y);
         }
     }
 
+    // Pounces in the middle of the air.
     public void Pounce()
     {
-        // Pouncing is only allowed in mid-air.
-
-        if (IsGrounded() || moveState != MoveState.Ground || rb2D.velocity.y > 0f || isPouncing)
+        if (IsGrounded() || moveState != MoveState.Ground || isPouncing || rb2D.velocity.y > jumpForce || heldItem != null)
             return;
 
         jumpVel = Vector2.zero;
         moveVel = Vector2.zero;
         pounceVel = new Vector2(sprtRndr.flipX ? -jumpForce * 2.5f: jumpForce * 2.5f, -jumpForce * 0.5f);
         isPouncing = true;
-        rb2D.gravityScale = 0f;
 
         if (showDebugs)
         {
@@ -415,21 +365,31 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void EndPounce()
+    // Slows down the pounce.
+    private void SlowPounce()
     {
-        pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
-        rb2D.gravityScale = moveState == MoveState.Ground ? aboveGroundGravity : underwaterGravity;
+        if (pounceVel.x <= 0.01f)
+        {
+            pounceVel = Vector2.zero;
+            isPouncing = false;
+
+            return;
+        }
+        else
+        {
+            pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
+            rb2D.gravityScale = moveState == MoveState.Ground ? aboveGroundGravity : underwaterGravity;
+        }
 
         if (showDebugs)
         {
-            Debug.Log("Player Hit Ground");
+            Debug.Log("Player Slowing Pounce");
         }
     }
 
+    // Begins to climb a wall when there is one nearby.
     public void BeginClimb()
     {
-        // Beginning a climb can only happen when on land and when there's a climbable wall nearby.
-
         if (!nextToWall || moveState != MoveState.Ground && (abilities & wallClimb) != 0) // Make it so you need the ability for it to work.
             return;
 
@@ -445,10 +405,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Finishes climbing a wall.
     private void EndClimb()
     {
-        // Ending a climb can happen while jumping and climbing a wall or by lowering yourself to the ground.
-
         moveState = MoveState.Ground;
         rb2D.gravityScale = 2f;
 
@@ -458,70 +417,50 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // For use with new input system.
-    public void Crouch(InputAction.CallbackContext ctx)
+    // Crouching to allow the player to duck and move slowly.
+    public void Crouch(bool isCrouching)
     {
-        ApplyCrouch(ctx.ReadValue<float>() == 1f);
-    }
-
-    // For use with old input system.
-    public void Crouch(float crouchVal)
-    {
-        ApplyCrouch(crouchVal == 1f);
-    }
-
-    public void ApplyCrouch(bool isCrouching)
-    {
-        // Crouching will allow the player to duck and move slowly.
-
         if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed)
             return;
 
-        currentSpeed = isCrouching ? crawlSpeed : walkSpeed;
-
         if (isCrouching)
         {
+            currentSpeed = crawlSpeed;
             currentTurnAroundSpeed = currentSpeed == crawlSpeed ? crawlTurnAroundSpeed : walkTurnAroundSpeed;
+
+            if (showDebugs)
+            {
+                Debug.Log("Player Is Crouching");
+            }
         }
-
-        if (showDebugs)
-        {
-            Debug.Log("Player Began Crouching");
-        }
     }
 
-    // For use with new input system.
-    public void LookUp(InputAction.CallbackContext ctx)
+    // Looking Up moves the camera up.
+    public void LookUp(bool isLookingUp)
     {
-        ApplyLookUp(ctx.ReadValue<float>() == 1f);
-    }
-
-    // For use with old input system.
-    public void LookUp(float lookUpVal)
-    {
-        ApplyLookUp(lookUpVal == 1f);
-    }
-
-    public void ApplyLookUp(bool isLookingUp)
-    {
-        // Player can only look up when grounded.
-
         if (moveState != MoveState.Ground || !IsGrounded())
             return;
 
-        if (showDebugs)
+        if (isLookingUp)
         {
-            Debug.Log("Player Began Looking Up");
+            currentSpeed = 0f;
+            currentTurnAroundSpeed = 20f;
+
+            if (showDebugs)
+            {
+                Debug.Log("Player Is Looking Up");
+            }
         }
     }
 
+    // Interacts or picks up nearby items depending on the item.
     public void Use()
     {
         if (heldItem == null) // Pick Up.
         {
             GameObject item = null;
 
-            if (CheckForItem(ref item))
+            if (IsItemOverlap(ref item))
             {
                 overlappingItem = item;
 
@@ -542,6 +481,11 @@ public class PlayerMovement : MonoBehaviour
             heldItem = null;
 
             overlappingItem = null;
+        }
+
+        if (showDebugs)
+        {
+            Debug.Log("Player Tried Using An Item");
         }
     }
 
@@ -598,18 +542,10 @@ public class PlayerMovement : MonoBehaviour
             maxUnderwaterBreath *= 2f;
     }
     
-    public void ActivateParticles(ParticleSystem particles)
-    {
-        if (particles != null)
-        {
-            particles.Play();
-        }
-    }
-
     // Checks if the player is grounded or not. Automatically set to true if the player is underwater.
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + boxOffset, boxSize, 0f, Vector2.down, 0f, ground);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + groundedBoxOffset, groundedBoxSize, 0f, Vector2.down, 0f, ground);
         bool isGrounded = hit;
 
         if (showDebugs)
@@ -621,7 +557,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Checks if there is a climbable wall in any direction of the player.
-    private bool CheckWall(Vector2 dir)
+    private bool IsBackgroundWall(Vector2 dir)
     {
         RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + dir, wallBoxSize, 0f, Vector2.zero, 0f, wall);
         bool isWall = hit;
@@ -634,14 +570,15 @@ public class PlayerMovement : MonoBehaviour
         return isWall;
     }
 
-    private bool CheckForItem(ref GameObject item)
+    // Checks if there is an item overlapping with the player.
+    private bool IsItemOverlap(ref GameObject item)
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 0f, Vector2.down, 0f, itemMask);
         bool isItem = hit;
 
         if (showDebugs)
         {
-            Debug.Log("Item detected.");
+            Debug.Log("Item Detected");
         }
 
         if (isItem)
@@ -652,14 +589,15 @@ public class PlayerMovement : MonoBehaviour
         return isItem;
     }
 
-    private bool CheckForWater()
+    // Checks if the player is submerged in water.
+    private bool IsWater()
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 0.1f), 0f, Vector2.down, 0f, water);
         bool isWater = hit;
 
         if (showDebugs)
         {
-            Debug.Log("Water detected.");
+            Debug.Log("Water Detected");
         }
 
         return isWater;
@@ -712,7 +650,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.CompareTag("Water") && moveState != MoveState.Water)
         {
-            if (CheckForWater())
+            if (IsWater())
             {
                 EnterWater();
             }
@@ -728,7 +666,6 @@ public class PlayerMovement : MonoBehaviour
         else if (collision.CompareTag("Wall"))
         {
             nextToWall = false;
-            EndClimb();
         }
         else if (collision.CompareTag("Pickup"))
         {
@@ -743,7 +680,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawCube((Vector2) transform.position + boxOffset, boxSize);
+        Gizmos.DrawCube((Vector2) transform.position + groundedBoxOffset, groundedBoxSize);
         Gizmos.DrawCube((Vector2) transform.position + wallBoxOffset, wallBoxSize);
     }
 
