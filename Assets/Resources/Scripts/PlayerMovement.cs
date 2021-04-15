@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
 public class PlayerMovement : MonoBehaviour
@@ -20,16 +18,17 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sprtRndr;
 
     // Volume Settings.
-    private VolumeProfile vol;
-    private Vignette vignette;
-    private ColorAdjustments colAdj;
-    private DepthOfField dof;
+    private UnityEngine.Rendering.VolumeProfile vol;
+    private UnityEngine.Rendering.Universal.Vignette vignette;
+    private UnityEngine.Rendering.Universal.ColorAdjustments colAdj;
+    private UnityEngine.Rendering.Universal.DepthOfField dof;
 
     private float defaultVignette;
     private Color defaultColAdj;
     private float defaultDOF;
 
     private float targetVignette;
+    private float targetExposure;
     private float targetDOF;
 
     [Header("Movement Settings")]
@@ -47,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpDecreaseTime = 20f; // The speed at which the extraJumpForce goes away.
     [SerializeField] private float aerialTurnAroundSpeed = 1.5f; // The speed the player turns around in the air.
     [SerializeField] private float coyoteTime; // Extra time after leaving the ground for jumping.
+    [SerializeField] private Vector2 pounceForce; // Force added when the player pounces.
     [SerializeField] private TrailRenderer pounceTrail; // Trail renderer for the pounce move.
     private float timeSinceGround;
 
@@ -64,13 +64,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float swimTurnAroundSpeed = 2f; // Speed the player turns around while swimming.
     [SerializeField] private float underwaterGravity = 0.5f; // Gravity for underwater.
     [SerializeField] private float maxUnderwaterBreath = 10f; // How long (in seconds) you can breath underwater for.
+    [SerializeField] private float newMaxUnderwaterBreath = 20f; // How long (in seconds) you can breath underwater for after upgrading.
     [SerializeField] private float swimMaxVelocity = 15f; // Maximum velocity you can achieve whilst going upwards underwater.
     [SerializeField] private UnityEngine.UI.Image breathMeter;
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 groundedBoxOffset = new Vector2(0f, -1.35f); // Offset for the grounded boxcast collision.
     [SerializeField] private Vector2 groundedBoxSize = new Vector2(0.625f, 0.05f); // Size for the grounded boxcast collision.
-    [SerializeField] private Vector2 wallBoxOffset = new Vector2(1.5f, 0f); // Size for the wall boxcast collision.
     [SerializeField] private Vector2 wallBoxSize = new Vector2(1f, 1f); // Size for the wall boxcast collision.
 
     [Header("Particle Settings")]
@@ -85,10 +85,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Miscellaneous")]
     [SerializeField] private bool showDebugs = false;
-    public byte abilities = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
-    private readonly byte wallClimb = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
-    private readonly byte nightVision = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
-    private readonly byte longerUnderwater = 0b_0000_1000; // Byte value representing unlocked abilities that the player has. 8.
+    [SerializeField] private byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
+    private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
+    private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
+    private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
     public UnityEngine.UI.Image fade; // Dark overlay that appears when respawning.
     private Animator fadeAnim;
 
@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
 
-        vol = Camera.main.GetComponent<Volume>().profile;
+        vol = Camera.main.GetComponent<UnityEngine.Rendering.Volume>().profile;
         vol.TryGet(out vignette);
         vol.TryGet(out colAdj);
         vol.TryGet(out dof);
@@ -179,12 +179,13 @@ public class PlayerMovement : MonoBehaviour
 
         #region Underwater Behaviour
 
+        float breath = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
         if (moveState == MoveState.Water)
         {
             underwaterParticles.rateOverTime = 7.5f;
             breathingParticles.rateOverTime = 0f;
 
-            vignette.intensity.value = 0.55f - (breathLeftUnderwater / maxUnderwaterBreath) * 0.35f;
+            vignette.intensity.value = 0.55f - (breathLeftUnderwater / breath) * 0.35f;
 
             if ((breathLeftUnderwater -= Time.deltaTime) <= 0f)
             {
@@ -209,13 +210,13 @@ public class PlayerMovement : MonoBehaviour
             vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, targetVignette, Time.deltaTime);
             dof.focusDistance.value = Mathf.Lerp(dof.focusDistance.value, targetDOF, Time.deltaTime);
         }
-        breathMeter.fillAmount = breathLeftUnderwater / maxUnderwaterBreath;
+        breathMeter.fillAmount = breathLeftUnderwater / breath;
 
         #endregion
 
-        #region Nightvision
+        #region Night Vision
 
-
+        colAdj.postExposure.value = Mathf.Lerp(colAdj.postExposure.value, targetExposure, Time.deltaTime * 2.5f);
 
         #endregion
 
@@ -480,7 +481,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded() || moveState != MoveState.Ground || isPouncing || jumpLeft != 0f || heldItem != null)
             return;
 
-        pounceVel = new Vector2(sprtRndr.flipX ? -jumpForce * 3f: jumpForce * 3f, -jumpForce * 0.35f);
+        pounceVel = Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), pounceForce);
         isPouncing = true;
 
         anim.SetTrigger("Pounce");
@@ -516,11 +517,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Player Slowing Pounce");
         }
     }
-    
+
     private void BeginClimb()
     {
         // Only allows player to climb wall when ability is unlocked.
-        if (!nextToWall || moveState != MoveState.Ground && (abilities & wallClimb) != 0) // Make it so you need the ability for it to work.
+        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0) // Make it so you need the ability for it to work.
             return;
 
         moveState = MoveState.Wall;
@@ -612,7 +613,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Sets gravity.
         rb2D.gravityScale = underwaterGravity;
-        breathLeftUnderwater = maxUnderwaterBreath;
+        breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath: newMaxUnderwaterBreath;
 
         anim.SetBool("Is Underwater", true);
     }
@@ -631,41 +632,39 @@ public class PlayerMovement : MonoBehaviour
 
         // Sets gravity.
         rb2D.gravityScale = aboveGroundGravity;
-        breathLeftUnderwater = maxUnderwaterBreath;
+        breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
 
         breathMeter.GetComponent<Animator>().SetTrigger("Exit");
         anim.SetBool("Is Underwater", false);
     }
-    
+
     private void ActivateNightVision()
     {
         // Checks to make sure ability can be used.
         if ((abilities & nightVision) == 0)
             return;
 
+        targetExposure = 5f;
     }
-    
+
     private void DeactivateNightVision()
     {
         // Checks to make sure ability can be used.
         if ((abilities & nightVision) == 0)
             return;
 
+        targetExposure = 0f;
     }
-    
-    public void UnlockNewAbility()
+
+    public void UnlockAbility(byte ability)
     {
-        // Bitshifts ability to the left by 1.
-        abilities <<= 1;
-        
-        if ((abilities & longerUnderwater) == 0)
-            maxUnderwaterBreath *= 2f;
+        abilities |= ability;
     }
-    
+
     // Checks if the player is grounded or not. Separate from Jump Coyote Time.
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + groundedBoxOffset, groundedBoxSize, 0f, Vector2.down, 0f, ground);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position + groundedBoxOffset, groundedBoxSize, 0f, Vector2.down, 0f, ground);
         bool isGrounded = hit;
 
         if (showDebugs)
@@ -681,14 +680,14 @@ public class PlayerMovement : MonoBehaviour
     // Checks if there is a climbable wall in any direction of the player. Will prevent the player from climbing in that direction if there isn't.
     private bool IsBackgroundWall(Vector2 dir)
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + dir, wallBoxSize, 0f, Vector2.zero, 0f, wall);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position + dir, wallBoxSize, 0f, Vector2.zero, 0f, wall);
         bool isWall = hit;
-        
+
         if (showDebugs)
         {
             Debug.Log("Wall: " + isWall);
         }
-        
+
         return isWall;
     }
 
