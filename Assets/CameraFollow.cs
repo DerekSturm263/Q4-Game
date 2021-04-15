@@ -5,9 +5,16 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform followObj;
+    public Vector3 offset;
+    public float speed = 5f;
 
-    private void Update()
+    private void Awake()
     {
-        transform.position = followObj.position + new Vector3(0f, 0f, -10f);
+        offset = transform.position - followObj.transform.position;
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = Vector3.Lerp(transform.position, followObj.position + offset, Time.deltaTime * speed);
     }
 }
