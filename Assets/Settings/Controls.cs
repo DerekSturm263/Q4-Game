@@ -81,6 +81,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Swim"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a2906a1-b9bf-4748-b18d-fd70886429a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -446,6 +454,28 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c6a6e1d-f0f2-4ddd-939d-34e6891fbe54"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Swim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""732a9292-590c-42e4-8776-c0370b0b1a8e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Swim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -485,6 +515,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_LookUp = m_Player.FindAction("Look Up", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+        m_Player_Swim = m_Player.FindAction("Swim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -542,6 +573,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_LookUp;
     private readonly InputAction m_Player_Use;
+    private readonly InputAction m_Player_Swim;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -554,6 +586,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @LookUp => m_Wrapper.m_Player_LookUp;
         public InputAction @Use => m_Wrapper.m_Player_Use;
+        public InputAction @Swim => m_Wrapper.m_Player_Swim;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -587,6 +620,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Swim.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
+                @Swim.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
+                @Swim.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -615,6 +651,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @Swim.started += instance.OnSwim;
+                @Swim.performed += instance.OnSwim;
+                @Swim.canceled += instance.OnSwim;
             }
         }
     }
@@ -647,5 +686,6 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnLookUp(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnSwim(InputAction.CallbackContext context);
     }
 }

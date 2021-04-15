@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float extraJumpForce = 2.5f; // Force added when the player holds down jump.
     [SerializeField] private float jumpDecreaseTime = 20f; // The speed at which the extraJumpForce goes away.
     [SerializeField] private float aerialTurnAroundSpeed = 1.5f; // The speed the player turns around in the air.
+    [SerializeField] private float coyoteTime;
+    private float timeSinceGround;
 
     [Header("Climbing Settings")]
     [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
@@ -55,10 +57,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed = 6f; // Speed the player can swim at.
     [SerializeField] private float swimRunSpeed = 9f; // Speed the player can swim at while running underwater.
-    [SerializeField] private float swimJumpForce = 5f; // Force added when the player jumps while underwater.
+    [SerializeField] private float swimForce = 5f; // Force added when the player jumps while underwater.
     [SerializeField] private float swimTurnAroundSpeed = 2f; // Speed the player turns around while swimming.
     [SerializeField] private float underwaterGravity = 0.5f; // Gravity for underwater.
     [SerializeField] private float maxUnderwaterBreath = 10f; // How long (in seconds) you can breath underwater for.
+    [SerializeField] private float swimMaxVelocity = 15f; // Maximum velocity you can achieve whilst going upwards underwater.
     [SerializeField] private UnityEngine.UI.Image breathMeter;
 
     [Header("Boxcast Settings")]
@@ -68,10 +71,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 wallBoxSize = new Vector2(1f, 1f); // Size for the wall boxcast collision.
 
     [Header("Particle Settings")]
-    [SerializeField] private ParticleSystem walkRunParticles; // Particles for when the player walks.
+    [SerializeField] private ParticleSystem walkRun; // Particles for when the player walks.
+    private ParticleSystem.EmissionModule walkRunParticles;
     [SerializeField] private ParticleSystem jumpLandParticles; // Particles for when the player jumps.
-    [SerializeField] private ParticleSystem breathingParticles; // Particles for when the player is breathing and not underwater.
-    [SerializeField] private ParticleSystem underwaterParticles; // Particles for when the player is breathing underwater.
+    [SerializeField] private ParticleSystem breathing; // Particles for when the player is breathing and not underwater.
+    private ParticleSystem.EmissionModule breathingParticles;
+    [SerializeField] private ParticleSystem underwater; // Particles for when the player is breathing underwater.
+    private ParticleSystem.EmissionModule underwaterParticles;
+    [SerializeField] private ParticleSystem waterSplashParticles; // Particles for when the player jumps.
 
     [Header("Miscellaneous")]
     [SerializeField] private bool showDebugs = false;
@@ -84,8 +91,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Vector2 throwVector = new Vector2(10f, 10f); // Vector applied when throwing an item.
 
-    public GameObject overlappingItem;
-    public GameObject heldItem;
+    [HideInInspector] public GameObject overlappingItem;
+    [HideInInspector] public GameObject heldItem;
 
     private float aboveGroundGravity;
     private bool isNightVisionActive;
@@ -131,9 +138,14 @@ public class PlayerMovement : MonoBehaviour
         targetVignette = defaultVignette;
         targetDOF = defaultDOF;
 
-        controls.Player.BeginClimb.performed += ctx => BeginClimb();
-        controls.Player.Pounce.performed += ctx => Pounce();
-        controls.Player.Use.performed += ctx => Use();
+        walkRunParticles = walkRun.emission;
+        breathingParticles = breathing.emission;
+        underwaterParticles = underwater.emission;
+
+        controls.Player.BeginClimb.performed += _ => BeginClimb();
+        controls.Player.Pounce.performed += _ => Pounce();
+        controls.Player.Use.performed += _ => Use();
+        controls.Player.Swim.performed += _ => Swim();
 
         fadeAnim = fade.GetComponent<Animator>();
 
@@ -147,16 +159,19 @@ public class PlayerMovement : MonoBehaviour
             SlowPounce();
         }
 
+        if (IsGrounded() && jumpVel == Vector2.zero)
+        {
+            timeSinceGround = 0f;
+        }
+        else
+        {
+            timeSinceGround += Time.deltaTime;
+        }
+
         if (moveState == MoveState.Water)
         {
-            if (!underwaterParticles.gameObject.activeSelf)
-            {
-                underwaterParticles.gameObject.SetActive(true);
-            }
-            if (breathingParticles.gameObject.activeSelf)
-            {
-                breathingParticles.gameObject.SetActive(false);
-            }
+            underwaterParticles.rateOverTime = 7.5f;
+            breathingParticles.rateOverTime = 0f;
 
             vignette.intensity.value = 0.55f - (breathLeftUnderwater / maxUnderwaterBreath) * 0.35f;
 
@@ -172,14 +187,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (!breathingParticles.gameObject.activeSelf)
-            {
-                breathingParticles.gameObject.SetActive(true);
-            }
-            if (underwaterParticles.gameObject.activeSelf)
-            {
-                underwaterParticles.gameObject.SetActive(false);
-            }
+            breathingParticles.rateOverTime = 100f;
+            underwaterParticles.rateOverTime = 0f;
 
             if (IsGrounded())
             {
@@ -222,6 +231,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb2D.velocity = targetVel;
+
+        // Caps swimming speed.
+        if (moveState == MoveState.Water)
+        {
+            rb2D.velocity = rb2D.velocity.y <= swimMaxVelocity ? rb2D.velocity : new Vector2(0f, swimMaxVelocity);
+        }
     }
 
     // Handles movement.
@@ -258,13 +273,13 @@ public class PlayerMovement : MonoBehaviour
             moveVel = Vector2.zero;
         }
 
-        if (moveVel.x != 0f && IsGrounded() && moveState == MoveState.Ground)
+        if (moveVal.x != 0f && IsGrounded() && moveState == MoveState.Ground)
         {
-            walkRunParticles.gameObject.SetActive(true);
+            walkRunParticles.rateOverTime = 10f;
         }
         else
         {
-            walkRunParticles.gameObject.SetActive(false);
+            walkRunParticles.rateOverTime = 0f;
         }
 
         anim.SetFloat("Move X", moveVel.x);
@@ -281,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Pressing run while grounded will allow you to run.
 
-        if (!IsGrounded() && moveState != MoveState.Wall && currentSpeed != crawlSpeed)
+        if (!IsGrounded() && moveState != MoveState.Wall && currentSpeed != crawlSpeed && moveState != MoveState.Water)
             return;
 
         switch (moveState)
@@ -311,6 +326,9 @@ public class PlayerMovement : MonoBehaviour
     // Jumps. Holding jump can make you jump higher.
     public void Jump(bool isJumping)
     {
+        if (moveState == MoveState.Water)
+            return;
+
         // Apply upward momentum.
         if (isJumping)
         {
@@ -322,12 +340,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpLeft = extraJumpForce;
                 currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
-            else if (moveState == MoveState.Water)
-            {
-                jumpLeft = extraJumpForce;
-                jumpVel = new Vector2(0f, swimJumpForce);
-            }
-            else if (IsGrounded())
+            else if (timeSinceGround < coyoteTime)
             {
                 jumpLandParticles.Play();
 
@@ -345,6 +358,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+            timeSinceGround = coyoteTime;
             if (showDebugs)
             {
                 Debug.Log("Player Is Jumping");
@@ -371,6 +385,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 jumpVel = Vector2.zero;
             }
+        }
+    }
+
+    // Swims.
+    public void Swim()
+    {
+        if (moveState != MoveState.Water)
+            return;
+
+        rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
+
+        if (showDebugs)
+        {
+            Debug.Log("Player Is Swimming");
         }
     }
 
@@ -403,7 +431,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 4f);
+            pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
             rb2D.gravityScale = moveState == MoveState.Ground ? aboveGroundGravity : underwaterGravity;
         }
 
@@ -534,6 +562,7 @@ public class PlayerMovement : MonoBehaviour
         targetVignette = defaultVignette;
         colAdj.colorFilter.value = new Color(0.8f, 0.8f, 1f);
         targetDOF = defaultDOF;
+        breathMeter.gameObject.SetActive(false);
         breathMeter.gameObject.SetActive(true);
 
         rb2D.velocity = new Vector2(rb2D.velocity.x, -1f);
@@ -547,6 +576,7 @@ public class PlayerMovement : MonoBehaviour
     private void ExitWater()
     {
         moveState = MoveState.Ground;
+        waterSplashParticles.Play();
 
         targetVignette = defaultVignette;
         colAdj.colorFilter.value = defaultColAdj;
@@ -675,6 +705,10 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("Wall"))
         {
             nextToWall = true;
+        }
+        else if (collision.CompareTag("Water"))
+        {
+            waterSplashParticles.Play();
         }
         else if (collision.CompareTag("Pickup"))
         {
