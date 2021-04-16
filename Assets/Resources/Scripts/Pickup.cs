@@ -5,7 +5,8 @@ public class Pickup : MonoBehaviour
     private Rigidbody2D rb2D;
     private BoxCollider2D boxCollider;
     [HideInInspector] public GameObject carrier;
-    public float weight;
+    public Vector2 offset;
+    public float weight = 1f;
 
     [SerializeField] private bool showDebugs;
 
@@ -19,7 +20,7 @@ public class Pickup : MonoBehaviour
     {
         if (carrier != null)
         {
-            transform.position = carrier.transform.position;
+            transform.position = (Vector2) carrier.transform.position + offset;
         }
     }
 
@@ -36,6 +37,6 @@ public class Pickup : MonoBehaviour
 
         boxCollider.enabled = true;
         rb2D.velocity = Vector2.zero;
-        rb2D.AddForce(throwVec * weight, ForceMode2D.Impulse);
+        rb2D.AddForce(throwVec / weight, ForceMode2D.Impulse);
     }
 }

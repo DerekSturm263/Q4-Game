@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float targetDOF;
 
     [Header("Movement Settings")]
-    [SerializeField] private LayerMask ground; // Layermask for the ground that will trigger a grounded collision.
+    [SerializeField] private LayerMask ground = 1 << 9; // Layermask for the ground that will trigger a grounded collision.
     [SerializeField] private float walkSpeed = 7f; // Speed the player can walk at.
     [SerializeField] private float runSpeed = 14f; // Speed the player can run at.
     [SerializeField] private float crawlSpeed = 2f; // Speed the player can crawl at.
@@ -51,13 +51,13 @@ public class PlayerMovement : MonoBehaviour
     private float timeSinceGround;
 
     [Header("Climbing Settings")]
-    [SerializeField] private LayerMask wall; // Layermask for the ground that the player can climb on.
+    [SerializeField] private LayerMask wall = 1 << 10; // Layermask for the ground that the player can climb on.
     [SerializeField] private float climbSpeed = 6f; // Speed the player can climb at.
     [SerializeField] private float climbRunSpeed = 12f; // Speed the player can climb at.
     [SerializeField] private float climbTurnAroundSpeed = 10f; // Speed the player turns around while climbing.
 
     [Header("Swim Settings")]
-    [SerializeField] private LayerMask water; // Layermask for the water that the player can swim in.
+    [SerializeField] private LayerMask water = 1 << 4; // Layermask for the water that the player can swim in.
     [SerializeField] private float swimSpeed = 6f; // Speed the player can swim at.
     [SerializeField] private float swimRunSpeed = 9f; // Speed the player can swim at while running underwater.
     [SerializeField] private float swimForce = 5f; // Force added when the player jumps while underwater.
@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 throwVector = new Vector2(10f, 10f); // Vector applied when throwing an item.
 
     [HideInInspector] public GameObject overlappingItem;
-    [HideInInspector] public GameObject heldItem;
+    [HideInInspector] public Pickup heldItem;
 
     private float aboveGroundGravity;
 
@@ -110,8 +110,12 @@ public class PlayerMovement : MonoBehaviour
     private float jumpLeft;
     private bool nextToWall;
     private bool isPouncing;
+    private bool playerIsLookingUp;
     private float breathLeftUnderwater;
-    private LayerMask itemMask = 1 << 11;
+    [SerializeField] private LayerMask itemMask = 1 << 11;
+
+    [SerializeField] private ParticleSystem snowfall;
+    private ParticleSystem.EmissionModule snowfallParticles;
 
     // Respawning.
     private Vector2 lastPosBeforeSwimOrPit; // The player's last grounded position before going in water or falling in a bottomless pit.
@@ -147,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
         walkRunParticles = walkRun.emission;
         breathingParticles = breathing.emission;
         underwaterParticles = underwater.emission;
+        snowfallParticles = snowfall.emission;
 
         controls.Player.BeginClimb.performed += _ => BeginClimb();
         controls.Player.Pounce.performed += _ => Pounce();
@@ -191,9 +196,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 dof.focusDistance.value -= Time.deltaTime * 2f;
 
-                if (vignette.intensity.value >= 0.65f)
+                if (vignette.intensity.value >= 0.625f)
                 {
-                    Die("Player Drown");
+                    Die();
                 }
             }
         }
@@ -244,8 +249,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Adds proper force to player.
         targetVel += moveVel * currentSpeed;
-        targetVel += pounceVel;
         targetVel += jumpVel;
+        targetVel += pounceVel;
 
         if (targetVel.x != 0f)
         {
@@ -317,7 +322,7 @@ public class PlayerMovement : MonoBehaviour
     private void Run(bool isRunning)
     {
         // Doesn't let the player run under these circumstances.
-        if (!IsGrounded() && moveState != MoveState.Wall && currentSpeed != crawlSpeed && moveState != MoveState.Water)
+        if (!IsGrounded() || currentSpeed == crawlSpeed || playerIsLookingUp)
             return;
 
         switch (moveState)
@@ -336,6 +341,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
+        if (heldItem != null)
+        {
+            currentSpeed /= heldItem.weight;
+        }
+
         anim.SetBool("Is Running", isRunning);
 
         if (showDebugs)
@@ -347,7 +357,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water)
+        if (moveState == MoveState.Water || playerIsLookingUp)
             return;
 
         // Jump button is held.
@@ -400,6 +410,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        if (heldItem != null)
+        {
+            jumpVel /= heldItem.weight;
+        }
+
         // Apply proper velocity.
         if (jumpLeft == 0f)
         {
@@ -442,6 +457,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         anim.SetBool("Is Looking Up", isLookingUp);
+        playerIsLookingUp = isLookingUp;
 
         // Applies proper speed and camera offset.
         if (isLookingUp)
@@ -571,8 +587,10 @@ public class PlayerMovement : MonoBehaviour
                 // Pickup Item.
                 if (overlappingItem.CompareTag("Pickup"))
                 {
-                    overlappingItem.GetComponent<Pickup>().Grab(gameObject);
-                    heldItem = overlappingItem;
+                    Pickup itemScript = overlappingItem.GetComponent<Pickup>();
+
+                    itemScript.Grab(gameObject);
+                    heldItem = itemScript;
                 }
                 // Interact with Item.
                 else if (overlappingItem.CompareTag("Interactable"))
@@ -599,6 +617,10 @@ public class PlayerMovement : MonoBehaviour
     private void EnterWater()
     {
         moveState = MoveState.Water;
+        snowfallParticles.rateOverTime = 0f;
+
+        currentSpeed = swimSpeed;
+        currentTurnAroundSpeed = swimTurnAroundSpeed;
 
         // Sets volume.
         targetVignette = defaultVignette;
@@ -618,17 +640,23 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("Is Underwater", true);
     }
 
-    private void ExitWater()
+    private void ExitWater(bool useJump = true)
     {
         moveState = MoveState.Ground;
+        snowfallParticles.rateOverTime = 10f;
+
+        currentTurnAroundSpeed = aerialTurnAroundSpeed;
 
         // Sets volume.
         targetVignette = defaultVignette;
         colAdj.colorFilter.value = defaultColAdj;
         targetDOF = defaultDOF;
 
-        rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
-        rb2D.AddForce(new Vector2(0f, 15f), ForceMode2D.Impulse);
+        if (useJump)
+        {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
+            rb2D.AddForce(new Vector2(moveVel.x * currentSpeed, 15f), ForceMode2D.Impulse);
+        }
 
         // Sets gravity.
         rb2D.gravityScale = aboveGroundGravity;
@@ -724,20 +752,27 @@ public class PlayerMovement : MonoBehaviour
         return isWater;
     }
 
-    public void Die(string boolName)
+    public void Die()
     {
-        fade.gameObject.SetActive(true);
-        fadeAnim.SetBool(boolName, true);
-
         anim.SetTrigger("Death");
+
+        fade.gameObject.SetActive(true);
+        fadeAnim.SetTrigger("Death");
+
+        if (showDebugs)
+        {
+            Debug.Log("Player Died");
+        }
     }
 
     public void Respawn()
     {
+        fadeAnim.ResetTrigger("Death");
+
         transform.position = lastPosBeforeSwimOrPit;
         cam.gameObject.transform.position = transform.position + cam.offset;
 
-        anim.SetTrigger("Respawn");
+        ExitWater(false);
     }
 
     // Makes you restart the day if the tribe runs out of food.
