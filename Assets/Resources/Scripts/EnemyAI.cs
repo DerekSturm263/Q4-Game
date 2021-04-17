@@ -1,6 +1,6 @@
-using System;
+using UnityEngine;
 
-public abstract class EnemyAI
+public abstract class EnemyAI : MonoBehaviour
 {
     private Rigidbody2D rb2D;
     private Animator anim;
