@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
 public abstract class EnemyAI : MonoBehaviour
 {
     protected Rigidbody2D rb2D;
