@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class EnemyAI : MonoBehaviour
 {
-    private Rigidbody2D rb2D;
-    private Animator anim;
-    private SpriteRenderer sprtRndr;
+    protected Rigidbody2D rb2D;
+    protected Animator anim;
+    protected SpriteRenderer sprtRndr;
 
     public float viewDist; // How far the enemy can see (in units). This affects the enemy's ability to see both the player, other enemies, and items.
     public Transform target; // Current transform that they enemy is targeting.
