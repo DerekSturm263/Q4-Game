@@ -1,41 +1,39 @@
-using UnityEngine
+using UnityEngine;
 
-public class WolfAI : EnemyAI
+public class GroundAI : EtityAI
 {
-    public float chaseSpeed; // Speed at which the enemy runs at while chasing something.
-    
-    private Vector2 moveVel; // Controls the enemy's movement direction.
-    private float moveSpeed; // The speed at which the enemy moves.
     private Vector2 currentGoal; // Enemy's current goal while wandering. Will determine where the enemy will walk while there isn't a likeable object present.
     private float waitTime; // Amount of time that the enmy waits to choose a new spot.
 
-    override void Chase(Transform target)
+    private override void Chase(Transform target)
     {
         // Applies proper velocity.
-        moveVel = (transform.position - target.position).normalized * chaseSpeed;
-        rb2D.velocity = moveVel;
+        currentSpeed = chaseSpeed;
+        moveVel = new Vector2(transform.position.x - target.position.x, 0f).normalized;
     }
     
-    override void Wander(Transform target)
+    private override void Wander()
     {
         // Checks to see if the current movement goal is close enough to find a new one.
-        if (Vector2.Distance(transform.position, currentGoal) < 0.1f)
+        if (Vector2.Distance(transform.position, currentGoal) < 0.05f)
         {
             if (waitTime -= Time.deltaTime <= 0f)
             {
                 currentGoal = NewPosition();
-                float dist = Vector2.Distance(transform.position, currentGoal);
-                moveSpeed = Random.Range(dist * 0.25f, dist * 0.75f);
+                currentSpeed = Random.Range(minWanderSpeed, maxWanderSpeed);
+            }
+            else
+            {
+                currentSpeed = 0f;
             }
         }
         else
         {
-            waitTime = Random.Range(0.5f, 2.5f); // Might change later if this becomes inefficent.
+            waitTime = Random.Range(0f, 2f); // Might change later if this becomes inefficent.
         }
-        
+
         // Applies proper velocity.
-        moveVel = (transform.position - currentGoal).normalized * moveSpeed;
-        rb2D.velocity = moveVel;
+        moveVel = new Vector2(transform.position.x - currentGoal.x, 0f).normalized;
     }
     
     // Finds a new spot using raycast for the enemy to wander to.
@@ -46,7 +44,7 @@ public class WolfAI : EnemyAI
         
         // Creates vectors for the linecast.
         Vector2 startPos = transform.position + new Vector2(randomDir, 0f);
-        Vector2 lineDist = 0.5f;
+        Vector2 lineDist = new Vector2(0f, -0.5f);
         
         RaycastHit2D hit = Physics2D.Linecast(startPos, startPos + lineDist);
         
@@ -58,5 +56,13 @@ public class WolfAI : EnemyAI
         
         // Try again.
         return NewPosition();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Kill(collision.GetComponent<PlayerMovement>());
+        }
     }
 }
