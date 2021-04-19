@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class GroundAI : EtityAI
+public class GroundAI : EntityAI
 {
-    private Vector2 currentGoal; // Enemy's current goal while wandering. Will determine where the enemy will walk while there isn't a likeable object present.
-    private float waitTime; // Amount of time that the enmy waits to choose a new spot.
+    private Vector2 currentGoal; // Entity's current goal while wandering. Will determine where the entity will walk while there isn't a likeable object present.
+    [SerializeField] private float minWaitTime = 0f;
+    [SerializeField] private float maxWaitTime = 2f;
+    private float waitTime; // Amount of time that the entity waits to choose a new spot.
 
     private override void Chase(Transform target)
     {
@@ -29,7 +31,7 @@ public class GroundAI : EtityAI
         }
         else
         {
-            waitTime = Random.Range(0f, 2f); // Might change later if this becomes inefficent.
+            waitTime = Random.Range(minWaitTime, maxWaitTime); // Might change later if this becomes inefficent.
         }
 
         // Applies proper velocity.

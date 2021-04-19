@@ -31,7 +31,10 @@ public abstract class EntityAI : MonoBehaviour
     
     private void Update()
     {
-        if (1isActive)
+        Vector2 camView = Camera.WorldToViewPoint((Vector2)transform.position);
+        isActive = camView.x > 0f && camView.x < 1f && camView.y > 0f && camView.y < 1f;
+
+        if (!isActive)
             return;
 
         Vector2 transformDir = sprtRndr.flipX ? Vector2.Left : Vector2.Right;
@@ -45,28 +48,28 @@ public abstract class EntityAI : MonoBehaviour
                     && Vector2.Dot(transformDir, likeableObjects[i].position) > 0f) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
-                    isFound = true;
-                    Chase(target);
 
                     break;
                 }
             }
-
-            Wander();
         }
         else
         {
-            if (Vector2.Distance(transform.position, target.position) <= viewDist // Target is within view distance.
-                && Physics2D.Linecast(transform.position, target.position // There are no obstacles blocking the vision between the enemy and the target.
-                && Vector2.Dot(transformDir, target.position) > 0f) // The enemy is facing towards the target.
-            {
-                Chase(target);
-            }
-            else
+            if (!Vector2.Distance(transform.position, target.position) <= viewDist // Target is within view distance.
+                || !Physics2D.Linecast(transform.position, target.position // There are no obstacles blocking the vision between the enemy and the target.
+                || !Vector2.Dot(transformDir, target.position) > 0f) // The enemy is facing towards the target.
             {
                 target = null;
-                Wander();
             }
+        }
+
+        if (target != null)
+        {
+            Chase(target);
+        }
+        else
+        {
+            Wander();
         }
     }
 

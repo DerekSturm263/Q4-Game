@@ -1,4 +1,4 @@
-﻿using System;
+﻿using UnityEngine;
 
 public class FlyingAI : EntityAI
 {
@@ -6,7 +6,7 @@ public class FlyingAI : EntityAI
     [SerializeField] private Vector2[] positions = new Vector2[];
     private int posIterator = 0;
 
-    private override void Chase()
+    private override void Chase(Transform target)
     {
         // TODO: Add an arc motion.
 
@@ -30,7 +30,12 @@ public class FlyingAI : EntityAI
 
     private Vector2 NewPosition()
     {
-        return positions[++posIterator];
+        if (++posIterator >= positions.Length)
+        {
+            posIterator = 0;
+        }
+
+        return positions[posIterator];
     }
 
     private void OnCollisionEnter2D(Collision collision)
