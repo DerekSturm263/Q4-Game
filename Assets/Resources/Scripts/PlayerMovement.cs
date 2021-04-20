@@ -118,9 +118,10 @@ public class PlayerMovement : MonoBehaviour
     private ParticleSystem.EmissionModule snowfallParticles;
 
     // Respawning.
-    private Vector2 lastPosBeforeSwimOrPit; // The player's last grounded position before going in water or falling in a bottomless pit.
-    private Vector2 lastPosBeforeCaughtByEnemy; // The player's last position before an enemy spotted them and killed them.
-    private Vector2 lastPosBeforeFoodRunsOut; // The player's last position during the beginning of the day before their food ran out later that day.
+    public static Vector2 lastPosBeforeSwimOrPit; // The player's last grounded position before going in water or falling in a bottomless pit.
+    public static Vector2 lastPosBeforeCaughtByEnemy; // The player's last position before an enemy spotted them and killed them.
+    public static Vector2 lastPosBeforeFoodRunsOut; // The player's last position during the beginning of the day before their food ran out later that day.
+    public static int deathCause; // 0 represents swimming or falling in a bottomless pit, 1 represents being caughtByAnEnemy, 2 represents running out of food.
 
     private void Awake()
     {
@@ -198,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if (vignette.intensity.value >= 0.625f)
                 {
-                    Die();
+                    Die(0);
                 }
             }
         }
@@ -322,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
     private void Run(bool isRunning)
     {
         // Doesn't let the player run under these circumstances.
-        if (!IsGrounded() || currentSpeed == crawlSpeed || playerIsLookingUp)
+        if (!IsGrounded() || playerIsLookingUp)
             return;
 
         switch (moveState)
@@ -370,7 +371,6 @@ public class PlayerMovement : MonoBehaviour
 
                 jumpVel = new Vector2(0f, jumpForce);
                 jumpLeft = extraJumpForce;
-                currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
             // Jump while grounded.
             else if (timeSinceGround < coyoteTime)
@@ -380,7 +380,6 @@ public class PlayerMovement : MonoBehaviour
 
                 jumpVel = new Vector2(0f, jumpForce);
                 jumpLeft = extraJumpForce;
-                currentTurnAroundSpeed = aerialTurnAroundSpeed;
             }
             // Apply extra momentum while Jump button is held.
             else if (jumpLeft > 0f)
@@ -441,7 +440,7 @@ public class PlayerMovement : MonoBehaviour
         if (isCrouching)
         {
             currentSpeed = crawlSpeed;
-            currentTurnAroundSpeed = currentSpeed == crawlSpeed ? crawlTurnAroundSpeed : walkTurnAroundSpeed;
+            currentTurnAroundSpeed = crawlTurnAroundSpeed;
 
             if (showDebugs)
             {
@@ -702,6 +701,10 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetBool("Is Grounded", isGrounded);
 
+        if (!isGrounded)
+        {
+            currentTurnAroundSpeed = aerialTurnAroundSpeed;
+        }
         return isGrounded;
     }
 
@@ -752,9 +755,10 @@ public class PlayerMovement : MonoBehaviour
         return isWater;
     }
 
-    public void Die()
+    public void Die(int death)
     {
         anim.SetTrigger("Death");
+        deathCause = death;
 
         fade.gameObject.SetActive(true);
         fadeAnim.SetTrigger("Death");
@@ -769,7 +773,19 @@ public class PlayerMovement : MonoBehaviour
     {
         fadeAnim.ResetTrigger("Death");
 
-        transform.position = lastPosBeforeSwimOrPit;
+        switch (deathCause)
+        {
+            case 0:
+                transform.position = lastPosBeforeSwimOrPit;
+                break;
+            case 1:
+                transform.position = lastPosBeforeCaughtByEnemy;
+                break;
+            default:
+                transform.position = lastPosBeforeFoodRunsOut;
+                break;
+        }
+
         cam.gameObject.transform.position = transform.position + cam.offset;
 
         ExitWater(false);

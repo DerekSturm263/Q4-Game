@@ -10,6 +10,8 @@ TagManager:
   - Water
   - Pickup
   - Bubble
+  - Enemy
+  - Entity
   layers:
   - Default
   - TransparentFX
@@ -24,7 +26,7 @@ TagManager:
   - Wall
   - Item
   - Player
-  - 
+  - Entity
   - 
   - 
   - 

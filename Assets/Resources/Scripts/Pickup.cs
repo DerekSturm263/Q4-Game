@@ -29,6 +29,8 @@ public class Pickup : MonoBehaviour
         this.carrier = carrier;
 
         boxCollider.enabled = false;
+        rb2D.gravityScale = 0f;
+        rb2D.velocity = Vector2.zero;
     }
 
     public void Throw(Vector2 throwVec)
@@ -36,6 +38,7 @@ public class Pickup : MonoBehaviour
         carrier = null;
 
         boxCollider.enabled = true;
+        rb2D.gravityScale = 2.5f;
         rb2D.velocity = Vector2.zero;
         rb2D.AddForce(throwVec / weight, ForceMode2D.Impulse);
     }
