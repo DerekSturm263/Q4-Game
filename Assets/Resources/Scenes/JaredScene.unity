@@ -154,8 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeDisplay: {fileID: 963237712}
-  time: 0
-  cycleLength: 5
+  cycleLength: 1
 --- !u!114 &105308037
 MonoBehaviour:
   m_ObjectHideFlags: 0
