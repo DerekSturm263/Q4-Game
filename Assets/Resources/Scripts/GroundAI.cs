@@ -7,64 +7,72 @@ public class GroundAI : EntityAI
     [SerializeField] private float maxWaitTime = 2f;
     private float waitTime; // Amount of time that the entity waits to choose a new spot.
 
-    private override void Chase(Transform target)
+    [SerializeField] private float wanderDist;
+
+    protected override void Chase(Transform target)
     {
-        // Applies proper velocity.
-        currentSpeed = chaseSpeed;
-        moveVel = new Vector2(transform.position.x - target.position.x, 0f).normalized;
-    }
-    
-    private override void Wander()
-    {
-        // Checks to see if the current movement goal is close enough to find a new one.
-        if (Vector2.Distance(transform.position, currentGoal) < 0.05f)
+        if (Vector2.Distance(transform.position, target.position) > 0.5f)
         {
-            if (waitTime -= Time.deltaTime <= 0f)
+            // Applies proper velocity.
+            currentSpeed = chaseSpeed;
+            moveVel = new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized;
+        }
+        else
+        {
+            currentSpeed = 0f;
+            moveVel = Vector2.zero;
+        }
+    }
+
+    protected override void Wander()
+    {
+        if (currentGoal != Vector2.zero)
+        {
+            // Checks to see if the current movement goal is close enough to find a new one.
+            if (Mathf.Abs(transform.position.x - currentGoal.x) <= 0.1f)
             {
-                currentGoal = NewPosition();
-                currentSpeed = Random.Range(minWanderSpeed, maxWanderSpeed);
-            }
-            else
-            {
-                currentSpeed = 0f;
+                if ((waitTime -= Time.deltaTime) <= 0f)
+                {
+                    currentGoal = NewPosition();
+                }
+                else
+                {
+                    currentSpeed = 0f;
+                }
             }
         }
         else
         {
-            waitTime = Random.Range(minWaitTime, maxWaitTime); // Might change later if this becomes inefficent.
+            currentGoal = NewPosition();
         }
 
         // Applies proper velocity.
-        moveVel = new Vector2(transform.position.x - currentGoal.x, 0f).normalized;
+        moveVel = new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized;
     }
     
     // Finds a new spot using raycast for the enemy to wander to.
     private Vector2 NewPosition()
     {
         // Chooses a random direction to move in by a random amount.
-        float randomDir = Random.Range(-10f, 10f);
-        
+        float randomDir = Random.Range(-wanderDist, wanderDist);
+
         // Creates vectors for the linecast.
-        Vector2 startPos = transform.position + new Vector2(randomDir, 0f);
-        Vector2 lineDist = new Vector2(0f, -0.5f);
+        Vector2 startPos = ogPos + new Vector2(randomDir, 0f);
+        Vector2 lineDist = Vector2.down * 2f;
         
-        RaycastHit2D hit = Physics2D.Linecast(startPos, startPos + lineDist);
-        
+        RaycastHit2D hit = Physics2D.Linecast(startPos, startPos + lineDist, ground);
+
+        // Sets the amount of time the entity should wait for before finding a new spot.
+        waitTime = Random.Range(minWaitTime, maxWaitTime);
+        currentSpeed = Random.Range(minWanderSpeed, maxWanderSpeed);
+
         // Return the new position to wander in.
         if (hit)
         {
-            return hit.point;
+            return new Vector2(hit.point.x, transform.position.y);
         }
         
         // Try again.
         return NewPosition();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            Kill(collision.GetComponent<PlayerMovement>());
-        }
     }
 }
