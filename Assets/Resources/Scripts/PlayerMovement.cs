@@ -323,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
     private void Run(bool isRunning)
     {
         // Doesn't let the player run under these circumstances.
-        if (!IsGrounded() || playerIsLookingUp)
+        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp)
             return;
 
         switch (moveState)
@@ -369,7 +369,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 EndClimb();
 
-                jumpVel = new Vector2(0f, jumpForce);
+                jumpVel = new Vector2(rb2D.velocity.x, jumpForce);
                 jumpLeft = extraJumpForce;
             }
             // Jump while grounded.
@@ -701,7 +701,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetBool("Is Grounded", isGrounded);
 
-        if (!isGrounded)
+        if (!isGrounded && moveState == MoveState.Ground)
         {
             currentTurnAroundSpeed = aerialTurnAroundSpeed;
         }

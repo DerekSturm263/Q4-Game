@@ -51,7 +51,7 @@ public abstract class EntityAI : MonoBehaviour
     private void Update()
     {
         Vector2 camView = cam.WorldToViewportPoint(transform.position);
-        isActive = camView.x > -0.5f && camView.x < 1.5f && camView.y > 0f && camView.y < 1f;
+        isActive = camView.x > -0.25f && camView.x < 1.25f && camView.y > -0.25f && camView.y < 1.25f;
 
         if (useDebugs)
         {
@@ -60,8 +60,6 @@ public abstract class EntityAI : MonoBehaviour
 
         if (!isActive)
         {
-            PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
-
             moveVel = Vector2.zero;
             return;
         }
@@ -70,6 +68,11 @@ public abstract class EntityAI : MonoBehaviour
 
         if (target == null)
         {
+            if (isHostile)
+            {
+                PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
+            }
+
             for (int i = 0; i < likeableObjects.Count; ++i)
             {
                 if (Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist
