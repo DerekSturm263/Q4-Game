@@ -11,7 +11,7 @@ public class GroundAI : EntityAI
 
     protected override void Chase(Transform target)
     {
-        if (Vector2.Distance(transform.position, target.position) > 0.5f)
+        if (Vector2.Distance(transform.position, target.position) > 1f)
         {
             // Applies proper velocity.
             currentSpeed = chaseSpeed;

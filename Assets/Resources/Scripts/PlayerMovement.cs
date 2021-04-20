@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb2D;
     private SpriteRenderer sprtRndr;
+    private PolygonCollider2D col2D;
 
     // Volume Settings.
     private UnityEngine.Rendering.VolumeProfile vol;
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 groundedBoxOffset = new Vector2(0f, -1.35f); // Offset for the grounded boxcast collision.
-    [SerializeField] private Vector2 groundedBoxSize = new Vector2(0.625f, 0.05f); // Size for the grounded boxcast collision.
+    [SerializeField] private Vector2 groundedBoxSize = new Vector2(0.75f, 0.05f); // Size for the grounded boxcast collision.
     [SerializeField] private Vector2 wallBoxSize = new Vector2(1f, 1f); // Size for the wall boxcast collision.
 
     [Header("Particle Settings")]
@@ -114,14 +115,19 @@ public class PlayerMovement : MonoBehaviour
     private float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
 
-    [SerializeField] private ParticleSystem snowfall;
-    private ParticleSystem.EmissionModule snowfallParticles;
+    [SerializeField] private ParticleSystem[] snowfall = new ParticleSystem[3];
+    private ParticleSystem.EmissionModule[] snowfallParticles = new ParticleSystem.EmissionModule[3];
 
     // Respawning.
     public static Vector2 lastPosBeforeSwimOrPit; // The player's last grounded position before going in water or falling in a bottomless pit.
     public static Vector2 lastPosBeforeCaughtByEnemy; // The player's last position before an enemy spotted them and killed them.
     public static Vector2 lastPosBeforeFoodRunsOut; // The player's last position during the beginning of the day before their food ran out later that day.
     public static int deathCause; // 0 represents swimming or falling in a bottomless pit, 1 represents being caughtByAnEnemy, 2 represents running out of food.
+
+    public bool lockMovement = false;
+
+    private Vector2[] colPoints = new Vector2[8];
+    private Vector2[] colCrouchingPoints = new Vector2[8];
 
     private void Awake()
     {
@@ -136,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
+        col2D = GetComponent<PolygonCollider2D>();
 
         vol = Camera.main.GetComponent<UnityEngine.Rendering.Volume>().profile;
         vol.TryGet(out vignette);
@@ -152,7 +159,11 @@ public class PlayerMovement : MonoBehaviour
         walkRunParticles = walkRun.emission;
         breathingParticles = breathing.emission;
         underwaterParticles = underwater.emission;
-        snowfallParticles = snowfall.emission;
+        
+        for (int i = 0; i < snowfallParticles.Length; ++i)
+        {
+            snowfallParticles[i] = snowfall[i].emission;
+        }
 
         controls.Player.BeginClimb.performed += _ => BeginClimb();
         controls.Player.Pounce.performed += _ => Pounce();
@@ -160,6 +171,13 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Swim.performed += _ => Swim();
 
         fadeAnim = fade.GetComponent<Animator>();
+
+        colPoints = col2D.points;
+        
+        for (int i = 0; i < colCrouchingPoints.Length; ++i)
+        {
+            colCrouchingPoints[i] = colPoints[i] / new Vector2(0.5f, 2f) - new Vector2(0.25f, 0.6f);
+        }
 
         aboveGroundGravity = rb2D.gravityScale;
     }
@@ -278,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move(Vector2 moveVal)
     {
         // Locks movement while pouncing.
-        if (Mathf.Abs(pounceVel.x) > 1f)
+        if (Mathf.Abs(pounceVel.x) > 1f || lockMovement)
             return;
 
         isPouncing = false;
@@ -331,7 +349,7 @@ public class PlayerMovement : MonoBehaviour
     private void Run(bool isRunning)
     {
         // Doesn't let the player run under these circumstances.
-        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp)
+        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp || lockMovement)
             return;
 
         switch (moveState)
@@ -366,7 +384,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water || playerIsLookingUp)
+        if (moveState == MoveState.Water || playerIsLookingUp || lockMovement)
             return;
 
         // Jump button is held.
@@ -439,7 +457,7 @@ public class PlayerMovement : MonoBehaviour
     private void Crouch(bool isCrouching)
     {
         // Only allows the player to crouch when walking or still.
-        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed)
+        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed || lockMovement)
             return;
 
         anim.SetBool("Is Crouching", isCrouching);
@@ -450,17 +468,25 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = crawlSpeed;
             currentTurnAroundSpeed = crawlTurnAroundSpeed;
 
+            col2D.points = colCrouchingPoints;
+            groundedBoxSize = new Vector2(1.75f, 0.05f);
+
             if (showDebugs)
             {
                 Debug.Log("Player Is Crouching");
             }
+        }
+        else
+        {
+            col2D.points = colPoints;
+            groundedBoxSize = new Vector2(0.75f, 0.05f);
         }
     }
 
     private void LookUp(bool isLookingUp)
     {
         // Only allows player to look up while standing still and grounded.
-        if (moveState != MoveState.Ground || !IsGrounded() || Mathf.Abs(moveVel.x) > 0.1f)
+        if (moveState != MoveState.Ground || !IsGrounded() || Mathf.Abs(moveVel.x) > 0.1f || lockMovement)
             return;
 
         anim.SetBool("Is Looking Up", isLookingUp);
@@ -487,7 +513,7 @@ public class PlayerMovement : MonoBehaviour
     private void Swim()
     {
         // Only allows you to swim underwater.
-        if (moveState != MoveState.Water)
+        if (moveState != MoveState.Water || lockMovement)
             return;
 
         rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
@@ -501,7 +527,7 @@ public class PlayerMovement : MonoBehaviour
     private void Pounce()
     {
         // Doesn't let the player pounce unless they're in the air.
-        if (IsGrounded() || moveState != MoveState.Ground || isPouncing || jumpLeft != 0f || heldItem != null)
+        if (IsGrounded() || moveState != MoveState.Ground || isPouncing || jumpLeft != 0f || heldItem != null || lockMovement)
             return;
 
         pounceVel = Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), pounceForce);
@@ -544,7 +570,7 @@ public class PlayerMovement : MonoBehaviour
     private void BeginClimb()
     {
         // Only allows player to climb wall when ability is unlocked.
-        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0) // Make it so you need the ability for it to work.
+        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0 || lockMovement) // Make it so you need the ability for it to work.
             return;
 
         moveState = MoveState.Wall;
@@ -582,6 +608,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Use()
     {
+        if (lockMovement)
+            return;
+
         // Pick up or interacts with an item.
         if (heldItem == null)
         {
@@ -624,7 +653,11 @@ public class PlayerMovement : MonoBehaviour
     private void EnterWater()
     {
         moveState = MoveState.Water;
-        snowfallParticles.rateOverTime = 0f;
+
+        for (int i = 0; i < snowfallParticles.Length; ++i)
+        {
+            snowfallParticles[i].rateOverTime = 0f;
+        }
 
         currentSpeed = swimSpeed;
         currentTurnAroundSpeed = swimTurnAroundSpeed;
@@ -650,7 +683,11 @@ public class PlayerMovement : MonoBehaviour
     private void ExitWater(bool useJump = true)
     {
         moveState = MoveState.Ground;
-        snowfallParticles.rateOverTime = 10f;
+
+        for (int i = 0; i < snowfallParticles.Length; ++i)
+        {
+            snowfallParticles[i].rateOverTime = 5f;
+        }
 
         currentTurnAroundSpeed = aerialTurnAroundSpeed;
 
@@ -765,8 +802,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die(int death)
     {
+        lockMovement = true;
         anim.SetTrigger("Death");
         deathCause = death;
+        moveVel = Vector2.zero;
+        jumpVel = Vector2.zero;
+        pounceVel = Vector2.zero;
 
         fade.gameObject.SetActive(true);
         fadeAnim.SetTrigger("Death");
@@ -779,6 +820,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        lockMovement = false;
         fadeAnim.ResetTrigger("Death");
 
         switch (deathCause)
