@@ -222,6 +222,14 @@ public class PlayerMovement : MonoBehaviour
 
         #region Night Vision
 
+        if (UIController.time >= 20f)
+        {
+            ActivateNightVision();
+        }
+        else
+        {
+            DeactivateNightVision();
+        }
         colAdj.postExposure.value = Mathf.Lerp(colAdj.postExposure.value, targetExposure, Time.deltaTime * 2.5f);
 
         #endregion
