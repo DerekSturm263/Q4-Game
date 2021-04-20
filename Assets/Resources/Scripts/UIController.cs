@@ -6,7 +6,7 @@ public class UIController : MonoBehaviour
 {
     public GameObject timeDisplay;
 
-    public float time;
+    public static float time;
     public float cycleLength;
     private float cycleSeconds;
     private Quaternion timeDisplayRoation;
@@ -19,6 +19,7 @@ public class UIController : MonoBehaviour
     
     void Update()
     {
+        time += Time.deltaTime;
         Vector3 rotationVector = new Vector3(0, 0, -((time / cycleSeconds) * 360));
         timeDisplayRoation.eulerAngles = rotationVector;
 
