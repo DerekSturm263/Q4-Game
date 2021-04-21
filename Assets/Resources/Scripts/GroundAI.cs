@@ -9,19 +9,34 @@ public class GroundAI : EntityAI
 
     [SerializeField] private float wanderDist;
 
+    [Header("Particle Settings")]
+    [SerializeField] private ParticleSystem walkRun; // Particles for when the player walks.
+    private ParticleSystem.EmissionModule walkRunParticles;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        walkRunParticles = walkRun.emission;
+    }
+
     protected override void Chase(Transform target)
     {
-        if (Vector2.Distance(transform.position, target.position) > 1f)
+        if (Mathf.Abs(transform.position.x - target.position.x) > 0.5f)
         {
             // Applies proper velocity.
             currentSpeed = chaseSpeed;
-            moveVel = new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized;
+            moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized, Time.deltaTime * 2.5f);
+
+            walkRunParticles.rateOverTime = 25f;
         }
         else
         {
             currentSpeed = 0f;
-            moveVel = Vector2.zero;
+            moveVel = Vector2.Lerp(moveVel, Vector2.zero, Time.deltaTime * 2.5f);
+
+            walkRunParticles.rateOverTime = 0f;
         }
+
     }
 
     protected override void Wander()
@@ -33,10 +48,12 @@ public class GroundAI : EntityAI
             {
                 if ((waitTime -= Time.deltaTime) <= 0f)
                 {
+                    walkRunParticles.rateOverTime = 25f;
                     currentGoal = NewPosition();
                 }
                 else
                 {
+                    walkRunParticles.rateOverTime = 0f;
                     currentSpeed = 0f;
                 }
             }
@@ -47,7 +64,7 @@ public class GroundAI : EntityAI
         }
 
         // Applies proper velocity.
-        moveVel = new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized;
+        moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized, Time.deltaTime * 2.5f);
     }
     
     // Finds a new spot using raycast for the enemy to wander to.

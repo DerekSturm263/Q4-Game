@@ -4,9 +4,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
 public abstract class EntityAI : MonoBehaviour
 {
+    public static List<GameObject> entities = new List<GameObject>();
+
     private Camera cam;
     private PlayerMovement playerMov;
 
+    [Header("Layer Mask Settings")]
     [SerializeField] protected LayerMask ground = 1 << 9;
     [SerializeField] protected LayerMask player = 1 << 12;
     [SerializeField] protected LayerMask notEnemy = ~(1 << 13 & 1 << 8 & 1 << 10);
@@ -15,14 +18,16 @@ public abstract class EntityAI : MonoBehaviour
     protected Animator anim;
     protected SpriteRenderer sprtRndr;
 
+    [Header("Target Settings")]
     [SerializeField] private bool isHostile = true;
-    [SerializeField] private bool isActive = false;
+    [HideInInspector] public bool isActive = false;
 
     [SerializeField] private float viewDist; // How far the enemy can see (in units). This affects the enemy's ability to see both the player, other enemies, and items.
     protected Transform target; // Current transform that they enemy is targeting.
     
     [SerializeField] private List<Transform> likeableObjects = new List<Transform>(); // Transforms that the enemy will be drawn towards. Sort in order of priority.
 
+    [Header("Speed Settings")]
     [SerializeField] protected float minWanderSpeed = 1.5f; // Minimum speed to wander at.
     [SerializeField] protected float maxWanderSpeed = 2.5f; // Maximum speed to wander at.
     [SerializeField] protected float chaseSpeed = 3f; // Speed to chase at.
@@ -35,8 +40,9 @@ public abstract class EntityAI : MonoBehaviour
 
     [SerializeField] protected bool useDebugs;
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        entities.Add(gameObject);
         playerMov = FindObjectOfType<PlayerMovement>();
         ogPos = transform.position;
 
@@ -52,6 +58,7 @@ public abstract class EntityAI : MonoBehaviour
     
     private void Update()
     {
+        // Make the enemy active if they are within the camera view.
         Vector2 camView = cam.WorldToViewportPoint(transform.position);
         isActive = camView.x > -0.25f && camView.x < 1.25f && camView.y > -0.25f && camView.y < 1.25f;
 
@@ -66,6 +73,7 @@ public abstract class EntityAI : MonoBehaviour
             return;
         }
 
+        // Change vision direction based on sprite flip settings.
         Vector2 transformDir = sprtRndr.flipX ? Vector2.left : Vector2.right;
 
         if (Vector2.Distance(transform.position, playerMov.transform.position) > viewDist)
@@ -73,13 +81,15 @@ public abstract class EntityAI : MonoBehaviour
             SetVectors();
         }
 
+        // Look for a likeableObject to chase.
         if (target == null)
         {
             for (int i = 0; i < likeableObjects.Count; ++i)
             {
                 if (Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist
                     && Physics2D.Linecast(transform.position, likeableObjects[i].position, notEnemy).transform == likeableObjects[i] // There are no obstacles blocking the vision between the enemy and the target and target is within view.
-                    && Vector2.Dot(transformDir, likeableObjects[i].position) > 0f) // The enemy is facing towards the target.
+                    && (Vector2.Dot(transformDir, likeableObjects[i].position) > 0f
+                    || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
                     break;
@@ -100,6 +110,7 @@ public abstract class EntityAI : MonoBehaviour
             Debug.Log(target.name);
         }
 
+        // Decide to chase target or wander around.
         if (target != null)
         {
             Chase(target);
@@ -109,6 +120,13 @@ public abstract class EntityAI : MonoBehaviour
             Wander();
         }
 
+        // Adjust sprite flip settings.
+        if (moveVel.x != 0f)
+        {
+            sprtRndr.flipX = moveVel.x < 0f;
+        }
+
+        // Kill player if touching.
         if (isHostile && CheckForPlayer(out Transform playerObj))
         {
             Kill(playerObj.GetComponent<PlayerMovement>());
@@ -117,11 +135,6 @@ public abstract class EntityAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (moveVel.x != 0f)
-        {
-            sprtRndr.flipX = moveVel.x < 0f;
-        }
-
         rb2D.velocity = new Vector2(moveVel.x * currentSpeed, rb2D.velocity.y);
     }
 
@@ -150,9 +163,14 @@ public abstract class EntityAI : MonoBehaviour
     private void Kill(PlayerMovement player)
     {
         player.Die(1);
-        transform.position = lastPos;
     }
     
+    public void Respawn()
+    {
+        transform.position = lastPos;
+        target = null;
+    }
+
     protected abstract void Chase(Transform chaseTarget);
     protected abstract void Wander();
 }

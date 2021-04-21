@@ -7,5 +7,14 @@ public class PlayerRespawn : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.Respawn();
+        EntityAI.entities.ForEach((x) =>
+        {
+            EntityAI enemy = x.GetComponent<EntityAI>();
+
+            if (enemy.isActive)
+            {
+                x.GetComponent<EntityAI>().Respawn();
+            }
+        });
     }
 }
