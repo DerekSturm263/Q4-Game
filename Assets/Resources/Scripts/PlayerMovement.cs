@@ -240,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
 
         #region Night Vision
 
-        if (UIController.time >= 20f)
+        if (UIController.timeTitle == "dusk" || UIController.timeTitle == "night")
         {
             ActivateNightVision();
         }
@@ -395,7 +395,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 EndClimb();
 
-                jumpVel = new Vector2(rb2D.velocity.x, jumpForce);
+                jumpVel = new Vector2(0f, jumpForce);
+                moveVel = new Vector2(rb2D.velocity.x / 5f, moveVel.y);
                 jumpLeft = extraJumpForce;
             }
             // Jump while grounded.

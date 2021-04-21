@@ -9,7 +9,7 @@ public abstract class EntityAI : MonoBehaviour
 
     [SerializeField] protected LayerMask ground = 1 << 9;
     [SerializeField] protected LayerMask player = 1 << 12;
-    [SerializeField] protected LayerMask notEnemy = ~(1 << 13);
+    [SerializeField] protected LayerMask notEnemy = ~(1 << 13 & 1 << 8 & 1 << 10);
 
     protected Rigidbody2D rb2D;
     protected Animator anim;
@@ -27,6 +27,7 @@ public abstract class EntityAI : MonoBehaviour
     [SerializeField] protected float maxWanderSpeed = 2.5f; // Maximum speed to wander at.
     [SerializeField] protected float chaseSpeed = 3f; // Speed to chase at.
 
+    private Vector2 lastPos;
     protected Vector2 ogPos;
 
     protected float currentSpeed;
@@ -43,6 +44,7 @@ public abstract class EntityAI : MonoBehaviour
         anim = GetComponent<Animator>();
         sprtRndr = GetComponent<SpriteRenderer>();
 
+        lastPos = transform.position;
         PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
 
         cam = Camera.main;
@@ -66,17 +68,17 @@ public abstract class EntityAI : MonoBehaviour
 
         Vector2 transformDir = sprtRndr.flipX ? Vector2.left : Vector2.right;
 
+        if (Vector2.Distance(transform.position, playerMov.transform.position) > viewDist)
+        {
+            SetVectors();
+        }
+
         if (target == null)
         {
-            if (isHostile)
-            {
-                PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
-            }
-
             for (int i = 0; i < likeableObjects.Count; ++i)
             {
                 if (Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist
-                    && Physics2D.Raycast(transform.position, (likeableObjects[i].position - transform.position).normalized, notEnemy) // There are no obstacles blocking the vision between the enemy and the target and target is within view.
+                    && Physics2D.Linecast(transform.position, likeableObjects[i].position, notEnemy).transform == likeableObjects[i] // There are no obstacles blocking the vision between the enemy and the target and target is within view.
                     && Vector2.Dot(transformDir, likeableObjects[i].position) > 0f) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
@@ -87,7 +89,7 @@ public abstract class EntityAI : MonoBehaviour
         else
         {
             if (Vector2.Distance(transform.position, target.position) > viewDist
-                || !Physics2D.Raycast(transform.position, (target.position - transform.position).normalized, notEnemy))
+                || Physics2D.Linecast(transform.position, target.position, notEnemy).transform != target)
             {
                 target = null;
             }
@@ -131,6 +133,12 @@ public abstract class EntityAI : MonoBehaviour
         }
     }
 
+    private void SetVectors()
+    {
+        PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
+        lastPos = transform.position;
+    }
+
     private bool CheckForPlayer(out Transform playerObj)
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 0f, Vector2.down, 0f, player);
@@ -142,6 +150,7 @@ public abstract class EntityAI : MonoBehaviour
     private void Kill(PlayerMovement player)
     {
         player.Die(1);
+        transform.position = lastPos;
     }
     
     protected abstract void Chase(Transform chaseTarget);
