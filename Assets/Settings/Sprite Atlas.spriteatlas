@@ -17,7 +17,7 @@ SpriteAtlas:
       textureCompression: 0
       filterMode: 1
       generateMipMaps: 0
-      readable: 0
+      readable: 1
       crunchedCompression: 0
       sRGB: 1
     platformSettings:
@@ -41,11 +41,58 @@ SpriteAtlas:
       enableRotation: 1
       enableTightPacking: 1
     variantMultiplier: 1
-    packables: []
-    totalSpriteSurfaceArea: 0
+    packables:
+    - {fileID: 2800000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
+    - {fileID: 2800000, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+    - {fileID: 2800000, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+    - {fileID: 2800000, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+    - {fileID: 2800000, guid: f3ca58e9c2d977e4bbabd2e7f00b10d6, type: 3}
+    totalSpriteSurfaceArea: 8781651
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
+  - {fileID: 6195344657483792524, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+  - {fileID: -4229346075008629873, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+  - {fileID: 4354993551913307361, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+  - {fileID: -1673732733077124514, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 7915683653226457324, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: -497406288967409369, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: -8841855405480785529, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 6531415816565926178, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: -271311362049036883, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: -7523560045513598774, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 3818217323743452925, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 384058854656272681, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 5223556475179290604, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 2249915519335348110, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 3611188691014843535, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
+  - {fileID: 21300000, guid: f3ca58e9c2d977e4bbabd2e7f00b10d6, type: 3}
+  - {fileID: -8800029140359239523, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+  - {fileID: 6169715721816308806, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+  - {fileID: -2108457666576224162, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+  - {fileID: 3040141027863336449, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - placeholder
+  - berries_etw_2_0
+  - berries_etw_2_1
+  - berries_etw_2_2
+  - trees_0
+  - trees_9
+  - trees_8
+  - trees_10
+  - trees_11
+  - trees_7
+  - trees_6
+  - trees_5
+  - trees_4
+  - trees_3
+  - trees_2
+  - trees_1
+  - creepy_forest_concept
+  - background_trees_etw_3
+  - background_trees_etw_2
+  - background_trees_etw_1
+  - background_trees_etw_0
   m_Tag: Sprite Atlas
   m_IsVariant: 0

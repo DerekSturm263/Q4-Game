@@ -12,6 +12,7 @@ TagManager:
   - Bubble
   - Enemy
   - Entity
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -60,6 +61,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3651334409
+    locked: 0
+  - name: Berry
+    uniqueID: 3648066665
     locked: 0
   - name: Foreground
     uniqueID: 2821163227

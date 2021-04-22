@@ -6,6 +6,8 @@ public abstract class EntityAI : MonoBehaviour
 {
     public static List<GameObject> entities = new List<GameObject>();
 
+    [SerializeField] protected bool showDebugs;
+
     private Camera cam;
     private PlayerMovement playerMov;
 
@@ -22,15 +24,15 @@ public abstract class EntityAI : MonoBehaviour
     [SerializeField] private bool isHostile = true;
     [HideInInspector] public bool isActive = false;
 
-    [SerializeField] private float viewDist; // How far the enemy can see (in units). This affects the enemy's ability to see both the player, other enemies, and items.
+    [SerializeField] protected float viewDist = 10f; // How far the enemy can see (in units). This affects the enemy's ability to see both the player, other enemies, and items.
     protected Transform target; // Current transform that they enemy is targeting.
     
     [SerializeField] private List<Transform> likeableObjects = new List<Transform>(); // Transforms that the enemy will be drawn towards. Sort in order of priority.
 
     [Header("Speed Settings")]
-    [SerializeField] protected float minWanderSpeed = 1.5f; // Minimum speed to wander at.
-    [SerializeField] protected float maxWanderSpeed = 2.5f; // Maximum speed to wander at.
     [SerializeField] protected float chaseSpeed = 3f; // Speed to chase at.
+    [SerializeField] protected float wanderTurnAroundSpeed = 5f; // Speed to chase at.
+    [SerializeField] protected float chaseTurnAroundSpeed = 2.5f; // Speed to chase at.
 
     private Vector2 lastPos;
     protected Vector2 ogPos;
@@ -38,7 +40,7 @@ public abstract class EntityAI : MonoBehaviour
     protected float currentSpeed;
     protected Vector2 moveVel;
 
-    [SerializeField] protected bool useDebugs;
+    private bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
 
     protected virtual void Awake()
     {
@@ -55,14 +57,14 @@ public abstract class EntityAI : MonoBehaviour
 
         cam = Camera.main;
     }
-    
-    private void Update()
+
+    protected virtual void Update()
     {
         // Make the enemy active if they are within the camera view.
         Vector2 camView = cam.WorldToViewportPoint(transform.position);
         isActive = camView.x > -0.25f && camView.x < 1.25f && camView.y > -0.25f && camView.y < 1.25f;
 
-        if (useDebugs)
+        if (showDebugs)
         {
             Debug.Log(name + " is " + (isActive ? "active" : "not active"));
         }
@@ -105,13 +107,13 @@ public abstract class EntityAI : MonoBehaviour
             }
         }
 
-        if (useDebugs && target)
+        if (showDebugs && target)
         {
             Debug.Log(target.name);
         }
 
         // Decide to chase target or wander around.
-        if (target != null)
+        if (target != null && !isSatisfied)
         {
             Chase(target);
         }
@@ -126,16 +128,27 @@ public abstract class EntityAI : MonoBehaviour
             sprtRndr.flipX = moveVel.x < 0f;
         }
 
-        // Kill player if touching.
-        if (isHostile && CheckForPlayer(out Transform playerObj))
+        // Checks if it's touching the player or an object. If it's the player, it kills the player, if it's an object then it grabs the object.
+        if (!isSatisfied && isHostile && CheckForObject(out Transform obj))
         {
-            Kill(playerObj.GetComponent<PlayerMovement>());
-        }
-    }
+            if (showDebugs)
+            {
+                Debug.Log(obj);
+            }
 
-    private void FixedUpdate()
-    {
-        rb2D.velocity = new Vector2(moveVel.x * currentSpeed, rb2D.velocity.y);
+            PlayerMovement m = obj.GetComponent<PlayerMovement>();
+            Pickup p = obj.GetComponent<Pickup>();
+
+            if (m)
+            {
+                Kill(m);
+            }
+            else if (p)
+            {
+                p.Grab(gameObject);
+                isSatisfied = true;
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -152,12 +165,12 @@ public abstract class EntityAI : MonoBehaviour
         lastPos = transform.position;
     }
 
-    private bool CheckForPlayer(out Transform playerObj)
+    private bool CheckForObject(out Transform obj)
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 0f, Vector2.down, 0f, player);
-        playerObj = hit.transform;
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 0f, Vector2.down, 0f, notEnemy);
+        obj = hit.transform;
 
-        return hit;
+        return hit && likeableObjects.Contains(obj);
     }
 
     private void Kill(PlayerMovement player)
