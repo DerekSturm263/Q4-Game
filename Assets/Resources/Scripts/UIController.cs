@@ -79,6 +79,12 @@ public class UIController : MonoBehaviour
 
         Debug.Log("Berries Found: " + berries.Length);
 
+        // Check if has enough food (use this area for player punishment)
+        if (numFoodToTake > numFood)
+        {
+            Debug.Log("NOT ENOUGH FOOD");
+        }
+
         for (int i = 0; i < numFoodToTake; i++)
         {
             if (numFood == 0)
