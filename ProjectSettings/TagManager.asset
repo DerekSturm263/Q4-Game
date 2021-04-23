@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - Entity
   - Interactable
+  - UIBerry
   layers:
   - Default
   - TransparentFX
