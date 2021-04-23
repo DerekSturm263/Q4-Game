@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
     public GameObject timeDisplay;
     public GameObject berryPrefab;
+    public TextMeshProUGUI foodNumDisplay;
 
     public static float time;
     public static string timeTitle;
@@ -19,6 +22,8 @@ public class UIController : MonoBehaviour
     {
         cycleSeconds = cycleLength * 60;
         timeDisplayRoation = Quaternion.identity;
+
+        foodNumDisplay.text = "X " + numFood;
     }
     
     void FixedUpdate()
@@ -38,11 +43,11 @@ public class UIController : MonoBehaviour
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
         {
             timeTitle = "dusk";
-            TakeFood(2); // Food is taken away every day at dusk
+            //TakeFood(5); // Food is taken away every day at dusk
         } else if ((int)rotCalc == -30 && timeTitle != "day")
         {
             timeTitle = "day";
-            GiveFood(2); //Simulating the player finding food
+            //GiveFood(5); //Simulating the player finding food
         } else if ((int)rotCalc == 0 && timeTitle != "dawn")
         {
             timeTitle = "dawn";
@@ -61,9 +66,12 @@ public class UIController : MonoBehaviour
             Instantiate(berryPrefab, new Vector3(-2.5f, 10, 0), Quaternion.identity);
         }
 
-        Debug.Log(numFood);
+        foodNumDisplay.text = "X " + numFood; 
+        //Debug.Log(numFood);
     }
 
+    // DO NOT Call Take food too quickly, it will break if it is called before
+    // the other berries are gone
     public void TakeFood(int numFoodToTake)
     {
         GameObject[] berries;
@@ -77,7 +85,9 @@ public class UIController : MonoBehaviour
                 break;
             berries[berries.Length - 1 - i].GetComponent<Rigidbody2D>().gravityScale = -1;
             numFood--;
-            Debug.Log(numFood);
+
+            foodNumDisplay.text = "X " + numFood;
+            //Debug.Log(numFood);
         }
     }
 
