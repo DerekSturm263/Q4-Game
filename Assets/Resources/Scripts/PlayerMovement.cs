@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, ISaveable
 {
     private CameraFollow cam;
 
@@ -117,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
     private float jumpLeft;
     private bool nextToWall;
     private bool isPouncing;
+    private bool isSliding;
     private bool playerIsLookingUp;
     private float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
@@ -297,16 +298,10 @@ public class PlayerMovement : MonoBehaviour
             sprtRndr.flipX = targetVel.x < 0f;
         }
 
-        /*
-        if (Mathf.Abs(rb2D.velocity.x) < 0.05f && targetVel.x != 0f)
+        if (isSliding)
         {
-            if (showDebugs)
-            {
-                Debug.Log("Player Sliding");
-            }
-
-            targetVel.x = 0f;
-        }*/
+            targetVel = new Vector2(0f, targetVel.y - 5f);
+        }
 
         rb2D.velocity = targetVel;
     }
@@ -428,7 +423,7 @@ public class PlayerMovement : MonoBehaviour
                     isPouncing = false;
 
                     jumpVel = jumpForce;
-                    moveVel = new Vector2(sprtRndr.flipX ? -2f : 2f, 0f);
+                    moveVel = new Vector2(sprtRndr.flipX ? -1.5f : 1.5f, 0f);
                 }
                 else
                 {
@@ -553,6 +548,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded() || moveState != MoveState.Ground || isPouncing || jumpLeft != 0f || heldItem != null || lockMovement)
             return;
 
+        moveVel = Vector2.zero;
         pounceVel = Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), pounceForce);
         isPouncing = true;
 
@@ -597,11 +593,14 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         moveState = MoveState.Wall;
-        rb2D.gravityScale = 0f;
 
         // Cancels other velocity.
         jumpVel = 0f;
         pounceVel = Vector2.zero;
+
+        rb2D.gravityScale = 0f;
+
+        rb2D.velocity = Vector2.zero;
 
         anim.SetBool("Is Climbing", true);
 
@@ -934,6 +933,65 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Player Exited: " + collision.name);
         }
     }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        isSliding = targetVel.x != 0f && Mathf.Abs(rb2D.velocity.magnitude) < 0.1f && !IsGrounded();
+
+        if (showDebugs && isSliding)
+        {
+            Debug.Log("Player is Sliding");
+        }
+    }
+    
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isSliding = false;
+    }
+
+    #region ISaveable Methods
+
+    public string GetDataPath()
+    {
+        return "/player.saveData";
+    }
+
+    public float[] SaveFloats()
+    {
+        return new float[0];
+    }
+
+    public int[] SaveInts()
+    {
+        return new int[0];
+    }
+
+    public byte[] SaveBytes()
+    {
+        return new byte[0];
+    }
+
+    public bool[] SaveBools()
+    {
+        return new bool[0];
+    }
+
+    public float[,] SaveVector2s()
+    {
+        return new float[0, 0];
+    }
+
+    public float[,] SaveVector3s()
+    {
+        return new float[0, 0];
+    }
+
+    public void Load()
+    {
+        
+    }
+
+    #endregion
 
     private void OnDrawGizmos()
     {
