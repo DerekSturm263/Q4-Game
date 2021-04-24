@@ -2,14 +2,14 @@
 
 public interface ISaveable
 {
-    public string GetDataPath();
+    string GetDataPath();
 
-    public float[] SaveFloats();
-    public int[] SaveInts();
-    public byte[] SaveBytes();
-    public bool[] SaveBools();
-    public float[,] SaveVector2s();
-    public float[,] SaveVector3s();
+    float[] SaveFloats();
+    int[] SaveInts();
+    byte[] SaveBytes();
+    bool[] SaveBools();
+    float[,] SaveVector2s();
+    float[,] SaveVector3s();
 
-    public void Load();
+    void Load();
 }
