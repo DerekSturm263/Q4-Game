@@ -70,9 +70,9 @@ public class GroundAI : EntityAI
         // Applies proper velocity.
         moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized, Time.deltaTime * wanderTurnAroundSpeed);
     }
-    
+
     // Finds a new spot using raycast for the enemy to wander to.
-    private Vector2 NewPosition()
+    protected override Vector2 NewPosition()
     {
         // Chooses a random direction to move in by a random amount.
         float randomDir = Random.Range(-wanderDist, wanderDist);

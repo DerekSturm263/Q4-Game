@@ -20,6 +20,9 @@ public abstract class EntityAI : MonoBehaviour
     protected Animator anim;
     protected SpriteRenderer sprtRndr;
 
+    [SerializeField] private float underwaterGravity = 0.5f;
+    private float aboveWaterGravity;
+
     [Header("Target Settings")]
     [SerializeField] private bool isHostile = true;
     [HideInInspector] public bool isActive = false;
@@ -31,8 +34,11 @@ public abstract class EntityAI : MonoBehaviour
 
     [Header("Speed Settings")]
     [SerializeField] protected float chaseSpeed = 3f; // Speed to chase at.
-    [SerializeField] protected float wanderTurnAroundSpeed = 5f; // Speed to chase at.
-    [SerializeField] protected float chaseTurnAroundSpeed = 2.5f; // Speed to chase at.
+    [SerializeField] protected float wanderTurnAroundSpeed = 5f; // Speed to turn around at while wandering.
+    [SerializeField] protected float chaseTurnAroundSpeed = 2.5f; // Speed to turn around at while chasing.
+
+    [SerializeField] protected float chaseWaitTime = 1f; // Amount of time after chasing to make the enemy relaxed.
+    protected float chaseTime;
 
     private Vector2 lastPos;
     protected Vector2 ogPos;
@@ -41,6 +47,8 @@ public abstract class EntityAI : MonoBehaviour
     protected Vector2 moveVel;
 
     private bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
+
+    private GameObject warningSignal;
 
     protected virtual void Awake()
     {
@@ -55,6 +63,17 @@ public abstract class EntityAI : MonoBehaviour
         lastPos = transform.position;
         PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;
 
+        aboveWaterGravity = rb2D.gravityScale;
+
+        if (isHostile)
+        {
+            try
+            {
+                warningSignal = GetComponentsInChildren<Animator>()[1].gameObject;
+                warningSignal.SetActive(false);
+            }
+            catch { }
+        }
         cam = Camera.main;
     }
 
@@ -84,7 +103,7 @@ public abstract class EntityAI : MonoBehaviour
         }
 
         // Look for a likeableObject to chase.
-        if (target == null)
+        if (target == null && !isSatisfied)
         {
             for (int i = 0; i < likeableObjects.Count; ++i)
             {
@@ -94,16 +113,29 @@ public abstract class EntityAI : MonoBehaviour
                     || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
+                    if (isHostile)
+                    {
+                        warningSignal.SetActive(false);
+                        warningSignal.SetActive(true);
+                    }
+                    chaseTime = chaseWaitTime;
                     break;
                 }
             }
         }
-        else
+        else if (target != null)
         {
+            chaseTime -= Time.deltaTime;
+
             if (Vector2.Distance(transform.position, target.position) > viewDist
-                || Physics2D.Linecast(transform.position, target.position, notEnemy).transform != target)
+                || Physics2D.Linecast(transform.position, target.position, notEnemy).transform != target
+                && chaseTime <= 0f)
             {
                 target = null;
+                if (isHostile)
+                {
+                    warningSignal.GetComponent<Animator>().SetTrigger("Exit");
+                }
             }
         }
 
@@ -136,17 +168,18 @@ public abstract class EntityAI : MonoBehaviour
                 Debug.Log(obj);
             }
 
-            PlayerMovement m = obj.GetComponent<PlayerMovement>();
-            Pickup p = obj.GetComponent<Pickup>();
+            PlayerMovement player = obj.GetComponent<PlayerMovement>();
+            Pickup item = obj.GetComponent<Pickup>();
 
-            if (m)
+            if (player)
             {
-                Kill(m);
+                Kill(player);
             }
-            else if (p)
+            else if (item)
             {
-                p.Grab(gameObject);
+                item.Grab(gameObject);
                 isSatisfied = true;
+                chaseTime = 0f;
             }
         }
     }
@@ -181,9 +214,22 @@ public abstract class EntityAI : MonoBehaviour
     public void Respawn()
     {
         transform.position = lastPos;
-        target = null;
+        warningSignal.SetActive(false);
+
+        NewPosition();
+    }
+
+    private void EnterWater()
+    {
+        rb2D.gravityScale = underwaterGravity;
+    }
+
+    private void ExitWater()
+    {
+        rb2D.gravityScale = aboveWaterGravity;
     }
 
     protected abstract void Chase(Transform chaseTarget);
     protected abstract void Wander();
+    protected abstract Vector2 NewPosition();
 }

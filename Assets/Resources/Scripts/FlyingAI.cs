@@ -76,7 +76,7 @@ public class FlyingAI : EntityAI
         moveVel = Vector2.Lerp(moveVel, -((Vector2) transform.position - currentGoal).normalized, Time.deltaTime * wanderTurnAroundSpeed);
     }
 
-    private Vector2 NewPosition()
+    protected override Vector2 NewPosition()
     {
         if (showDebugs)
         {

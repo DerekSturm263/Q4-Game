@@ -47,14 +47,18 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
     - {fileID: 2800000, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
     - {fileID: 2800000, guid: f3ca58e9c2d977e4bbabd2e7f00b10d6, type: 3}
-    totalSpriteSurfaceArea: 8781651
+    - {fileID: 2800000, guid: 95793e414f517fa4bb4ed1ab1b940732, type: 3}
+    - {fileID: 2800000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
+    totalSpriteSurfaceArea: 10382091
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 95793e414f517fa4bb4ed1ab1b940732, type: 3}
   - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
   - {fileID: 6195344657483792524, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: -4229346075008629873, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: 4354993551913307361, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+  - {fileID: 21300000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
   - {fileID: -1673732733077124514, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
   - {fileID: 7915683653226457324, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
   - {fileID: -497406288967409369, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
@@ -73,10 +77,12 @@ SpriteAtlas:
   - {fileID: -2108457666576224162, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
   - {fileID: 3040141027863336449, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
   m_PackedSpriteNamesToIndex:
+  - berries_etw
   - placeholder
   - berries_etw_2_0
   - berries_etw_2_1
   - berries_etw_2_2
+  - bush_etw
   - trees_0
   - trees_9
   - trees_8

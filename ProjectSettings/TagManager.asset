@@ -14,6 +14,7 @@ TagManager:
   - Entity
   - Interactable
   - UIBerry
+  - Warning
   layers:
   - Default
   - TransparentFX
