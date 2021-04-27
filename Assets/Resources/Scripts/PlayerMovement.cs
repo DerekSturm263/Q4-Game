@@ -678,7 +678,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             throwLeft += Time.deltaTime;
             throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
 
-            RenderThrowingArc(throwVector, throwForce / 1.925f, throwVecResolution);
+            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution);
         }
         else
         {
@@ -726,7 +726,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity)
     {
         float x = t * maxDistance;
-        float y = x * Mathf.Tan(angle) - ((rb2D.gravityScale * x * x) / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
+        float y = x * Mathf.Tan(angle) - (rb2D.gravityScale * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
 
         return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset;
     }
