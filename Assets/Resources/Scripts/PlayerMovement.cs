@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private Rigidbody2D rb2D;
     private SpriteRenderer sprtRndr;
     private PolygonCollider2D col2D;
+    private LineRenderer lineRndr;
 
     [Header("Movement Settings")]
     [SerializeField] private LayerMask ground = 1 << 9; // Layermask for the ground that will trigger a grounded collision.
@@ -57,6 +58,12 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     [SerializeField] private float swimMaxVelocity = 15f; // Maximum velocity you can achieve whilst going upwards underwater.
     [SerializeField] private UnityEngine.UI.Image breathMeter;
 
+    [Header("Throwing Settings")]
+    [SerializeField] private float minThrowForce = 1f; // Minimum force applied when throwing an item.
+    [SerializeField] private float maxThrowForce = 10f; // Maximum force applied when throwing an item.
+    [SerializeField] private Vector2 throwVector = new Vector2(1f, 1.25f); // Maximum force applied when throwing an item.
+    private float throwForce;
+
     [Header("Boxcast Settings")]
     [SerializeField] private Vector2 groundedBoxOffset = new Vector2(0f, -1.35f); // Offset for the grounded boxcast collision.
     [SerializeField] private Vector2 groundedBoxSize = new Vector2(0.75f, 0.05f); // Size for the grounded boxcast collision.
@@ -82,6 +89,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     [SerializeField] private float defaultVignette = 0.2f;
     [SerializeField] private Color defaultColAdj = new Color(1f, 1f, 1f);
     [SerializeField] private Color underwaterColorAdj = new Color(0.8f, 0.8f, 1f);
+    [SerializeField] private Color nightVisionColorAdj = new Color(0f, 1f, 1f);
+    [SerializeField] private float nightVisionExposure = 7f;
     [SerializeField] private float defaultDOF = 4f;
 
     private float targetVignette;
@@ -90,14 +99,13 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
+    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0111; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
     public UnityEngine.UI.Image fade; // Dark overlay that appears when respawning.
     private Animator fadeAnim;
-
-    [SerializeField] private Vector2 throwVector = new Vector2(10f, 10f); // Vector applied when throwing an item.
+    [SerializeField] private int throwVecResolution = 5;
 
     [HideInInspector] public GameObject overlappingItem;
     [HideInInspector] public Pickup heldItem;
@@ -115,12 +123,15 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     // Miscellaneous.
     private float jumpLeft;
+    private float throwLeft;
     private bool nextToWall;
     private bool isPouncing;
     private bool isSliding;
     private bool playerIsLookingUp;
     private float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
+
+    private bool isInDarkZone = false;
 
     [SerializeField] private ParticleSystem[] snowfall = new ParticleSystem[3];
     private ParticleSystem.EmissionModule[] snowfallParticles = new ParticleSystem.EmissionModule[3];
@@ -150,6 +161,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         rb2D = GetComponent<Rigidbody2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
         col2D = GetComponent<PolygonCollider2D>();
+        lineRndr = GetComponent<LineRenderer>();
 
         vol = Camera.main.GetComponent<UnityEngine.Rendering.Volume>().profile;
         vol.TryGet(out vignette);
@@ -249,7 +261,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
         #region Night Vision
 
-        if (UIController.timeTitle == "dusk" || UIController.timeTitle == "night")
+        if (UIController.timeTitle == "night" || isInDarkZone)
         {
             ActivateNightVision();
         }
@@ -278,6 +290,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         Jump(controls.Player.Jump.ReadValue<float>() == 1f);
         Crouch(controls.Player.Crouch.ReadValue<float>() == 1f);
         LookUp(controls.Player.LookUp.ReadValue<float>() == 1f);
+        Throw(controls.Player.Throw.ReadValue<float>() == 1f);
 
         if (moveState != MoveState.Wall)
         {
@@ -397,7 +410,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water || playerIsLookingUp || lockMovement)
+        if (moveState == MoveState.Water || lockMovement)
             return;
 
         // Jump button is held.
@@ -413,7 +426,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
                 jumpLeft = extraJumpForce;
             }
             // Jump while grounded.
-            else if (timeSinceGround < coyoteTime)
+            else if (timeSinceGround < coyoteTime && rb2D.gravityScale != 0f && !playerIsLookingUp)
             {
                 jumpLandParticles.Play();
 
@@ -589,18 +602,16 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private void BeginClimb()
     {
         // Only allows player to climb wall when ability is unlocked.
-        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0 || lockMovement || isPouncing) // Make it so you need the ability for it to work.
+        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0 || lockMovement || isPouncing || heldItem != null) // Make it so you need the ability for it to work.
             return;
 
         moveState = MoveState.Wall;
+        rb2D.gravityScale = 0f;
 
         // Cancels other velocity.
         jumpVel = 0f;
         pounceVel = Vector2.zero;
-
-        rb2D.gravityScale = 0f;
-
-        rb2D.velocity = Vector2.zero;
+        moveVel = Vector2.zero;
 
         anim.SetBool("Is Climbing", true);
 
@@ -616,8 +627,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         rb2D.gravityScale = aboveGroundGravity;
 
         // Cancels other velocity.
-        moveVel = Vector2.zero;
         jumpVel = 0f;
+        moveVel = Vector2.zero;
         pounceVel = Vector2.zero;
 
         anim.SetBool("Is Climbing", false);
@@ -630,46 +641,97 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private void Use()
     {
-        if (lockMovement)
+        if (lockMovement || heldItem != null)
             return;
 
-        // Pick up or interacts with an item.
-        if (heldItem == null)
+        GameObject item = null;
+        if (IsItemOverlap(ref item))
         {
-            GameObject item = null;
+            overlappingItem = item;
 
-            if (IsItemOverlap(ref item))
+            // Pickup Item.
+            if (overlappingItem.CompareTag("Pickup"))
             {
-                overlappingItem = item;
-
-                // Pickup Item.
-                if (overlappingItem.CompareTag("Pickup"))
+                if (showDebugs)
                 {
-                    Pickup itemScript = overlappingItem.GetComponent<Pickup>();
+                    Debug.Log("Player Picked Up An Item");
+                }
 
-                    itemScript.Grab(gameObject);
-                    heldItem = itemScript;
-                }
-                // Interact with Item.
-                else if (overlappingItem.CompareTag("Interactable"))
-                {
-                    overlappingItem.GetComponent<Interactable>().Effect();
-                }
+                Pickup itemScript = overlappingItem.GetComponent<Pickup>();
+
+                itemScript.Grab(gameObject);
+                heldItem = itemScript;
+                throwLeft = 0f;
+            }
+            // Interact with Item.
+            else if (overlappingItem.CompareTag("Interactable"))
+            {
+                overlappingItem.GetComponent<Interactable>().Effect();
             }
         }
-        // Throws the currently held item.
+    }
+
+    private void Throw(bool isThrowing)
+    {
+        if (heldItem == null || heldItem.timeSinceGrabbed < 0.5f)
+            return;
+
+        if (isThrowing)
+        {
+            throwLeft += Time.deltaTime;
+            throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
+
+            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution, heldItem.rb2D.gravityScale);
+        }
         else
         {
-            heldItem.GetComponent<Pickup>().Throw(Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), throwVector));
-            heldItem = null;
+            if (throwLeft > 0f)
+            {
+                // Throw the item.
+                heldItem.GetComponent<Pickup>().Throw(Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), throwVector * throwForce));
+                heldItem = null;
+                overlappingItem = null;
 
-            overlappingItem = null;
+                throwLeft = 0f;
+                RenderThrowingArc(Vector2.zero, 0f, 0, 0f);
+            }
         }
 
         if (showDebugs)
         {
-            Debug.Log("Player Tried Using An Item");
+            Debug.Log("Player Threw An Item");
         }
+    }
+
+    private void RenderThrowingArc(Vector2 throwVec, float velocity, int resolution, float gravity)
+    {
+        lineRndr.positionCount = resolution;
+
+        float angle = Mathf.Atan2(throwVec.y, throwVec.x);
+        float maxDistance =  (velocity * velocity * Mathf.Sin(2 * angle)) / gravity;
+
+        lineRndr.SetPositions(CalculateThrowingPositions(resolution, maxDistance, angle, velocity, gravity));
+    }
+
+    private Vector3[] CalculateThrowingPositions(int resolution, float maxDistance, float angle, float velocity, float gravity)
+    {
+        Vector3[] positions = new Vector3[resolution];
+
+        for (int i = 0; i < resolution; ++i)
+        {
+            float t = (float) i / (float) resolution;
+            positions[i] = CalculateArcPoint(t, maxDistance, angle, velocity, gravity);
+        }
+
+        return positions;
+    }
+
+    private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity, float gravity)
+    {
+        float x = t * maxDistance;
+        float y = x * Mathf.Tan(angle) - (gravity * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
+
+        return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset;
     }
 
     private void EnterWater()
@@ -738,7 +800,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         if ((abilities & nightVision) == 0)
             return;
 
-        targetExposure = 5f;
+        targetExposure = nightVisionExposure;
+        targetColAdj = nightVisionColorAdj;
     }
 
     private void DeactivateNightVision()
@@ -748,6 +811,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             return;
 
         targetExposure = 0f;
+        targetColAdj = moveState == MoveState.Water ? underwaterColorAdj : defaultColAdj;
     }
 
     public static void UnlockAbility(byte ability)
@@ -879,6 +943,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         {
             waterSplashParticles.Play();
         }
+        else if (collision.CompareTag("Dark Area"))
+        {
+            isInDarkZone = true;
+        }
         else if (collision.CompareTag("Pickup"))
         {
             overlappingItem = collision.gameObject;
@@ -922,6 +990,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         else if (collision.CompareTag("Water"))
         {
             waterSplashParticles.Play();
+        }
+        else if (collision.CompareTag("Dark Area"))
+        {
+            isInDarkZone = false;
         }
         else if (collision.CompareTag("Pickup"))
         {

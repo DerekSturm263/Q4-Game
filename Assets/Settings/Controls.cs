@@ -89,6 +89,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Value"",
+                    ""id"": ""59e510a9-04d3-4ea9-8f4b-00a6189304c2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -476,6 +484,28 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Swim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53c06e01-4392-45aa-ab79-7ebd05ea7192"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c6db97e-71c8-4874-9e75-031bc0dcadc7"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -516,6 +546,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Player_LookUp = m_Player.FindAction("Look Up", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Swim = m_Player.FindAction("Swim", throwIfNotFound: true);
+        m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -574,6 +605,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_LookUp;
     private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Swim;
+    private readonly InputAction m_Player_Throw;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -587,6 +619,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @LookUp => m_Wrapper.m_Player_LookUp;
         public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Swim => m_Wrapper.m_Player_Swim;
+        public InputAction @Throw => m_Wrapper.m_Player_Throw;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -623,6 +656,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Swim.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
                 @Swim.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
                 @Swim.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwim;
+                @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -654,6 +690,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Swim.started += instance.OnSwim;
                 @Swim.performed += instance.OnSwim;
                 @Swim.canceled += instance.OnSwim;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
             }
         }
     }
@@ -687,5 +726,6 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnLookUp(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
         void OnSwim(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }
