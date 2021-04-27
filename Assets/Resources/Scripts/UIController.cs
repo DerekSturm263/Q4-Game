@@ -63,6 +63,7 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < numFoodToGive; i++)
         {
             numFood++;
+            // need to change this out later to be based on screen size
             Instantiate(berryPrefab, new Vector3(-2.5f, 10, 0), Quaternion.identity);
         }
 
