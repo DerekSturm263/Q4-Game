@@ -15,6 +15,7 @@ TagManager:
   - Interactable
   - UIBerry
   - Warning
+  - Dark Area
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Item
   - Player
   - Entity
-  - 
+  - Dark Area
   - 
   - 
   - 

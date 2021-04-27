@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     [SerializeField] private Color defaultColAdj = new Color(1f, 1f, 1f);
     [SerializeField] private Color underwaterColorAdj = new Color(0.8f, 0.8f, 1f);
     [SerializeField] private Color nightVisionColorAdj = new Color(0f, 1f, 1f);
+    [SerializeField] private float nightVisionExposure = 7f;
     [SerializeField] private float defaultDOF = 4f;
 
     private float targetVignette;
@@ -98,7 +99,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0101; // Byte value representing unlocked abilities that the player has.
+    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0111; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
@@ -129,6 +130,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private bool playerIsLookingUp;
     private float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
+
+    private bool isInDarkZone = false;
 
     [SerializeField] private ParticleSystem[] snowfall = new ParticleSystem[3];
     private ParticleSystem.EmissionModule[] snowfallParticles = new ParticleSystem.EmissionModule[3];
@@ -258,7 +261,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
         #region Night Vision
 
-        if (UIController.timeTitle == "dusk" || UIController.timeTitle == "night")
+        if (UIController.timeTitle == "night" || isInDarkZone)
         {
             ActivateNightVision();
         }
@@ -678,7 +681,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             throwLeft += Time.deltaTime;
             throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
 
-            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution);
+            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution, heldItem.rb2D.gravityScale);
         }
         else
         {
@@ -690,7 +693,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
                 overlappingItem = null;
 
                 throwLeft = 0f;
-                RenderThrowingArc(Vector2.zero, 0f, 0);
+                RenderThrowingArc(Vector2.zero, 0f, 0, 0f);
             }
         }
 
@@ -700,33 +703,33 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         }
     }
 
-    private void RenderThrowingArc(Vector2 throwVec, float velocity, int resolution)
+    private void RenderThrowingArc(Vector2 throwVec, float velocity, int resolution, float gravity)
     {
         lineRndr.positionCount = resolution;
 
         float angle = Mathf.Atan2(throwVec.y, throwVec.x);
-        float maxDistance =  (velocity * velocity * Mathf.Sin(2 * angle)) / rb2D.gravityScale;
+        float maxDistance =  (velocity * velocity * Mathf.Sin(2 * angle)) / gravity;
 
-        lineRndr.SetPositions(CalculateThrowingPositions(resolution, maxDistance, angle, velocity));
+        lineRndr.SetPositions(CalculateThrowingPositions(resolution, maxDistance, angle, velocity, gravity));
     }
 
-    private Vector3[] CalculateThrowingPositions(int resolution, float maxDistance, float angle, float velocity)
+    private Vector3[] CalculateThrowingPositions(int resolution, float maxDistance, float angle, float velocity, float gravity)
     {
         Vector3[] positions = new Vector3[resolution];
 
         for (int i = 0; i < resolution; ++i)
         {
             float t = (float) i / (float) resolution;
-            positions[i] = CalculateArcPoint(t, maxDistance, angle, velocity);
+            positions[i] = CalculateArcPoint(t, maxDistance, angle, velocity, gravity);
         }
 
         return positions;
     }
 
-    private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity)
+    private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity, float gravity)
     {
         float x = t * maxDistance;
-        float y = x * Mathf.Tan(angle) - (rb2D.gravityScale * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
+        float y = x * Mathf.Tan(angle) - (gravity * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
 
         return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset;
     }
@@ -797,7 +800,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         if ((abilities & nightVision) == 0)
             return;
 
-        targetExposure = 5f;
+        targetExposure = nightVisionExposure;
         targetColAdj = nightVisionColorAdj;
     }
 
@@ -940,6 +943,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         {
             waterSplashParticles.Play();
         }
+        else if (collision.CompareTag("Dark Area"))
+        {
+            isInDarkZone = true;
+        }
         else if (collision.CompareTag("Pickup"))
         {
             overlappingItem = collision.gameObject;
@@ -983,6 +990,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         else if (collision.CompareTag("Water"))
         {
             waterSplashParticles.Play();
+        }
+        else if (collision.CompareTag("Dark Area"))
+        {
+            isInDarkZone = false;
         }
         else if (collision.CompareTag("Pickup"))
         {

@@ -2,7 +2,7 @@
 
 public class Pickup : MonoBehaviour
 {
-    private Rigidbody2D rb2D;
+    public Rigidbody2D rb2D;
     private BoxCollider2D boxCollider;
 
     [SerializeField] private float underwaterGravity = 0.5f;
