@@ -14,7 +14,7 @@ public abstract class EntityAI : MonoBehaviour
 
     [Header("Layer Mask Settings")]
     [SerializeField] protected LayerMask ground = 1 << 9;
-    [SerializeField] protected LayerMask player = 1 << 12;
+    [SerializeField] protected LayerMask playerMask = 1 << 12;
     [SerializeField] protected LayerMask notEnemy = ~(1 << 13 & 1 << 8 & 1 << 10);
 
     protected Rigidbody2D rb2D;
@@ -56,7 +56,7 @@ public abstract class EntityAI : MonoBehaviour
     {
         entities.Add(gameObject);
         playerMov = FindObjectOfType<PlayerMovement>();
-        player = playerMov.gameObject;
+        player = playerMov.transform;
         ogPos = transform.position;
 
         rb2D = GetComponent<Rigidbody2D>();
@@ -73,7 +73,9 @@ public abstract class EntityAI : MonoBehaviour
             try
             {
                 warningSignal = GetComponentsInChildren<Animator>()[1].gameObject;
+                interestedSignal = GetComponentsInChildren<Animator>()[2].gameObject;
                 warningSignal.SetActive(false);
+                interestedSignal.SetActive(false);
             }
             catch { }
         }
@@ -116,7 +118,8 @@ public abstract class EntityAI : MonoBehaviour
                     || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
-                    if (isHostile && target == player)
+
+                    if (isHostile)
                     {
                         if (target == player)
                         {
@@ -143,7 +146,6 @@ public abstract class EntityAI : MonoBehaviour
                 || Physics2D.Linecast(transform.position, target.position, notEnemy).transform != target
                 && chaseTime <= 0f)
             {
-                target = null;
                 if (isHostile)
                 {
                     if (target == player)
@@ -155,6 +157,8 @@ public abstract class EntityAI : MonoBehaviour
                         interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
                     }
                 }
+
+                target = null;
             }
         }
 

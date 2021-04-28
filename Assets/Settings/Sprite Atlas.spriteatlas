@@ -49,15 +49,38 @@ SpriteAtlas:
     - {fileID: 2800000, guid: f3ca58e9c2d977e4bbabd2e7f00b10d6, type: 3}
     - {fileID: 2800000, guid: 95793e414f517fa4bb4ed1ab1b940732, type: 3}
     - {fileID: 2800000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
-    totalSpriteSurfaceArea: 10382091
+    - {fileID: 2800000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
+    - {fileID: 2800000, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
+    - {fileID: 2800000, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+    totalSpriteSurfaceArea: 12361749
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 95793e414f517fa4bb4ed1ab1b940732, type: 3}
+  - {fileID: -6484519099441814531, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -6576664503135843148, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -2599109698496938168, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 5793571107211460557, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 7676550351762972379, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 8172040029051291547, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -6218418147159095372, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -4454367897960526327, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -3542230098568340954, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 8688004030104111925, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -5929405817864647190, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -2010917458671493427, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 7391444822214289219, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -1169521843657391632, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: 5546325865808303138, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
+  - {fileID: -189306258743223521, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
   - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
   - {fileID: 6195344657483792524, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: -4229346075008629873, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: 4354993551913307361, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
+  - {fileID: 2744171872641618106, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
+  - {fileID: 5626756845483543181, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
+  - {fileID: 613601938791539414, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
+  - {fileID: 7711884721034271394, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
   - {fileID: 21300000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
   - {fileID: -1673732733077124514, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
   - {fileID: 7915683653226457324, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
@@ -76,12 +99,33 @@ SpriteAtlas:
   - {fileID: 6169715721816308806, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
   - {fileID: -2108457666576224162, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
   - {fileID: 3040141027863336449, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
+  - {fileID: 21300000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
   m_PackedSpriteNamesToIndex:
   - berries_etw
+  - thorns_17
+  - thorns_16
+  - thorns_15
+  - thorns_13
+  - thorns_11
+  - thorns_10
+  - thorns_4
+  - thorns_5
+  - thorns_6
+  - thorns_7
+  - thorns_0
+  - thorns_1
+  - thorns_2
+  - thorns_3
+  - thorns_8
+  - thorns_9
   - placeholder
   - berries_etw_2_0
   - berries_etw_2_1
   - berries_etw_2_2
+  - Racoon_idle_3
+  - Racoon_idle_2
+  - Racoon_idle_1
+  - Racoon_idle_0
   - bush_etw
   - trees_0
   - trees_9
@@ -100,5 +144,6 @@ SpriteAtlas:
   - background_trees_etw_2
   - background_trees_etw_1
   - background_trees_etw_0
+  - mushroom_platform
   m_Tag: Sprite Atlas
   m_IsVariant: 0

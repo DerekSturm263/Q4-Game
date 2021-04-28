@@ -140,6 +140,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     public static Vector2 lastPosBeforeSwimOrPit; // The player's last grounded position before going in water or falling in a bottomless pit.
     public static Vector2 lastPosBeforeCaughtByEnemy; // The player's last position before an enemy spotted them and killed them.
     public static Vector2 lastPosBeforeFoodRunsOut; // The player's last position during the beginning of the day before their food ran out later that day.
+    public static Vector2 lastPosBeforeThorns; // The player's last position before touching thorns.
+
     public static int deathCause; // 0 represents swimming or falling in a bottomless pit, 1 represents being caughtByAnEnemy, 2 represents running out of food.
 
     public bool lockMovement = false;
@@ -681,7 +683,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             throwLeft += Time.deltaTime;
             throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
 
-            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution, heldItem.rb2D.gravityScale);
+            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight * (rb2D.gravityScale / 2.5f), throwVecResolution);
         }
         else
         {
@@ -693,7 +695,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
                 overlappingItem = null;
 
                 throwLeft = 0f;
-                RenderThrowingArc(Vector2.zero, 0f, 0, 0f);
+                RenderThrowingArc(Vector2.zero, 0f, 0);
             }
         }
 
@@ -703,33 +705,33 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         }
     }
 
-    private void RenderThrowingArc(Vector2 throwVec, float velocity, int resolution, float gravity)
+    private void RenderThrowingArc(Vector2 throwVec, float velocity, int resolution)
     {
         lineRndr.positionCount = resolution;
 
         float angle = Mathf.Atan2(throwVec.y, throwVec.x);
-        float maxDistance =  (velocity * velocity * Mathf.Sin(2 * angle)) / gravity;
+        float maxDistance =  (velocity * velocity * Mathf.Sin(2 * angle)) / aboveGroundGravity;
 
-        lineRndr.SetPositions(CalculateThrowingPositions(resolution, maxDistance, angle, velocity, gravity));
+        lineRndr.SetPositions(CalculateThrowingPositions(resolution, maxDistance, angle, velocity));
     }
 
-    private Vector3[] CalculateThrowingPositions(int resolution, float maxDistance, float angle, float velocity, float gravity)
+    private Vector3[] CalculateThrowingPositions(int resolution, float maxDistance, float angle, float velocity)
     {
         Vector3[] positions = new Vector3[resolution];
 
         for (int i = 0; i < resolution; ++i)
         {
             float t = (float) i / (float) resolution;
-            positions[i] = CalculateArcPoint(t, maxDistance, angle, velocity, gravity);
+            positions[i] = CalculateArcPoint(t, maxDistance, angle, velocity);
         }
 
         return positions;
     }
 
-    private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity, float gravity)
+    private Vector2 CalculateArcPoint(float t, float maxDistance, float angle, float velocity)
     {
         float x = t * maxDistance;
-        float y = x * Mathf.Tan(angle) - (gravity * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
+        float y = x * Mathf.Tan(angle) - (aboveGroundGravity * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
 
         return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset;
     }
@@ -917,8 +919,11 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             case 1:
                 transform.position = lastPosBeforeCaughtByEnemy;
                 break;
-            default:
+            case 2:
                 transform.position = lastPosBeforeFoodRunsOut;
+                break;
+            default:
+                transform.position = lastPosBeforeThorns;
                 break;
         }
 
@@ -946,6 +951,10 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         else if (collision.CompareTag("Dark Area"))
         {
             isInDarkZone = true;
+        }
+        else if (collision.CompareTag("Thorns"))
+        {
+            Die(3);
         }
         else if (collision.CompareTag("Pickup"))
         {

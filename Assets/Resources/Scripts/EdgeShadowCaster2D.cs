@@ -6,8 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class EdgeShadowCaster2D : MonoBehaviour
 {
-    private int step = 0;
-
     private EdgeCollider2D col;
     private ShadowCaster2D shadowCaster;
 
@@ -28,7 +26,7 @@ public class EdgeShadowCaster2D : MonoBehaviour
         shadowCaster = gameObject.AddComponent<ShadowCaster2D>();
         col = gameObject.GetComponent<EdgeCollider2D>();
 
-        Vector3[] points = FromVector2(col.points);
+        Vector3[] points = Reduce(FromVector2(col.points), 2);
 
         shapePathField.SetValue(shadowCaster, points);
         meshField.SetValue(shadowCaster, new Mesh());
@@ -40,11 +38,22 @@ public class EdgeShadowCaster2D : MonoBehaviour
     private static Vector3[] FromVector2(Vector2[] ogPoints)
     {
         Vector3[] newPoints = new Vector3[ogPoints.Length];
-        step = newPoints.Length / 10;
 
-        for (int i = 0; i < ogPoints.Length; i += step)
+        for (int i = 0; i < ogPoints.Length; ++i)
         {
             newPoints[i] = ogPoints[i];
+        }
+
+        return newPoints;
+    }
+
+    private static Vector3[] Reduce(Vector3[] ogPoints, int step)
+    {
+        Vector3[] newPoints = new Vector3[ogPoints.Length / step];
+
+        for (int i = 0, j = 0; j < newPoints.Length; i += step, ++j)
+        {
+            newPoints[j] = ogPoints[i];
         }
 
         return newPoints;
