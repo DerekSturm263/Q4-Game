@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class EdgeShadowCaster2D : MonoBehaviour
 {
-    private const int Step = 5;
+    private int step = 0;
 
     private EdgeCollider2D col;
     private ShadowCaster2D shadowCaster;
@@ -40,8 +40,9 @@ public class EdgeShadowCaster2D : MonoBehaviour
     private static Vector3[] FromVector2(Vector2[] ogPoints)
     {
         Vector3[] newPoints = new Vector3[ogPoints.Length];
+        step = newPoints.Length / 10;
 
-        for (int i = 0; i < ogPoints.Length; ++i)
+        for (int i = 0; i < ogPoints.Length; i += step)
         {
             newPoints[i] = ogPoints[i];
         }
