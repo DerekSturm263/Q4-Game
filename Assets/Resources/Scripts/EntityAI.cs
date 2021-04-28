@@ -10,6 +10,7 @@ public abstract class EntityAI : MonoBehaviour
 
     private Camera cam;
     private PlayerMovement playerMov;
+    private Transform player;
 
     [Header("Layer Mask Settings")]
     [SerializeField] protected LayerMask ground = 1 << 9;
@@ -49,11 +50,13 @@ public abstract class EntityAI : MonoBehaviour
     private bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
 
     private GameObject warningSignal;
+    private GameObject interestedSignal;
 
     protected virtual void Awake()
     {
         entities.Add(gameObject);
         playerMov = FindObjectOfType<PlayerMovement>();
+        player = playerMov.gameObject;
         ogPos = transform.position;
 
         rb2D = GetComponent<Rigidbody2D>();
@@ -113,11 +116,20 @@ public abstract class EntityAI : MonoBehaviour
                     || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
-                    if (isHostile)
+                    if (isHostile && target == player)
                     {
-                        warningSignal.SetActive(false);
-                        warningSignal.SetActive(true);
+                        if (target == player)
+                        {
+                            warningSignal.SetActive(false);
+                            warningSignal.SetActive(true);
+                        }
+                        else
+                        {
+                            interestedSignal.SetActive(false);
+                            interestedSignal.SetActive(true);
+                        }
                     }
+                    
                     chaseTime = chaseWaitTime;
                     break;
                 }
@@ -134,7 +146,14 @@ public abstract class EntityAI : MonoBehaviour
                 target = null;
                 if (isHostile)
                 {
-                    warningSignal.GetComponent<Animator>().SetTrigger("Exit");
+                    if (target == player)
+                    {
+                        warningSignal.GetComponent<Animator>().SetTrigger("Exit");
+                    }
+                    else
+                    {
+                        interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+                    }
                 }
             }
         }
