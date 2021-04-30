@@ -10,7 +10,7 @@ public abstract class EntityAI : MonoBehaviour
 
     private Camera cam;
     private PlayerMovement playerMov;
-    private Transform player;
+    protected Transform player;
 
     [Header("Layer Mask Settings")]
     [SerializeField] protected LayerMask ground = 1 << 9;
@@ -72,8 +72,17 @@ public abstract class EntityAI : MonoBehaviour
         {
             try
             {
-                warningSignal = GetComponentsInChildren<Animator>()[1].gameObject;
-                interestedSignal = GetComponentsInChildren<Animator>()[2].gameObject;
+                foreach (Transform t in GetComponentInChildren<Transform>())
+                {
+                    if (t.CompareTag("Warning"))
+                    {
+                        warningSignal = t.gameObject;
+                    }
+                    else if (t.CompareTag("Interested"))
+                    {
+                        interestedSignal = t.gameObject;
+                    }
+                }
                 warningSignal.SetActive(false);
                 interestedSignal.SetActive(false);
             }
@@ -237,7 +246,17 @@ public abstract class EntityAI : MonoBehaviour
     public void Respawn()
     {
         transform.position = lastPos;
-        warningSignal.SetActive(false);
+
+        if (showDebugs)
+        {
+            Debug.Log(name + " Respawned");
+        }
+
+        try
+        {
+            warningSignal.SetActive(false);
+            interestedSignal.SetActive(false);
+        } catch { }
 
         NewPosition();
     }

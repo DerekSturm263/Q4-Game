@@ -16,6 +16,8 @@ public class GroundAI : EntityAI
     [SerializeField] private ParticleSystem walkRun; // Particles for when the entity walks.
     private ParticleSystem.EmissionModule walkRunParticles;
 
+    private float iceSlipperiness = 1f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -36,7 +38,11 @@ public class GroundAI : EntityAI
         {
             // Applies proper velocity.
             currentSpeed = chaseSpeed;
-            moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized, Time.deltaTime * chaseTurnAroundSpeed);
+            if (target != player)
+            {
+                currentSpeed /= 2f;
+            }
+            moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized, Time.deltaTime * chaseTurnAroundSpeed * iceSlipperiness);
 
             walkRunParticles.rateOverTime = 25f;
         }
@@ -44,7 +50,7 @@ public class GroundAI : EntityAI
         {
             // Cancels velocity.
             currentSpeed = 0f;
-            moveVel = Vector2.Lerp(moveVel, Vector2.zero, Time.deltaTime * chaseTurnAroundSpeed);
+            moveVel = Vector2.Lerp(moveVel, Vector2.zero, Time.deltaTime * chaseTurnAroundSpeed * iceSlipperiness);
 
             walkRunParticles.rateOverTime = 0f;
         }
@@ -68,7 +74,7 @@ public class GroundAI : EntityAI
         }
 
         // Applies proper velocity.
-        moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized, Time.deltaTime * wanderTurnAroundSpeed);
+        moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - currentGoal.x) * -1f, 0f).normalized, Time.deltaTime * wanderTurnAroundSpeed * iceSlipperiness);
     }
 
     // Finds a new spot using raycast for the enemy to wander to.
@@ -95,5 +101,17 @@ public class GroundAI : EntityAI
         
         // Try again.
         return NewPosition();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ice"))
+        {
+            iceSlipperiness = 0.25f;
+        }
+        else if (collision.gameObject.CompareTag("Ground"))
+        {
+            iceSlipperiness = 1f;
+        }
     }
 }

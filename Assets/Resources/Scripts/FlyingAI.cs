@@ -9,15 +9,7 @@ public class FlyingAI : EntityAI
     [SerializeField] private List<Vector2> positions = new List<Vector2>();
     private int posIterator = -1;
 
-    private bool isSwooping;
-
-    [SerializeField] private float perchWaitTime = 5f;
-    private float timeSincePerch = 0f;
-
-    private float swoopStartX;
-    private float swoopEndX;
-    private float swoopOffset;
-    private Vector2 endSwoopPos;
+    private float direction = -1f;
 
     protected override void Awake()
     {
@@ -28,7 +20,6 @@ public class FlyingAI : EntityAI
     protected override void Update()
     {
         base.Update();
-
         rb2D.velocity = moveVel * currentSpeed;
     }
 
@@ -37,31 +28,9 @@ public class FlyingAI : EntityAI
         // Applies proper velocity.
         currentSpeed = chaseSpeed;
 
-        if (Vector2.Distance(transform.position, target.position) > viewDist)
-        {
-            isSwooping = false;
-            return;
-        }
+        direction = transform.position.y > target.transform.position.y ? -1f : 1f;
 
-        if (!isSwooping)
-        {
-            swoopStartX = transform.position.x;
-            swoopEndX = (transform.position.x - target.position.x) * -2f;
-            swoopOffset = Mathf.Abs(swoopStartX) + Mathf.Abs(swoopEndX) - target.transform.position.y;
-            endSwoopPos = new Vector2(swoopEndX, transform.position.y);
-        }
-
-        float xPos = swoopStartX + (transform.position.x - target.position.x < 0f ? -Time.deltaTime : Time.deltaTime);
-        float yPos = SwoopYPos(transform.position.x, swoopStartX, swoopEndX, 7f, swoopOffset);
-
-        moveVel = -new Vector2(xPos, yPos).normalized;
-
-        if (isSwooping)
-        {
-            return;
-        }
-
-        isSwooping = true;
+        moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -0.8f, direction).normalized, Time.deltaTime * chaseTurnAroundSpeed);
     }
 
     protected override void Wander()
@@ -91,10 +60,5 @@ public class FlyingAI : EntityAI
         }
 
         return positions[posIterator];
-    }
-
-    private float SwoopYPos(in float xPos, float xInt1, float xInt2, float steepness, float yOffset)
-    {
-        return ((xPos - xInt1) * (xPos - xInt2) / steepness) + yOffset;
     }
 }

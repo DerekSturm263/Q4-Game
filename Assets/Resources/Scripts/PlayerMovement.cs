@@ -122,6 +122,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private Vector2 targetVel;
 
     // Miscellaneous.
+    private float iceSlipperiness = 1f;
+    [SerializeField] private float iceSlip = 0.2f;
     private float jumpLeft;
     private float throwLeft;
     private bool nextToWall;
@@ -345,7 +347,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
                 break;
             // Walking/Running/Swimming.
             default:
-                moveVel = Vector2.Lerp(moveVel, new Vector2(moveVal.x, 0f), Time.deltaTime * currentTurnAroundSpeed);
+                moveVel = Vector2.Lerp(moveVel, new Vector2(moveVal.x, 0f), Time.deltaTime * currentTurnAroundSpeed * iceSlipperiness);
                 break;
         }
 
@@ -683,7 +685,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             throwLeft += Time.deltaTime;
             throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
 
-            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight * (rb2D.gravityScale / 2.5f), throwVecResolution);
+            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution);
         }
         else
         {
@@ -1012,6 +1014,18 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         if (showDebugs)
         {
             Debug.Log("Player Exited: " + collision.name);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ice"))
+        {
+            iceSlipperiness = iceSlip;
+        }
+        else
+        {
+            iceSlipperiness = 1f;
         }
     }
 

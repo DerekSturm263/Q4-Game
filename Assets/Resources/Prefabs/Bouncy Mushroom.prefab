@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -666055297
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -143,11 +143,11 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -1.23, y: 1.71}
-      - {x: -2.6, y: 1.12}
+      - {x: -2.3336024, y: 1.1366559}
       - {x: -1, y: 0.64}
       - {x: 0.05, y: 0.79}
       - {x: 1.16, y: 0.64}
-      - {x: 2.57, y: 1.01}
+      - {x: 2.3535502, y: 1.01}
       - {x: 1.18, y: 1.66}
       - {x: 0, y: 1.85}
 --- !u!95 &3677198634646135009
