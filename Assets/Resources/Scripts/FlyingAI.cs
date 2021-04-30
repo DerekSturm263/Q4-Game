@@ -10,6 +10,7 @@ public class FlyingAI : EntityAI
     private int posIterator = -1;
 
     private float direction = -1f;
+    private bool isDiving;
 
     protected override void Awake()
     {
@@ -28,7 +29,16 @@ public class FlyingAI : EntityAI
         // Applies proper velocity.
         currentSpeed = chaseSpeed;
 
-        direction = transform.position.y > target.transform.position.y ? -1f : 1f;
+        if (!isDiving)
+        {
+            isDiving = true;
+            direction = -1f;
+        }
+
+        if (transform.position.y < player.position.y)
+        {
+            direction = 1f;
+        }
 
         moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -0.8f, direction).normalized, Time.deltaTime * chaseTurnAroundSpeed);
     }
@@ -41,6 +51,7 @@ public class FlyingAI : EntityAI
             currentGoal = NewPosition();
         }
 
+        isDiving = false;
         // Applies proper velocity.
         moveVel = Vector2.Lerp(moveVel, -((Vector2) transform.position - currentGoal).normalized, Time.deltaTime * wanderTurnAroundSpeed);
     }

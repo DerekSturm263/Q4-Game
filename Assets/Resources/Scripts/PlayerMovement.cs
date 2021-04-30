@@ -103,6 +103,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
+
+    [Header("Miscellaneous")]
     public UnityEngine.UI.Image fade; // Dark overlay that appears when respawning.
     private Animator fadeAnim;
     [SerializeField] private int throwVecResolution = 5;
@@ -121,8 +123,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private Vector2 targetVel;
 
-    // Miscellaneous.
-    private float iceSlipperiness = 1f;
+    [HideInInspector] public float iceSlipperiness = 1f;
     [SerializeField] private float iceSlip = 0.2f;
     private float jumpLeft;
     private float throwLeft;
@@ -208,6 +209,12 @@ public class PlayerMovement : MonoBehaviour, ISaveable
 
     private void Update()
     {
+        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f);
+        LookUp(controls.Player.LookUp.ReadValue<float>() == 1f);
+        Throw(controls.Player.Throw.ReadValue<float>() == 1f);
+        Move(controls.Player.Move.ReadValue<Vector2>());
+        Run(controls.Player.Run.ReadValue<float>() == 1f);
+
         // Slows the pounce down once the player hits the ground.
         if (isPouncing && IsGrounded() || rb2D.velocity == Vector2.zero || pounceVel.y > 0f)
         {
@@ -289,12 +296,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     // Physics calculations and movement setting.
     private void FixedUpdate()
     {
-        Move(controls.Player.Move.ReadValue<Vector2>());
-        Run(controls.Player.Run.ReadValue<float>() == 1f);
         Jump(controls.Player.Jump.ReadValue<float>() == 1f);
-        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f);
-        LookUp(controls.Player.LookUp.ReadValue<float>() == 1f);
-        Throw(controls.Player.Throw.ReadValue<float>() == 1f);
 
         if (moveState != MoveState.Wall)
         {

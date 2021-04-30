@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BouncePlatforn : MonoBehaviour
+public class BouncePlatform : MonoBehaviour
 {
     private Animator anim;
 
@@ -19,6 +19,11 @@ public class BouncePlatforn : MonoBehaviour
             return;
 
         rb2D.velocity = new Vector2(rb2D.velocity.x, bounceForce);
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.GetComponent<PlayerMovement>().iceSlipperiness = 1f;
+        }
 
         anim.SetTrigger("Bounce");
     }

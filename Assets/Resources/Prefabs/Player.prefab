@@ -9589,7 +9589,8 @@ SpriteRenderer:
   m_SortingLayerID: -643632887
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
+  m_Sprite: {fileID: 7711884721034271394, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9657,7 +9658,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.7425389, y: 2.398333}
+    oldSize: {x: 2.742857, y: 2.742857}
     newSize: {x: 1.5, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -9830,13 +9831,15 @@ MonoBehaviour:
   defaultVignette: 0
   defaultColAdj: {r: 1, g: 1, b: 1, a: 1}
   underwaterColorAdj: {r: 0.8, g: 0.8, b: 1, a: 1}
-  nightVisionColorAdj: {r: 0, g: 1, b: 0, a: 1}
+  nightVisionColorAdj: {r: 0.5, g: 1, b: 0.5, a: 1}
   nightVisionExposure: 7
   defaultDOF: 0
   fade: {fileID: 0}
   throwVecResolution: 10
   overlappingItem: {fileID: 0}
   heldItem: {fileID: 0}
+  iceSlipperiness: 1
+  iceSlip: 0.2
   itemMask:
     serializedVersion: 2
     m_Bits: 2048
