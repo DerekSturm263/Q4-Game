@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class WindZone : MonoBehaviour
@@ -15,13 +14,11 @@ public class WindZone : MonoBehaviour
 
     [SerializeField] private Vector2 windVector = new Vector2(-5f, 0f);
 
-    private List<Rigidbody2D> objectsInWind = new List<Rigidbody2D>();
-
     private void Awake()
     {
         player = FindObjectOfType<PlayerMovement>();
         col = GetComponent<BoxCollider2D>();
-        ps = gameObject.AddComponent<ParticleSystem>();
+        ps = GetComponent<ParticleSystem>();
 
         emission = ps.emission;
         shape = ps.shape;
@@ -37,23 +34,16 @@ public class WindZone : MonoBehaviour
         velocity.z = -5f;
     }
 
-    private void Update()
-    {
-        foreach (Rigidbody2D rb2D in objectsInWind)
-        {
-            rb2D.velocity += windVector;
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             player.outsideVel = windVector;
-            return;
         }
-
-        objectsInWind.Add(collision.GetComponent<Rigidbody2D>());
+        else if (collision.CompareTag("Pickup"))
+        {
+            collision.GetComponent<Pickup>().outsideVel = windVector;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -61,9 +51,10 @@ public class WindZone : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             player.outsideVel = Vector2.zero;
-            return;
         }
-
-        objectsInWind.Remove(collision.GetComponent<Rigidbody2D>());
+        else if (collision.CompareTag("Pickup"))
+        {
+            collision.GetComponent<Pickup>().outsideVel = Vector2.zero;
+        }
     }
 }

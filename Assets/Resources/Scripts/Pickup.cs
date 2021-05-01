@@ -15,6 +15,8 @@ public class Pickup : MonoBehaviour
     [SerializeField] private bool showDebugs;
     [HideInInspector] public float timeSinceGrabbed;
 
+    [HideInInspector] public Vector2 outsideVel;
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -26,7 +28,14 @@ public class Pickup : MonoBehaviour
     private void Update()
     {
         if (carrier == null)
+        {
+            if (outsideVel != Vector2.zero)
+            {
+                rb2D.velocity = new Vector2(outsideVel.x, rb2D.velocity.y + outsideVel.y);
+            }
+
             return;
+        }
 
         timeSinceGrabbed += Time.deltaTime;
         transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + offset, timeSinceGrabbed);
