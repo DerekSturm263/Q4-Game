@@ -120,6 +120,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private Vector2 moveVel;
     private float jumpVel;
     private Vector2 pounceVel;
+    [HideInInspector] public Vector2 outsideVel;
 
     private Vector2 targetVel;
 
@@ -323,6 +324,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         }
 
         rb2D.velocity = targetVel;
+        rb2D.velocity += outsideVel;
     }
 
     private void Move(Vector2 moveVal)
