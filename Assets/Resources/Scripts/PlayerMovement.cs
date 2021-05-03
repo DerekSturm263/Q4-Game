@@ -104,7 +104,9 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
 
-    [Header("Miscellaneous")]
+    public float maxYVelocity = 15f;
+    [HideInInspector] public float defaultMaxYVelocity;
+
     public UnityEngine.UI.Image fade; // Dark overlay that appears when respawning.
     private Animator fadeAnim;
     [SerializeField] private int throwVecResolution = 5;
@@ -205,7 +207,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         {
             colCrouchingPoints[i] = colPoints[i] / new Vector2(0.5f, 2f) - new Vector2(0.25f, 0.6f);
         }
-
+        
+        defaultMaxYVelocity = maxYVelocity;
         aboveGroundGravity = rb2D.gravityScale;
     }
 
@@ -292,6 +295,15 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             rb2D.velocity = rb2D.velocity.y <= swimMaxVelocity ? rb2D.velocity : new Vector2(0f, swimMaxVelocity);
         }
 
+        if (outsideVel.y > 0.01f)
+        {
+            maxYVelocity = outsideVel.y * 1.5f;
+        }
+        else
+        {
+            maxYVelocity = defaultMaxYVelocity;
+        }
+
         anim.SetFloat("Y Vel", rb2D.velocity.y);
     }
 
@@ -319,13 +331,19 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             sprtRndr.flipX = targetVel.x < 0f;
         }
 
+        targetVel += outsideVel;
+
         if (isSliding)
         {
             targetVel = new Vector2(0f, targetVel.y - 5f);
         }
 
+        if (targetVel.y > maxYVelocity)
+        {
+            targetVel.y = maxYVelocity;
+        }
+
         rb2D.velocity = targetVel;
-        rb2D.velocity += outsideVel;
     }
 
     private void Move(Vector2 moveVal)

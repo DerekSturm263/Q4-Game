@@ -17,6 +17,9 @@ public class Pickup : MonoBehaviour
 
     [HideInInspector] public Vector2 outsideVel;
 
+    public float maxYVelocity = 15f;
+    [HideInInspector] public float defaultMaxYVelocity;
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -29,9 +32,20 @@ public class Pickup : MonoBehaviour
     {
         if (carrier == null)
         {
-            if (outsideVel != Vector2.zero)
+            rb2D.velocity += outsideVel;
+
+            if (outsideVel.y > 0.01f)
             {
-                rb2D.velocity = new Vector2(outsideVel.x, rb2D.velocity.y + outsideVel.y);
+                maxYVelocity = outsideVel.y * 1.5f;
+            }
+            else
+            {
+                maxYVelocity = defaultMaxYVelocity;
+            }
+
+            if (rb2D.velocity.y > maxYVelocity)
+            {
+                rb2D.velocity = new Vector2(rb2D.velocity.x, maxYVelocity);
             }
 
             return;

@@ -8331,7 +8331,7 @@ GameObject:
   - component: {fileID: 664241928}
   m_Layer: 9
   m_Name: Ground 1
-  m_TagString: Ice
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9362,6 +9362,8 @@ MonoBehaviour:
   showDebugs: 1
   timeSinceGrabbed: 0
   outsideVel: {x: 0, y: 0}
+  maxYVelocity: 15
+  defaultMaxYVelocity: 0
 --- !u!61 &828215133
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9717,7 +9719,7 @@ GameObject:
   - component: {fileID: 953272630}
   m_Layer: 9
   m_Name: Ground 2
-  m_TagString: Ground
+  m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15965,6 +15967,8 @@ MonoBehaviour:
   showDebugs: 1
   timeSinceGrabbed: 0
   outsideVel: {x: 0, y: 0}
+  maxYVelocity: 15
+  defaultMaxYVelocity: 0
 --- !u!61 &1234433192
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17115,7 +17119,7 @@ GameObject:
   - component: {fileID: 1360436784}
   m_Layer: 9
   m_Name: Ground 4
-  m_TagString: Ground
+  m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30832,12 +30836,12 @@ PrefabInstance:
     - target: {fileID: 644191261069594300, guid: 4a8554e4fc540bc429bac7dde3adf507,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 46.765
+      value: -28.3
       objectReference: {fileID: 0}
     - target: {fileID: 644191261069594300, guid: 4a8554e4fc540bc429bac7dde3adf507,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.713
+      value: 43.6
       objectReference: {fileID: 0}
     - target: {fileID: 644191261069594300, guid: 4a8554e4fc540bc429bac7dde3adf507,
         type: 3}
@@ -31392,11 +31396,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 621151796, guid: c2ea09e299f086140a3b49be4612b23e, type: 3}
       propertyPath: windVector.x
-      value: -2.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 621151796, guid: c2ea09e299f086140a3b49be4612b23e, type: 3}
       propertyPath: windVector.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 621151796, guid: c2ea09e299f086140a3b49be4612b23e, type: 3}
+      propertyPath: windVector2.x
+      value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089450120258953318, guid: c2ea09e299f086140a3b49be4612b23e,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 9.371069
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089450120258953318, guid: c2ea09e299f086140a3b49be4612b23e,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 55.21873
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089450120258953318, guid: c2ea09e299f086140a3b49be4612b23e,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.3358612
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089450120258953318, guid: c2ea09e299f086140a3b49be4612b23e,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 40.341522
       objectReference: {fileID: 0}
     - target: {fileID: 7576072411333331007, guid: c2ea09e299f086140a3b49be4612b23e,
         type: 3}
@@ -31406,12 +31434,12 @@ PrefabInstance:
     - target: {fileID: 9006572409993219864, guid: c2ea09e299f086140a3b49be4612b23e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 45.1
+      value: -2.3
       objectReference: {fileID: 0}
     - target: {fileID: 9006572409993219864, guid: c2ea09e299f086140a3b49be4612b23e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.6
+      value: 18.2
       objectReference: {fileID: 0}
     - target: {fileID: 9006572409993219864, guid: c2ea09e299f086140a3b49be4612b23e,
         type: 3}
@@ -31628,6 +31656,11 @@ PrefabInstance:
       propertyPath: snowfall.Array.data[2]
       value: 
       objectReference: {fileID: 1113854219}
+    - target: {fileID: 8221768544477038133, guid: 2806807e892e8b441bc1d804a9bae922,
+        type: 3}
+      propertyPath: maxYVelocity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8221768544477038135, guid: 2806807e892e8b441bc1d804a9bae922,
         type: 3}
       propertyPath: m_Name
