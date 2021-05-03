@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private bool nextToWall;
     private bool isPouncing;
     private bool isSliding;
+    private bool playerIsCrouching;
     private bool playerIsLookingUp;
     private float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
@@ -383,7 +384,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private void Run(bool isRunning)
     {
         // Doesn't let the player run under these circumstances.
-        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp || lockMovement)
+        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp || lockMovement || playerIsCrouching)
             return;
 
         switch (moveState)
@@ -418,7 +419,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water || lockMovement)
+        if (moveState == MoveState.Water || lockMovement || playerIsCrouching)
             return;
 
         // Jump button is held.
@@ -501,6 +502,8 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             return;
 
         anim.SetBool("Is Crouching", isCrouching);
+
+        playerIsCrouching = isCrouching;
 
         // Applies proper speed.
         if (isCrouching)
@@ -690,7 +693,14 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             throwLeft += Time.deltaTime;
             throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, throwLeft);
 
-            RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution);
+            if (moveState != MoveState.Water)
+            {
+                RenderThrowingArc(throwVector, throwForce / 1.925f / heldItem.weight, throwVecResolution);
+            }
+            else
+            {
+                RenderThrowingArc(throwVector, throwForce / (1.925f * 2f) / heldItem.weight, throwVecResolution);
+            }
         }
         else
         {
