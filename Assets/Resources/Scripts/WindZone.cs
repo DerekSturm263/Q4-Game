@@ -12,7 +12,11 @@ public class WindZone : MonoBehaviour
     private ParticleSystem.ShapeModule shape;
     private ParticleSystem.VelocityOverLifetimeModule velocity;
 
-    [SerializeField] private Vector2 windVector = new Vector2(-5f, 0f);
+    [SerializeField] private Vector2 windVector = new Vector2(-2.5f, 0f);
+    [SerializeField] private float windTime = 0f;
+    [SerializeField] private Vector2 windVector2 = new Vector2(2.5f, 0f);
+
+    private Vector2 targetDirection;
 
     private void Awake()
     {
@@ -32,17 +36,44 @@ public class WindZone : MonoBehaviour
         velocity.x = windVector.x * 2.5f;
         velocity.y = windVector.y * 2.5f;
         velocity.z = -5f;
+
+        targetDirection = windVector;
+        if (windTime != 0f)
+        {
+            InvokeRepeating("ChangeDirections", windTime, windTime);
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Update()
+    {
+        if (windTime == 0f)
+            return;
+
+        velocity.x = Mathf.Lerp(velocity.x.constant, targetDirection.x * 2.5f, Time.deltaTime * 2.5f);
+        velocity.y = Mathf.Lerp(velocity.y.constant, targetDirection.y * 2.5f, Time.deltaTime * 2.5f);
+    }
+
+    private void ChangeDirections()
+    {
+        if (targetDirection == windVector)
+        {
+            targetDirection = windVector2;
+        }
+        else
+        {
+            targetDirection = windVector;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            player.outsideVel = windVector;
+            player.outsideVel = new Vector2(velocity.x.constant / 2f, velocity.y.constant / 2f);
         }
         else if (collision.CompareTag("Pickup"))
         {
-            collision.GetComponent<Pickup>().outsideVel = windVector;
+            collision.GetComponent<Pickup>().outsideVel = new Vector2(velocity.x.constant / 2f, velocity.y.constant / 2f);
         }
     }
 

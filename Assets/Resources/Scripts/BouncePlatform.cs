@@ -20,11 +20,6 @@ public class BouncePlatform : MonoBehaviour
 
         rb2D.velocity = new Vector2(rb2D.velocity.x, bounceForce);
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.GetComponent<PlayerMovement>().iceSlipperiness = 1f;
-        }
-
         anim.SetTrigger("Bounce");
     }
 }

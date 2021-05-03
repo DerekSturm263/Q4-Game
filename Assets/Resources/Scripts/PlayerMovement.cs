@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0111; // Byte value representing unlocked abilities that the player has.
+    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
@@ -291,7 +291,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             rb2D.velocity = rb2D.velocity.y <= swimMaxVelocity ? rb2D.velocity : new Vector2(0f, swimMaxVelocity);
         }
 
-        anim.SetFloat("Velocity Y", rb2D.velocity.y);
+        anim.SetFloat("Y Vel", rb2D.velocity.y);
     }
 
     // Physics calculations and movement setting.
@@ -437,6 +437,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             else if (timeSinceGround < coyoteTime && rb2D.gravityScale != 0f && !playerIsLookingUp)
             {
                 jumpLandParticles.Play();
+                anim.SetTrigger("Jump");
 
                 if (isPouncing)
                 {
@@ -838,7 +839,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
             Debug.Log("Grounded: " + isGrounded);
         }
 
-        anim.SetBool("Is Grounded", isGrounded);
+        anim.SetBool("Grounded", isGrounded);
 
         if (!isGrounded && moveState == MoveState.Ground)
         {
@@ -966,17 +967,17 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         {
             overlappingItem = collision.gameObject;
         }
-        else if (collision.CompareTag("Bubble"))
-        {
-            breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
-            collision.gameObject.SetActive(false);
-            dof.focusDistance.value = defaultDOF;
-        }
 
         if (showDebugs)
         {
             Debug.Log("Player Entered: " + collision.name);
         }
+    }
+
+    public void RestoreBreath()
+    {
+        breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
+        dof.focusDistance.value = defaultDOF;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -1027,10 +1028,6 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         {
             iceSlipperiness = iceSlip;
         }
-        else
-        {
-            iceSlipperiness = 1f;
-        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -1046,6 +1043,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private void OnCollisionExit2D(Collision2D collision)
     {
         isSliding = false;
+        iceSlipperiness = 1f;
     }
 
     #region ISaveable Methods
