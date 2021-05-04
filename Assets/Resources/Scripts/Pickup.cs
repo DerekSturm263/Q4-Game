@@ -33,21 +33,6 @@ public class Pickup : MonoBehaviour
         if (carrier == null)
         {
             rb2D.velocity += outsideVel;
-
-            if (outsideVel.y > 0.01f)
-            {
-                maxYVelocity = outsideVel.y * 1.5f;
-            }
-            else
-            {
-                maxYVelocity = defaultMaxYVelocity;
-            }
-
-            if (rb2D.velocity.y > maxYVelocity)
-            {
-                rb2D.velocity = new Vector2(rb2D.velocity.x, maxYVelocity);
-            }
-
             return;
         }
 

@@ -128,20 +128,6 @@ public abstract class EntityAI : MonoBehaviour
                 {
                     target = likeableObjects[i];
 
-                    if (isHostile)
-                    {
-                        if (target == player)
-                        {
-                            warningSignal.SetActive(false);
-                            warningSignal.SetActive(true);
-                        }
-                        else
-                        {
-                            interestedSignal.SetActive(false);
-                            interestedSignal.SetActive(true);
-                        }
-                    }
-                    
                     chaseTime = chaseWaitTime;
                     break;
                 }
@@ -155,18 +141,6 @@ public abstract class EntityAI : MonoBehaviour
                 || Physics2D.Linecast(transform.position, target.position, notEnemy).transform != target
                 && chaseTime <= 0f)
             {
-                if (isHostile)
-                {
-                    if (target == player)
-                    {
-                        warningSignal.GetComponent<Animator>().SetTrigger("Exit");
-                    }
-                    else
-                    {
-                        interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
-                    }
-                }
-
                 target = null;
             }
         }
@@ -180,10 +154,22 @@ public abstract class EntityAI : MonoBehaviour
         if (target != null && !isSatisfied)
         {
             Chase(target);
+
+            if (target == player)
+            {
+                warningSignal.SetActive(true);
+            }
+            else
+            {
+                interestedSignal.SetActive(true);
+            }
         }
         else
         {
             Wander();
+
+            warningSignal.GetComponent<Animator>().SetTrigger("Exit");
+            interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
         }
 
         // Adjust sprite flip settings.
