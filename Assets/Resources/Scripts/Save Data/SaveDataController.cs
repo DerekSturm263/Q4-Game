@@ -4,11 +4,20 @@ using UnityEngine;
 
 public static class SaveDataController
 {
-    public const string cameraPath = "/camera.save";
-    public const string playerPath = "/player.save";
-    public const string entityPath = "/entities.save";
-    public const string pickupPath = "/pickups.save";
-    public const string interactablePath = "/interactables.save";
+    public const string cameraPath = "/camera.saveData";
+    public const string playerPath = "/player.saveData";
+    public const string entityPath = "/entities.saveData";
+    public const string pickupPath = "/pickups.saveData";
+    public const string interactablePath = "/interactables.saveData";
+
+    public static bool HasSave()
+    {
+        return File.Exists(Application.persistentDataPath + playerPath) &&
+            File.Exists(Application.persistentDataPath + cameraPath) &&
+            File.Exists(Application.persistentDataPath + entityPath) &&
+            File.Exists(Application.persistentDataPath + pickupPath) &&
+            File.Exists(Application.persistentDataPath + interactablePath);
+    }
 
     #region Camera
 

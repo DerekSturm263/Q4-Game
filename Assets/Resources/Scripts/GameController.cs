@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.IO;
 using System;
 
 public class GameController : MonoBehaviour
@@ -24,7 +23,7 @@ public class GameController : MonoBehaviour
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
 
-        if (File.Exists(Application.persistentDataPath + "/player.save"))
+        if (SaveDataController.HasSave())
         {
             LoadGame();
         }
@@ -53,7 +52,7 @@ public class GameController : MonoBehaviour
     {
         try
         {
-            //cam = SaveDataController.LoadCamera();
+            cam = SaveDataController.LoadCamera();
             player = SaveDataController.LoadPlayer();
 
             //for (int i = 0; i < entities.Length; ++i)
@@ -83,7 +82,7 @@ public class GameController : MonoBehaviour
     {
         try
         {
-            //SaveDataController.SaveCamera(cam);
+            SaveDataController.SaveCamera(cam);
             SaveDataController.SavePlayer(player);
 
             //for (int i = 0; i < entities.Length; ++i)
