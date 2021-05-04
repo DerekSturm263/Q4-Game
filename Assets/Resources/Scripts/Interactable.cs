@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System;
 
 public abstract class Interactable : MonoBehaviour
 {
-    public bool canUse = false;
+    [SerializeField] public bool canUse = true;
 
     public abstract void Effect();
 }

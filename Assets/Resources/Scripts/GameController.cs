@@ -5,11 +5,12 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private float saveTime = 60f;
 
-    private static Camera cam;
-    private static PlayerMovement player;
-    private static EntityAI[] entities;
-    private static Pickup[] pickups;
-    private static Interactable[] interactables;
+    public static Camera cam;
+    public static PlayerMovement player;
+    public static UIController uiCont;
+    public static EntityAI[] entities;
+    public static Pickup[] pickups;
+    public static Interactable[] interactables;
 
     // TODO: Add code for UI stuff from Jared.
 
@@ -17,8 +18,9 @@ public class GameController : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        cam = FindObjectOfType<Camera>();
-        player = FindObjectOfType<PlayerMovement>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        uiCont = FindObjectOfType<UIController>();
         entities = FindObjectsOfType<EntityAI>();
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
@@ -43,68 +45,59 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    private static void SaveGame()
     {
-        SaveGame(); // Remove once save button is added.
+        SaveDataController.SaveCamera();
+        SaveDataController.SavePlayer();
+        SaveDataController.SaveUI();
+
+        for (int i = 0; i < entities.Length; ++i)
+        {
+            SaveDataController.SaveEntity(i);
+        }
+
+        for (int i = 0; i < pickups.Length; ++i)
+        {
+            SaveDataController.SavePickup(i);
+        }
+
+        for (int i = 0; i < interactables.Length; ++i)
+        {
+            SaveDataController.SaveInteractable(i);
+        }
     }
 
     private static void LoadGame()
     {
-        try
+        CameraSaveData camData = SaveDataController.LoadCamera();
+        cam.transform.position = new Vector2(camData.position[0], camData.position[1]);
+
+        PlayerSaveData playerData = SaveDataController.LoadPlayer();
+        player.transform.position = new Vector2(playerData.position[0], playerData.position[1]);
+        player.moveState = (PlayerMovement.MoveState) playerData.moveState;
+        PlayerMovement.abilities = playerData.abilities;
+
+        UISaveData uiData = SaveDataController.LoadUI();
+        UIController.time = uiData.time;
+        UIController.numFood = uiData.berryCount;
+
+        for (int i = 0; i < entities.Length; ++i)
         {
-            cam = SaveDataController.LoadCamera();
-            player = SaveDataController.LoadPlayer();
-
-            //for (int i = 0; i < entities.Length; ++i)
-            //{
-            //    entities[i] = SaveDataController.LoadEntity();
-            //}
-
-            //for (int i = 0; i < pickups.Length; ++i)
-            //{
-            //    pickups[i] = SaveDataController.LoadPickup();
-            //}
-
-            //for (int i = 0; i < interactables.Length; ++i)
-            //{
-            //    interactables[i] = SaveDataController.LoadInteractable();
-            //}
-
-            Debug.Log("Game Loaded Succesfully!");
+            EntitySaveData entitySaveData = SaveDataController.LoadEntity(i);
+            entities[i].transform.position = new Vector2(entitySaveData.position[0], entitySaveData.position[1]);
+            entities[i].isSatisfied = entitySaveData.isSatisified;
         }
-        catch (Exception e)
+
+        for (int i = 0; i < pickups.Length; ++i)
         {
-            Debug.LogError("Game Could Not Be Loaded to " + Application.persistentDataPath + "\n" + e.Message);
+            PickupSaveData pickupSaveData = SaveDataController.LoadPickup(i);
+            pickups[i].transform.position = new Vector2(pickupSaveData.position[0], pickupSaveData.position[1]);
         }
-    }
 
-    private static void SaveGame()
-    {
-        try
+        for (int i = 0; i < interactables.Length; ++i)
         {
-            SaveDataController.SaveCamera(cam);
-            SaveDataController.SavePlayer(player);
-
-            //for (int i = 0; i < entities.Length; ++i)
-            //{
-            //    SaveDataController.SaveEntity(entities[i]);
-            //}
-
-            //for (int i = 0; i < pickups.Length; ++i)
-            //{
-            //    SaveDataController.SavePickup(pickups[i]);
-            //}
-
-            //for (int i = 0; i < interactables.Length; ++i)
-            //{
-            //    SaveDataController.SaveInteractable(interactables[i]);
-            //}
-
-            Debug.Log("Game Saved Succesfully!");
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Game Could Not Be Saved to " + Application.persistentDataPath + "\n" + e.Message);
+            InteractableSaveData interactableSaveData = SaveDataController.LoadInteractable(i);
+            interactables[i].canUse = interactableSaveData.canUse;
         }
     }
 }

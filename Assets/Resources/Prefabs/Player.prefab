@@ -9782,6 +9782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showDebugs: 0
+  moveState: 0
   ground:
     serializedVersion: 2
     m_Bits: 512
@@ -9834,6 +9835,8 @@ MonoBehaviour:
   nightVisionColorAdj: {r: 0.5, g: 1, b: 0.5, a: 1}
   nightVisionExposure: 7
   defaultDOF: 0
+  maxYVelocity: 15
+  defaultMaxYVelocity: 0
   fade: {fileID: 0}
   throwVecResolution: 10
   overlappingItem: {fileID: 0}

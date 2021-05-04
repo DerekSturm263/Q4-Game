@@ -768,7 +768,7 @@ public class PlayerMovement : MonoBehaviour
         float x = t * maxDistance;
         float y = x * Mathf.Tan(angle) - (aboveGroundGravity * x * x / (2 * velocity * velocity * Mathf.Cos(angle) * Mathf.Cos(angle)));
 
-        return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset;
+        return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset * (sprtRndr.flipX ? -1f : 1f);
     }
 
     private void EnterWater()

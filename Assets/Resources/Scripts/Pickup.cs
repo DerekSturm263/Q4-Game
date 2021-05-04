@@ -2,8 +2,14 @@
 
 public class Pickup : MonoBehaviour
 {
-    public Rigidbody2D rb2D;
+    private Rigidbody2D rb2D;
     private BoxCollider2D boxCollider;
+    private SpriteRenderer sprtRndr;
+
+    private ParticleSystem particles;
+    private ParticleSystem.EmissionModule emission;
+
+    private SpriteRenderer carrierSprtRndr;
 
     [SerializeField] private float underwaterGravity = 0.5f;
     private float aboveWaterGravity;
@@ -24,6 +30,10 @@ public class Pickup : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        sprtRndr = GetComponent<SpriteRenderer>();
+
+        particles = GetComponentInChildren<ParticleSystem>();
+        emission = particles.emission;
 
         aboveWaterGravity = rb2D.gravityScale;
     }
@@ -36,14 +46,18 @@ public class Pickup : MonoBehaviour
             return;
         }
 
+        sprtRndr.flipX = carrierSprtRndr.flipX;
+
         timeSinceGrabbed += Time.deltaTime;
-        transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + offset, timeSinceGrabbed);
+        transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + offset * (carrierSprtRndr.flipX ? -1f : 1f), timeSinceGrabbed);
     }
 
     public void Grab(GameObject carrier)
     {
         this.carrier = carrier;
+        emission.rateOverTime = 0f;
 
+        carrierSprtRndr = carrier.GetComponent<SpriteRenderer>();
         timeSinceGrabbed = 0f;
         boxCollider.enabled = false;
         rb2D.gravityScale = 0f;
@@ -53,7 +67,9 @@ public class Pickup : MonoBehaviour
     public void Throw(Vector2 throwVec)
     {
         carrier = null;
+        emission.rateOverTime = 10f;
 
+        carrierSprtRndr = null;
         timeSinceGrabbed = 0f;
         boxCollider.enabled = true;
         rb2D.gravityScale = aboveWaterGravity;

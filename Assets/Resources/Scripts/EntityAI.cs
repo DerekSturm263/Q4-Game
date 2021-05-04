@@ -168,8 +168,11 @@ public abstract class EntityAI : MonoBehaviour
         {
             Wander();
 
-            warningSignal.GetComponent<Animator>().SetTrigger("Exit");
-            interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+            if (isHostile)
+            {
+                warningSignal.GetComponent<Animator>().SetTrigger("Exit");
+                interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+            }
         }
 
         // Adjust sprite flip settings.

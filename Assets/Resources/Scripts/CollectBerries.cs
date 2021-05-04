@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectBerries : Interactable
@@ -20,10 +19,23 @@ public class CollectBerries : Interactable
 
         foreach (Transform berry in GetComponentInChildren<Transform>())
         {
-            if (berry.GetComponent<ParticleSystem>() == null)
+            if (berry.GetComponent<ParticleSystem>() == null && canUse)
             {
                 berries.Add(berry.gameObject);
             }
+        }
+    }
+
+    private void Start()
+    {
+        if (!canUse)
+        {
+            foreach (GameObject berry in berries)
+            {
+                Destroy(berry.gameObject);
+            }
+
+            particlesEmission.rateOverTime = 0f;
         }
     }
 
