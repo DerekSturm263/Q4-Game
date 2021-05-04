@@ -47,7 +47,7 @@ public abstract class EntityAI : MonoBehaviour
     protected float currentSpeed;
     protected Vector2 moveVel;
 
-    private bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
+    [HideInInspector] public bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
 
     private GameObject warningSignal;
     private GameObject interestedSignal;

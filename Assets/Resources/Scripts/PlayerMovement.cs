@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(SpriteRenderer))]
-public class PlayerMovement : MonoBehaviour, ISaveable
+public class PlayerMovement : MonoBehaviour
 {
     private CameraFollow cam;
 
@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     {
         Ground, Water, Wall
     }
-    private MoveState moveState;
+    [HideInInspector] public MoveState moveState;
 
     private Controls controls;
 
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour, ISaveable
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    [SerializeField] [Tooltip("0: Nothing\n1: Wall Climb\n2: Night Vision\n4: More Underwater Time\nAdd for multiple")] private static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
+    public static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
@@ -1073,50 +1073,6 @@ public class PlayerMovement : MonoBehaviour, ISaveable
         isSliding = false;
         iceSlipperiness = 1f;
     }
-
-    #region ISaveable Methods
-
-    public string GetDataPath()
-    {
-        return "/player.saveData";
-    }
-
-    public float[] SaveFloats()
-    {
-        return new float[0];
-    }
-
-    public int[] SaveInts()
-    {
-        return new int[0];
-    }
-
-    public byte[] SaveBytes()
-    {
-        return new byte[0];
-    }
-
-    public bool[] SaveBools()
-    {
-        return new bool[0];
-    }
-
-    public float[,] SaveVector2s()
-    {
-        return new float[0, 0];
-    }
-
-    public float[,] SaveVector3s()
-    {
-        return new float[0, 0];
-    }
-
-    public void Load()
-    {
-        
-    }
-
-    #endregion
 
     private void OnDrawGizmos()
     {

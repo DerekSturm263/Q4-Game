@@ -6,7 +6,12 @@ public class AbilityUnlock : Interactable
 
     public override void Effect()
     {
+        if (!canUse)
+            return;
+
         Debug.Log("Button Pressed");
         PlayerMovement.UnlockAbility(ability);
+
+        canUse = false;
     }
 }

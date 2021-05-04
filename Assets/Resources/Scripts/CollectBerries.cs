@@ -29,6 +29,9 @@ public class CollectBerries : Interactable
 
     public override void Effect()
     {
+        if (!canUse)
+            return;
+
         Debug.Log("Berries Collected");
         foreach (GameObject berry in berries)
         {
@@ -37,5 +40,7 @@ public class CollectBerries : Interactable
 
         particlesEmission.rateOverTime = 0f;
         uiCont.GiveFood(numberOfBerries);
+
+        canUse = false;
     }
 }
