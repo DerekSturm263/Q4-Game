@@ -15235,6 +15235,60 @@ Transform:
   m_Father: {fileID: 224437065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1240385882 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1822262746811206161, guid: 10eeabc82b6030d478d187cafcff1f23,
+    type: 3}
+  m_PrefabInstance: {fileID: 2944950358233093739}
+  m_PrefabAsset: {fileID: 0}
+--- !u!68 &1240385886
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240385882}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.7306133, y: -3.739169}
+  - {x: -0.7306133, y: -3.739169}
+  - {x: -1.2025173, y: -4.4134474}
+  - {x: -1.408938, y: -4.484558}
+  - {x: -1.7400774, y: -4.4677196}
+  - {x: -2.0817902, y: -4.3766704}
+  - {x: -2.352743, y: -4.265944}
+  - {x: -2.3686862, y: -4.2589917}
+  - {x: -2.5356097, y: -4.177573}
+  - {x: -2.9135976, y: -3.9666157}
+  - {x: -3.287054, y: -3.7245822}
+  - {x: -3.6298485, y: -3.466814}
+  - {x: -4.0294003, y: -3.0841527}
+  - {x: -4.181262, y: -2.8538523}
+  - {x: -4.2106714, y: -2.6606956}
+  - {x: -3.6099122, y: -1.8483357}
+  - {x: -2.4902208, y: -0.122874394}
+  - {x: -2.4273303, y: -0.041164614}
+  - {x: -2.5204155, y: -0.110107824}
+  - {x: -2.780243, y: -0.1835919}
+  - {x: -3.4817646, y: -0.27015647}
+  - {x: -3.6807094, y: -0.34347904}
+  - {x: -3.7747402, y: -0.48267278}
+  - {x: -3.770776, y: -0.5821632}
+  - {x: -3.7055972, y: -0.8786236}
+  - {x: -3.5388892, y: -1.5134137}
+  - {x: -3.060665, y: -3.1155825}
+  - {x: -2.9173253, y: -3.637807}
+  - {x: -2.8428245, y: -4.02113}
+  - {x: -2.865615, y: -4.2193384}
+  - {x: -2.9224598, y: -4.233181}
+  - {x: -3.8873293, y: -4.4630156}
 --- !u!1 &1312243488
 GameObject:
   m_ObjectHideFlags: 0
@@ -30743,7 +30797,7 @@ PrefabInstance:
     - target: {fileID: 5177347638513267799, guid: 10eeabc82b6030d478d187cafcff1f23,
         type: 3}
       propertyPath: m_DynamicOccludee
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5177347638513267799, guid: 10eeabc82b6030d478d187cafcff1f23,
         type: 3}
