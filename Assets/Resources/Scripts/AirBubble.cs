@@ -6,7 +6,7 @@ public class AirBubble : MonoBehaviour
     private Animator anim;
 
     [SerializeField] private float respawnTime = 10f;
-    private float timeSincePopped;
+    [HideInInspector] public float timeSincePopped;
 
     private Vector2 posUp, posDown;
 

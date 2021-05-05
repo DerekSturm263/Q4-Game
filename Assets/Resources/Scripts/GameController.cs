@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public static EntityAI[] entities;
     public static Pickup[] pickups;
     public static Interactable[] interactables;
+    public static AirBubble[] bubbles;
 
     public static GameObject savingIndicator;
 
@@ -24,6 +25,8 @@ public class GameController : MonoBehaviour
         entities = FindObjectsOfType<EntityAI>();
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
+        bubbles = FindObjectsOfType<AirBubble>();
+
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
 
@@ -67,23 +70,44 @@ public class GameController : MonoBehaviour
         {
             SaveDataController.SaveInteractable(i);
         }
+
+        for (int i = 0; i < bubbles.Length; ++i)
+        {
+            SaveDataController.SaveBubble(i);
+        }
     }
 
     private static void LoadGame()
     {
+        // Camera.
         CameraSaveData camData = SaveDataController.LoadCamera();
-        cam.transform.position = new Vector2(camData.position[0], camData.position[1]);
+        cam.transform.position = new Vector3(camData.position[0], camData.position[1], camData.position[2]);
 
+        // Player.
         PlayerSaveData playerData = SaveDataController.LoadPlayer();
         player.transform.position = new Vector2(playerData.position[0], playerData.position[1]);
         player.moveState = (PlayerMovement.MoveState) playerData.moveState;
+        if (player.moveState == PlayerMovement.MoveState.Water)
+        {
+            player.EnterWater();
+        }
+        else if (player.moveState == PlayerMovement.MoveState.Wall)
+        {
+            player.BeginClimb(true);
+        }
         PlayerMovement.abilities = playerData.abilities;
         player.breathLeftUnderwater = playerData.underwaterBreathLeft;
+        PlayerMovement.lastPosBeforeSwimOrPit = new Vector2(playerData.lastPosBeforeSwimOrPit[0], playerData.lastPosBeforeSwimOrPit[1]);
+        PlayerMovement.lastPosBeforeCaughtByEnemy = new Vector2(playerData.lastPosBeforeCaughtByEnemy[0], playerData.lastPosBeforeCaughtByEnemy[1]);
+        PlayerMovement.lastPosBeforeFoodRunsOut = new Vector2(playerData.lastPosBeforeFoodRunsOut[0], playerData.lastPosBeforeFoodRunsOut[1]);
+        PlayerMovement.lastPosBeforeThorns = new Vector2(playerData.lastPosBeforeThorns[0], playerData.lastPosBeforeThorns[1]);
 
+        // UI.
         UISaveData uiData = SaveDataController.LoadUI();
         UIController.time = uiData.time;
         UIController.numFood = uiData.berryCount;
 
+        // Entities.
         for (int i = 0; i < entities.Length; ++i)
         {
             EntitySaveData entitySaveData = SaveDataController.LoadEntity(i);
@@ -97,16 +121,25 @@ public class GameController : MonoBehaviour
             }
         }
 
+        // Pickups.
         for (int i = 0; i < pickups.Length; ++i)
         {
             PickupSaveData pickupSaveData = SaveDataController.LoadPickup(i);
             pickups[i].transform.position = new Vector2(pickupSaveData.position[0], pickupSaveData.position[1]);
         }
 
+        // Interactables.
         for (int i = 0; i < interactables.Length; ++i)
         {
             InteractableSaveData interactableSaveData = SaveDataController.LoadInteractable(i);
             interactables[i].canUse = interactableSaveData.canUse;
+        }
+
+        // Bubbles.
+        for (int i = 0; i < bubbles.Length; ++i)
+        {
+            BubbleSaveData bubbleSaveData = SaveDataController.LoadBubble(i);
+            bubbles[i].timeSincePopped = bubbleSaveData.timeSincePopped;
         }
     }
 }

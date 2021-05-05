@@ -3,7 +3,7 @@
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform followObj;
-    private Vector3 offset;
+    private Vector3 offset = new Vector3(0f, 0f, -12.5f);
     public float speed = 5f;
 
     public static Vector3 defaultOffset = new Vector3(0f, 0f, -12.5f);

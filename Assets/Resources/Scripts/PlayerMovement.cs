@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    public static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
+    public static byte abilities = 0b_0000_0101; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
@@ -629,10 +629,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void BeginClimb()
+    public void BeginClimb(bool skipCheck = false)
     {
         // Only allows player to climb wall when ability is unlocked.
-        if (!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0 || lockMovement || isPouncing || heldItem != null) // Make it so you need the ability for it to work.
+        if ((!nextToWall || moveState != MoveState.Ground || (abilities & wallClimb) == 0 || lockMovement || isPouncing || heldItem != null) && !skipCheck) // Make it so you need the ability for it to work.
             return;
 
         moveState = MoveState.Wall;
@@ -771,7 +771,7 @@ public class PlayerMovement : MonoBehaviour
         return new Vector2(x * (sprtRndr.flipX ? -1f : 1f), y) + heldItem.offset * (sprtRndr.flipX ? -1f : 1f);
     }
 
-    private void EnterWater()
+    public void EnterWater()
     {
         moveState = MoveState.Water;
 

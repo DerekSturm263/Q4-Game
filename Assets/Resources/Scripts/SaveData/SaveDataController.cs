@@ -4,18 +4,19 @@ using UnityEngine;
 
 public static class SaveDataController
 {
-    public const string cameraPath = "/camera.saveData";
-    public const string playerPath = "/player.saveData";
-    public const string uiPath = "/ui.saveData";
-    public const string entityPath = "/entities";
-    public const string pickupPath = "/pickups";
-    public const string interactablePath = "/interactables";
+    public const string Extension = ".data";
 
-    public const string extension = ".saveData";
+    public const string CameraPath = "/camera" + Extension;
+    public const string PlayerPath = "/player" + Extension;
+    public const string UIPath = "/ui" + Extension;
+    public const string EntityPath = "/entity";
+    public const string PickupPath = "/pickup";
+    public const string InteractablePath = "/interactable";
+    public const string BubblePath = "/bubble";
 
     public static bool HasSave()
     {
-        return File.Exists(Application.persistentDataPath + playerPath);
+        return File.Exists(Application.persistentDataPath + PlayerPath);
     }
 
     #region Camera
@@ -24,7 +25,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + cameraPath;
+            string path = Application.persistentDataPath + CameraPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -43,7 +44,7 @@ public static class SaveDataController
 
     public static CameraSaveData LoadCamera()
     {
-        string path = Application.persistentDataPath + cameraPath;
+        string path = Application.persistentDataPath + CameraPath;
 
         if (File.Exists(path))
         {
@@ -71,7 +72,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + playerPath;
+            string path = Application.persistentDataPath + PlayerPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -90,7 +91,7 @@ public static class SaveDataController
 
     public static PlayerSaveData LoadPlayer()
     {
-        string path = Application.persistentDataPath + playerPath;
+        string path = Application.persistentDataPath + PlayerPath;
 
         if (File.Exists(path))
         {
@@ -118,7 +119,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + uiPath;
+            string path = Application.persistentDataPath + UIPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -137,7 +138,7 @@ public static class SaveDataController
 
     public static UISaveData LoadUI()
     {
-        string path = Application.persistentDataPath + uiPath;
+        string path = Application.persistentDataPath + UIPath;
 
         if (File.Exists(path))
         {
@@ -165,7 +166,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + entityPath + i + extension;
+            string path = Application.persistentDataPath + EntityPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -184,7 +185,7 @@ public static class SaveDataController
 
     public static EntitySaveData LoadEntity(int i)
     {
-        string path = Application.persistentDataPath + entityPath + i + extension;
+        string path = Application.persistentDataPath + EntityPath + i + Extension;
 
         if (File.Exists(path))
         {
@@ -212,7 +213,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + pickupPath + i + extension;
+            string path = Application.persistentDataPath + PickupPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -231,7 +232,7 @@ public static class SaveDataController
 
     public static PickupSaveData LoadPickup(int i)
     {
-        string path = Application.persistentDataPath + pickupPath + i + extension;
+        string path = Application.persistentDataPath + PickupPath + i + Extension;
 
         if (File.Exists(path))
         {
@@ -259,7 +260,7 @@ public static class SaveDataController
     {
         try
         {
-            string path = Application.persistentDataPath + interactablePath + i + extension;
+            string path = Application.persistentDataPath + InteractablePath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -278,7 +279,7 @@ public static class SaveDataController
 
     public static InteractableSaveData LoadInteractable(int i)
     {
-        string path = Application.persistentDataPath + interactablePath + i + extension;
+        string path = Application.persistentDataPath + InteractablePath + i + Extension;
 
         if (File.Exists(path))
         {
@@ -289,6 +290,53 @@ public static class SaveDataController
             stream.Close();
 
             Debug.Log("Succesfully Loaded Interactable " + i);
+            return data;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Bubbles
+
+    public static void SaveBubble(int i)
+    {
+        try
+        {
+            string path = Application.persistentDataPath + BubblePath + i + Extension;
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Create);
+            BubbleSaveData data = new BubbleSaveData(GameController.bubbles[i]);
+
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            Debug.Log("Succesfully Saved Bubble " + i);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Could Not Save Bubble\n" + e.Message);
+        }
+    }
+
+    public static BubbleSaveData LoadBubble(int i)
+    {
+        string path = Application.persistentDataPath + BubblePath + i + Extension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            BubbleSaveData data = formatter.Deserialize(stream) as BubbleSaveData;
+
+            stream.Close();
+
+            Debug.Log("Succesfully Loaded Bubble " + i);
             return data;
         }
         else
