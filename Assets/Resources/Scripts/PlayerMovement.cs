@@ -298,6 +298,8 @@ public class PlayerMovement : MonoBehaviour
         {
             lastPosBeforeThorns = transform.position;
         }
+        
+        // TODO: Add respawn position for when food runs out.
 
         // Caps swimming speed.
         if (moveState == MoveState.Water)
