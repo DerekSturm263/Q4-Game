@@ -19,6 +19,9 @@ public class GameController : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
+        MusicPlayer.Initialize();
+        SoundPlayer.Initialize();
+
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         uiCont = FindObjectOfType<UIController>();

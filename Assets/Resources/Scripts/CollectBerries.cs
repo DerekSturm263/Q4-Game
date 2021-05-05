@@ -19,7 +19,7 @@ public class CollectBerries : Interactable
 
         foreach (Transform berry in GetComponentInChildren<Transform>())
         {
-            if (berry.GetComponent<ParticleSystem>() == null && canUse)
+            if (berry.GetComponent<ParticleSystem>() == null)
             {
                 berries.Add(berry.gameObject);
             }

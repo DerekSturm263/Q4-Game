@@ -153,6 +153,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool lockMovement = false;
 
+    private GameObject[] thorns;
+
     private Vector2[] colPoints = new Vector2[8];
     private Vector2[] colCrouchingPoints = new Vector2[8];
 
@@ -207,6 +209,8 @@ public class PlayerMovement : MonoBehaviour
         {
             colCrouchingPoints[i] = colPoints[i] / new Vector2(0.5f, 2f) - new Vector2(0.25f, 0.6f);
         }
+
+        thorns = GameObject.FindGameObjectsWithTag("Thorns");
         
         defaultMaxYVelocity = maxYVelocity;
         aboveGroundGravity = rb2D.gravityScale;
@@ -288,6 +292,12 @@ public class PlayerMovement : MonoBehaviour
         colAdj.postExposure.value = Mathf.Lerp(colAdj.postExposure.value, targetExposure, Time.deltaTime * 2.5f);
 
         #endregion
+
+        // Check to see if there are any thorns in the player's camera.
+        if (IsGrounded() && !AreThornsPresent())
+        {
+            lastPosBeforeThorns = transform.position;
+        }
 
         // Caps swimming speed.
         if (moveState == MoveState.Water)
@@ -921,6 +931,19 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return isWater;
+    }
+
+    private bool AreThornsPresent()
+    {
+        for (int i = 0; i < thorns.Length; ++i)
+        {
+            Vector2 camView = Camera.main.WorldToViewportPoint(thorns[i].transform.position);
+
+            if (camView.x > -0.15f && camView.x < 1.15f && camView.y > -0.15f && camView.y < 1.15f)
+                return true;
+        }
+
+        return false;
     }
 
     public void Die(int death)

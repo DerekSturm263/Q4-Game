@@ -3,7 +3,7 @@
 public class Pickup : MonoBehaviour
 {
     private Rigidbody2D rb2D;
-    private BoxCollider2D boxCollider;
+    private PolygonCollider2D col;
     private SpriteRenderer sprtRndr;
 
     private ParticleSystem particles;
@@ -29,7 +29,7 @@ public class Pickup : MonoBehaviour
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        col = GetComponent<PolygonCollider2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
 
         particles = GetComponentInChildren<ParticleSystem>();
@@ -49,6 +49,7 @@ public class Pickup : MonoBehaviour
         sprtRndr.flipX = carrierSprtRndr.flipX;
 
         timeSinceGrabbed += Time.deltaTime;
+        transform.rotation = Quaternion.identity;
         transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + offset * (carrierSprtRndr.flipX ? -1f : 1f), timeSinceGrabbed);
     }
 
@@ -59,7 +60,7 @@ public class Pickup : MonoBehaviour
 
         carrierSprtRndr = carrier.GetComponent<SpriteRenderer>();
         timeSinceGrabbed = 0f;
-        boxCollider.enabled = false;
+        col.enabled = false;
         rb2D.gravityScale = 0f;
         rb2D.velocity = Vector2.zero;
     }
@@ -71,7 +72,7 @@ public class Pickup : MonoBehaviour
 
         carrierSprtRndr = null;
         timeSinceGrabbed = 0f;
-        boxCollider.enabled = true;
+        col.enabled = true;
         rb2D.gravityScale = aboveWaterGravity;
         rb2D.velocity = Vector2.zero;
 
