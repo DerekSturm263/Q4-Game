@@ -4,6 +4,7 @@ public class PlayerSaveData
     public float[] position = new float[2];
     public int moveState;
     public byte abilities;
+    public float underwaterBreathLeft;
 
     public PlayerSaveData(PlayerMovement player)
     {
@@ -13,5 +14,7 @@ public class PlayerSaveData
         this.moveState = (int) player.moveState;
 
         this.abilities = PlayerMovement.abilities;
+
+        this.underwaterBreathLeft = player.breathLeftUnderwater;
     }
 }

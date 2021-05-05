@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isSliding;
     private bool playerIsCrouching;
     private bool playerIsLookingUp;
-    private float breathLeftUnderwater;
+    [HideInInspector] public float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
 
     private bool isInDarkZone = false;

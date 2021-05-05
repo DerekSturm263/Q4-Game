@@ -3,7 +3,7 @@ using System;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private float saveTime = 60f;
+    [SerializeField] private int saveTime = 120;
 
     public static Camera cam;
     public static PlayerMovement player;
@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     public static Pickup[] pickups;
     public static Interactable[] interactables;
 
-    // TODO: Add code for UI stuff from Jared.
+    public static GameObject savingIndicator;
 
     private void Awake()
     {
@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
         entities = FindObjectsOfType<EntityAI>();
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
+        savingIndicator = GameObject.FindGameObjectWithTag("Saving");
+        savingIndicator.SetActive(false);
 
         if (SaveDataController.HasSave())
         {
@@ -33,13 +35,11 @@ public class GameController : MonoBehaviour
         {
             SaveGame();
         }
-
-        InvokeRepeating("SaveGame", saveTime, saveTime);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.U) || ((int) Time.realtimeSinceStartup % saveTime == 0 && !savingIndicator.activeSelf))
         {
             SaveGame();
         }
@@ -47,6 +47,8 @@ public class GameController : MonoBehaviour
 
     private static void SaveGame()
     {
+        savingIndicator.SetActive(true);
+
         SaveDataController.SaveCamera();
         SaveDataController.SavePlayer();
         SaveDataController.SaveUI();
@@ -76,6 +78,7 @@ public class GameController : MonoBehaviour
         player.transform.position = new Vector2(playerData.position[0], playerData.position[1]);
         player.moveState = (PlayerMovement.MoveState) playerData.moveState;
         PlayerMovement.abilities = playerData.abilities;
+        player.breathLeftUnderwater = playerData.underwaterBreathLeft;
 
         UISaveData uiData = SaveDataController.LoadUI();
         UIController.time = uiData.time;
@@ -86,6 +89,12 @@ public class GameController : MonoBehaviour
             EntitySaveData entitySaveData = SaveDataController.LoadEntity(i);
             entities[i].transform.position = new Vector2(entitySaveData.position[0], entitySaveData.position[1]);
             entities[i].isSatisfied = entitySaveData.isSatisified;
+            entities[i].pickupNum = entitySaveData.itemCarried;
+
+            if (entities[i].pickupNum != 0)
+            {
+                pickups[entities[i].pickupNum - 1].Grab(entities[i].gameObject);
+            }
         }
 
         for (int i = 0; i < pickups.Length; ++i)

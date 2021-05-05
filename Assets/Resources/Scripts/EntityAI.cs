@@ -48,6 +48,7 @@ public abstract class EntityAI : MonoBehaviour
     protected Vector2 moveVel;
 
     [HideInInspector] public bool isSatisfied = false; // Sets to true if the enemy grabs an object that they like.
+    [HideInInspector] public int pickupNum = 0;
 
     private GameObject warningSignal;
     private GameObject interestedSignal;
@@ -199,6 +200,7 @@ public abstract class EntityAI : MonoBehaviour
             else if (item)
             {
                 item.Grab(gameObject);
+                pickupNum = System.Array.IndexOf(GameController.pickups, item) + 1;
                 isSatisfied = true;
                 chaseTime = 0f;
             }
