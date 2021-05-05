@@ -23,7 +23,7 @@ SpriteAtlas:
     platformSettings:
     - serializedVersion: 3
       m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 8192
+      m_MaxTextureSize: 4096
       m_ResizeAlgorithm: 0
       m_TextureFormat: -1
       m_TextureCompression: 0
@@ -51,30 +51,13 @@ SpriteAtlas:
     - {fileID: 2800000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
     - {fileID: 2800000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
     - {fileID: 2800000, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
-    - {fileID: 2800000, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-    - {fileID: 2800000, guid: 2ae0622b3f164da418eb34b5f217f707, type: 3}
     - {fileID: 2800000, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
-    totalSpriteSurfaceArea: 13279543
+    - {fileID: 2800000, guid: 2ae0622b3f164da418eb34b5f217f707, type: 3}
+    totalSpriteSurfaceArea: 12978461
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 89ebc9b180eaaa8458466ae952486f30, type: 3}
-  - {fileID: -6484519099441814531, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -6576664503135843148, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -2599109698496938168, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 5793571107211460557, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 7676550351762972379, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 8172040029051291547, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -6218418147159095372, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -4454367897960526327, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -3542230098568340954, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 8688004030104111925, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -5929405817864647190, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -2010917458671493427, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 7391444822214289219, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -1169521843657391632, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: 5546325865808303138, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
-  - {fileID: -189306258743223521, guid: db3e0524f0d358a42a3ff115191ec019, type: 3}
   - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
   - {fileID: 6195344657483792524, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: -4229346075008629873, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
@@ -113,22 +96,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
   m_PackedSpriteNamesToIndex:
   - tree_den_ETW
-  - thorns_17
-  - thorns_16
-  - thorns_15
-  - thorns_13
-  - thorns_11
-  - thorns_10
-  - thorns_4
-  - thorns_5
-  - thorns_6
-  - thorns_7
-  - thorns_0
-  - thorns_1
-  - thorns_2
-  - thorns_3
-  - thorns_8
-  - thorns_9
   - placeholder
   - berries_etw_2_0
   - berries_etw_2_1
