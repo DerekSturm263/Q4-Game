@@ -73,7 +73,7 @@ public class WindZone : MonoBehaviour
         }
         else if (collision.CompareTag("Pickup"))
         {
-            collision.GetComponent<Pickup>().outsideVel = new Vector2(velocity.x.constant / 2f, velocity.y.constant / 2f);
+            collision.GetComponent<Pickup>().outsideVel = new Vector2(velocity.x.constant, velocity.y.constant);
         }
     }
 

@@ -21,6 +21,7 @@ TagManager:
   - Ice
   - Wind
   - Saving
+  - Requested
   layers:
   - Default
   - TransparentFX

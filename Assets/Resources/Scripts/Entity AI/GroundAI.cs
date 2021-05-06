@@ -29,7 +29,11 @@ public class GroundAI : EntityAI
     protected override void Update()
     {
         base.Update();
+
         rb2D.velocity = new Vector2(moveVel.x * currentSpeed, rb2D.velocity.y);
+
+        anim.SetFloat("Move Vel", moveVel.x * currentSpeed);
+        anim.SetFloat("Move Speed", Mathf.Abs(rb2D.velocity.x) / 5f);
     }
 
     protected override void Chase(Transform target)

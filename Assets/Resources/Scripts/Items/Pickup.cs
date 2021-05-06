@@ -15,7 +15,6 @@ public class Pickup : MonoBehaviour
     private float aboveWaterGravity;
 
     [HideInInspector] public GameObject carrier;
-    public Vector2 offset;
     public float weight = 1f;
 
     [SerializeField] private bool showDebugs;
@@ -25,6 +24,8 @@ public class Pickup : MonoBehaviour
 
     public float maxYVelocity = 15f;
     [HideInInspector] public float defaultMaxYVelocity;
+
+    [HideInInspector] public Vector2 offset;
 
     private void Awake()
     {
@@ -42,7 +43,10 @@ public class Pickup : MonoBehaviour
     {
         if (carrier == null)
         {
-            rb2D.velocity += outsideVel;
+            if (outsideVel.magnitude > 0.2f)
+            {
+                rb2D.velocity = Vector2.Lerp(rb2D.velocity, outsideVel / weight * 1.475f, Time.deltaTime * 5f);
+            }
             return;
         }
 
@@ -58,6 +62,14 @@ public class Pickup : MonoBehaviour
         this.carrier = carrier;
         emission.rateOverTime = 0f;
 
+        if (carrier.GetComponent<PlayerMovement>() != null)
+        {
+            offset = carrier.GetComponent<PlayerMovement>().carrySpot;
+        }
+        else
+        {
+            offset = carrier.GetComponent<EntityAI>().carrySpot;
+        }
         carrierSprtRndr = carrier.GetComponent<SpriteRenderer>();
         timeSinceGrabbed = 0f;
         col.enabled = false;

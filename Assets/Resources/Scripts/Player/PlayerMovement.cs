@@ -99,7 +99,9 @@ public class PlayerMovement : MonoBehaviour
     private float targetDOF;
 
     [Header("Miscellaneous")]
-    public static byte abilities = 0b_0000_0101; // Byte value representing unlocked abilities that the player has.
+    public Vector2 carrySpot = new Vector2(0.25f, 0f);
+
+    public static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
     private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
     private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
     private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
@@ -317,6 +319,28 @@ public class PlayerMovement : MonoBehaviour
         }
 
         anim.SetFloat("Y Vel", rb2D.velocity.y);
+
+        #region Debug
+
+        if (showDebugs)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                abilities ^= wallClimb;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                abilities ^= nightVision;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                abilities ^= longerUnderwater;
+            }
+        }
+
+        #endregion
     }
 
     // Physics calculations and movement setting.
@@ -335,6 +359,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Adds proper force to player.
         targetVel += moveVel * currentSpeed;
+        anim.SetFloat("Move Speed", Mathf.Abs(targetVel.x) / 13f);
         targetVel.y += jumpVel;
         targetVel += pounceVel;
 
@@ -402,8 +427,7 @@ public class PlayerMovement : MonoBehaviour
             walkRunParticles.rateOverTime = 0f;
         }
 
-        anim.SetFloat("Move X", moveVel.x);
-        anim.SetFloat("Move Y", moveVel.y);
+        anim.SetFloat("Move Vel", moveVel.x);
 
         if (showDebugs)
         {
@@ -522,6 +546,7 @@ public class PlayerMovement : MonoBehaviour
         if (jumpLeft == 0f)
         {
             jumpVel = 0f;
+            anim.ResetTrigger("Jump");
         }
     }
 

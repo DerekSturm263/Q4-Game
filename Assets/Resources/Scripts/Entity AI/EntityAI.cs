@@ -52,6 +52,9 @@ public abstract class EntityAI : MonoBehaviour
 
     private GameObject warningSignal;
     private GameObject interestedSignal;
+    private GameObject requestedSignal;
+
+    public Vector2 carrySpot = new Vector2(0.25f, 0f);
 
     protected virtual void Awake()
     {
@@ -71,23 +74,34 @@ public abstract class EntityAI : MonoBehaviour
 
         if (isHostile)
         {
-            try
+            foreach (Transform t in GetComponentsInChildren<Transform>())
             {
-                foreach (Transform t in GetComponentInChildren<Transform>())
+                if (t.CompareTag("Warning"))
                 {
-                    if (t.CompareTag("Warning"))
+                    warningSignal = t.gameObject;
+                }
+                else if (t.CompareTag("Interested"))
+                {
+                    interestedSignal = t.gameObject;
+                }
+                else if (t.CompareTag("Requested"))
+                {
+                    requestedSignal = t.gameObject;
+
+                    if (likeableObjects[1] != null)
                     {
-                        warningSignal = t.gameObject;
-                    }
-                    else if (t.CompareTag("Interested"))
-                    {
-                        interestedSignal = t.gameObject;
+                        SpriteRenderer thisSprtRndr = t.GetComponentsInChildren<SpriteRenderer>()[1];
+                        SpriteRenderer objectSprtRndr = likeableObjects[1].GetComponent<SpriteRenderer>();
+
+                        thisSprtRndr.sprite = objectSprtRndr.sprite;
+                        thisSprtRndr.color = objectSprtRndr.color;
                     }
                 }
-                warningSignal.SetActive(false);
-                interestedSignal.SetActive(false);
             }
-            catch { }
+
+            warningSignal.SetActive(false);
+            interestedSignal.SetActive(false);
+            requestedSignal.SetActive(false);
         }
         cam = Camera.main;
     }
@@ -155,6 +169,7 @@ public abstract class EntityAI : MonoBehaviour
         if (target != null && !isSatisfied)
         {
             Chase(target);
+            requestedSignal.GetComponent<Animator>().SetTrigger("Exit");
 
             if (target == player)
             {
@@ -173,6 +188,11 @@ public abstract class EntityAI : MonoBehaviour
             {
                 warningSignal.GetComponent<Animator>().SetTrigger("Exit");
                 interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+
+                if (!isSatisfied)
+                {
+                    requestedSignal.SetActive(true);
+                }
             }
         }
 

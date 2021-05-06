@@ -42,23 +42,28 @@ SpriteAtlas:
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
-    - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
+    - {fileID: 2800000, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
     - {fileID: 2800000, guid: cd9246ccb9d55364bb77f6ed36a04c1b, type: 3}
     - {fileID: 2800000, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
     - {fileID: 2800000, guid: 4d14f0cae32a64e4aa8275c710093aa2, type: 3}
     - {fileID: 2800000, guid: f3ca58e9c2d977e4bbabd2e7f00b10d6, type: 3}
     - {fileID: 2800000, guid: 89ebc9b180eaaa8458466ae952486f30, type: 3}
     - {fileID: 2800000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
+    - {fileID: 2800000, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
     - {fileID: 2800000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
     - {fileID: 2800000, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
-    - {fileID: 2800000, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
     - {fileID: 2800000, guid: 2ae0622b3f164da418eb34b5f217f707, type: 3}
-    totalSpriteSurfaceArea: 12978461
+    totalSpriteSurfaceArea: 15007349
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 8992651038187004473, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
+  - {fileID: -4541555046990914668, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
+  - {fileID: 7111957720340885721, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
+  - {fileID: 3700259039498098694, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
+  - {fileID: -5824279125684890630, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
+  - {fileID: -7543536093805806530, guid: 31ecc211fb056b841bfd2b8d301102af, type: 3}
   - {fileID: 21300000, guid: 89ebc9b180eaaa8458466ae952486f30, type: 3}
-  - {fileID: 21300000, guid: bc4feb84c9e22794b85e13f74120e019, type: 3}
   - {fileID: 6195344657483792524, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: -4229346075008629873, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
   - {fileID: 4354993551913307361, guid: 51728966a7974e14a938b3d40d0deb0d, type: 3}
@@ -95,8 +100,13 @@ SpriteAtlas:
   - {fileID: -6937945259709128973, guid: cd9246ccb9d55364bb77f6ed36a04c1b, type: 3}
   - {fileID: 21300000, guid: 3ebd8ead52e4261469730c952a37dc36, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Racoon_running_0
+  - Racoon_running_1
+  - Racoon_running_2
+  - Racoon_running_3
+  - Racoon_running_4
+  - Racoon_running_5
   - tree_den_ETW
-  - placeholder
   - berries_etw_2_0
   - berries_etw_2_1
   - berries_etw_2_2
