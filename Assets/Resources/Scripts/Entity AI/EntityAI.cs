@@ -88,7 +88,7 @@ public abstract class EntityAI : MonoBehaviour
                 {
                     requestedSignal = t.gameObject;
 
-                    if (likeableObjects[1] != null)
+                    if (likeableObjects.Count > 1)
                     {
                         SpriteRenderer thisSprtRndr = t.GetComponentsInChildren<SpriteRenderer>()[1];
                         SpriteRenderer objectSprtRndr = likeableObjects[1].GetComponent<SpriteRenderer>();
@@ -169,7 +169,11 @@ public abstract class EntityAI : MonoBehaviour
         if (target != null && !isSatisfied)
         {
             Chase(target);
-            requestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+
+            if (likeableObjects.Count > 1)
+            {
+                requestedSignal.GetComponent<Animator>().SetTrigger("Exit");
+            }
 
             if (target == player)
             {
@@ -189,7 +193,7 @@ public abstract class EntityAI : MonoBehaviour
                 warningSignal.GetComponent<Animator>().SetTrigger("Exit");
                 interestedSignal.GetComponent<Animator>().SetTrigger("Exit");
 
-                if (!isSatisfied)
+                if (!isSatisfied && likeableObjects.Count > 1)
                 {
                     requestedSignal.SetActive(true);
                 }
