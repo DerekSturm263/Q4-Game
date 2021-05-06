@@ -77,6 +77,12 @@ TextureImporter:
   - first:
       213: 2704947934026017846
     second: thorns_18
+  - first:
+      213: -6510991827949902445
+    second: thorns_6
+  - first:
+      213: 2257347290010818284
+    second: thorns_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -117,7 +123,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -201,12 +207,12 @@ TextureImporter:
       name: thorns_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 383
-        width: 271
-        height: 188
+        x: 195
+        y: 1395
+        width: 293
+        height: 233
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -222,13 +228,13 @@ TextureImporter:
       name: thorns_1
       rect:
         serializedVersion: 2
-        x: 317
-        y: 423
-        width: 138
-        height: 113
+        x: 165
+        y: 1273
+        width: 333
+        height: 111
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 88, y: 0, z: 158, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -240,16 +246,37 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: thorns_2
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 980
+        width: 334
+        height: 196
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 28, y: 0, z: 139, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a71b378d3deaa9e0800000000000000
+      internalID: -1609213068313946200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: thorns_3
       rect:
         serializedVersion: 2
-        x: 794
-        y: 467
-        width: 283
-        height: 233
+        x: 108
+        y: 665
+        width: 440
+        height: 226
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 181, y: 0, z: 99, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -264,13 +291,13 @@ TextureImporter:
       name: thorns_4
       rect:
         serializedVersion: 2
-        x: 1132
-        y: 466.6667
-        width: 283.33334
-        height: 233.33333
+        x: 45
+        y: 406
+        width: 561
+        height: 143
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 84, y: 0, z: 53, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -285,250 +312,19 @@ TextureImporter:
       name: thorns_5
       rect:
         serializedVersion: 2
-        x: 1415
-        y: 466.6667
-        width: 283.33334
-        height: 233.33333
+        x: 26
+        y: 119
+        width: 517
+        height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 80, y: 0, z: 140, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 8c5ef5bb7bfca6760800000000000000
       internalID: 7451996921467495880
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_6
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 187
-        width: 271
-        height: 196
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 62a132e2e7877dec0800000000000000
-      internalID: -3542230098568340954
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_7
-      rect:
-        serializedVersion: 2
-        x: 317
-        y: 264
-        width: 138
-        height: 159
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 53b848562adf19870800000000000000
-      internalID: 8688004030104111925
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_8
-      rect:
-        serializedVersion: 2
-        x: 487
-        y: 164
-        width: 243
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22490104df188fc40800000000000000
-      internalID: 5546325865808303138
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_9
-      rect:
-        serializedVersion: 2
-        x: 794
-        y: 234
-        width: 283
-        height: 233
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f1b1adde5f27f5df0800000000000000
-      internalID: -189306258743223521
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_10
-      rect:
-        serializedVersion: 2
-        x: 1132
-        y: 233.66667
-        width: 283.33334
-        height: 233.33333
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b9700edeb1be86170800000000000000
-      internalID: 8172040029051291547
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_11
-      rect:
-        serializedVersion: 2
-        x: 1415
-        y: 233.66667
-        width: 283.33334
-        height: 233.33333
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bde5b317fd5988a60800000000000000
-      internalID: 7676550351762972379
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_13
-      rect:
-        serializedVersion: 2
-        x: 317
-        y: 153
-        width: 138
-        height: 111
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcf3e42f936e66050800000000000000
-      internalID: 5793571107211460557
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_15
-      rect:
-        serializedVersion: 2
-        x: 794
-        y: 1
-        width: 283
-        height: 233
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 84f31d8ff7b1eebd0800000000000000
-      internalID: -2599109698496938168
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_16
-      rect:
-        serializedVersion: 2
-        x: 1132
-        y: 0.66667175
-        width: 283.33334
-        height: 233.33333
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4bccaa3aa7efab4a0800000000000000
-      internalID: -6576664503135843148
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_17
-      rect:
-        serializedVersion: 2
-        x: 1415
-        y: 0.66667175
-        width: 283.33334
-        height: 233.33333
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: df3e88a4c3c5206a0800000000000000
-      internalID: -6484519099441814531
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thorns_2
-      rect:
-        serializedVersion: 2
-        x: 487
-        y: 341
-        width: 243
-        height: 169
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8a71b378d3deaa9e0800000000000000
-      internalID: -1609213068313946200
       vertices: []
       indices: 
       edges: []

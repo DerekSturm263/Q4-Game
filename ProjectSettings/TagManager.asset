@@ -20,6 +20,8 @@ TagManager:
   - Interested
   - Ice
   - Wind
+  - Saving
+  - Requested
   layers:
   - Default
   - TransparentFX
