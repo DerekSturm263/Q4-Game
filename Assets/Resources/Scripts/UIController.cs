@@ -23,7 +23,7 @@ public class UIController : MonoBehaviour
         cycleSeconds = cycleLength * 60;
         timeDisplayRoation = Quaternion.identity;
 
-        foodNumDisplay.text = "X " + numFood;
+        foodNumDisplay.text = "" + numFood;
     }
     
     void FixedUpdate()
@@ -67,7 +67,7 @@ public class UIController : MonoBehaviour
             Instantiate(berryPrefab, new Vector3(-2.5f, 10, 0), Quaternion.identity);
         }
 
-        foodNumDisplay.text = "X " + numFood; 
+        foodNumDisplay.text = "" + numFood; 
         //Debug.Log(numFood);
     }
 
@@ -93,7 +93,7 @@ public class UIController : MonoBehaviour
             berries[berries.Length - 1 - i].GetComponent<Rigidbody2D>().gravityScale = -1;
             numFood--;
 
-            foodNumDisplay.text = "X " + numFood;
+            foodNumDisplay.text = "" + numFood;
             //Debug.Log(numFood);
         }
     }
