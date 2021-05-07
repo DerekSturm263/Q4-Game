@@ -3,9 +3,9 @@ using UnityEngine;
 
 public static class MusicPlayer
 {
-    public static AudioSource audioSource;
+    public static AudioSource[] audioSource = new AudioSource[2];
     public static List<AudioClip> trackList = new List<AudioClip>();
-    public static float volume;
+    public static float[] volume = new float[2];
 
     // Used to set up the music player.
     public static void Initialize()
@@ -17,8 +17,10 @@ public static class MusicPlayer
             trackList.Add(c as AudioClip);
         }
 
-        audioSource = new GameObject("Music Player").AddComponent<AudioSource>();
-        audioSource.loop = true;
+        audioSource[0] = new GameObject("Music Player").AddComponent<AudioSource>();
+        audioSource[1] = new GameObject("Music Player 2").AddComponent<AudioSource>();
+        audioSource[0].loop = true;
+        audioSource[1].loop = true;
     }
 
     #region PlayTrack Methods
@@ -29,11 +31,11 @@ public static class MusicPlayer
     }
 
     // Plays the current AudioClip.
-    public static void Play()
+    public static void Play(int audioSourceNum)
     {
         try
         {
-            audioSource.Play();
+            audioSource[audioSourceNum].Play();
         }
         catch
         {
@@ -42,12 +44,12 @@ public static class MusicPlayer
     }
 
     // Plays an AudioClip based on an AudioClip.
-    public static void Play(AudioClip c)
+    public static void Play(int audioSourceNum, AudioClip c)
     {
         try
         {
-            audioSource.clip = c;
-            audioSource.Play();
+            audioSource[audioSourceNum].clip = c;
+            audioSource[audioSourceNum].Play();
         }
         catch
         {
@@ -56,12 +58,12 @@ public static class MusicPlayer
     }
 
     // Plays an AudioClip based on an index of the trackList array.
-    public static void Play(int i)
+    public static void Play(int audioSourceNum, int i)
     {
         try
         {
-            audioSource.clip = trackList[i];
-            audioSource.Play();
+            audioSource[audioSourceNum].clip = trackList[i];
+            audioSource[audioSourceNum].Play();
         }
         catch
         {
@@ -70,7 +72,7 @@ public static class MusicPlayer
     }
 
     // Plays an AudioClip based on a name as a string.
-    public static void Play(string s)
+    public static void Play(int audioSourceNum, string s)
     {
         try
         {
@@ -78,8 +80,8 @@ public static class MusicPlayer
             {
                 if (c.name == s)
                 {
-                    audioSource.clip = c;
-                    audioSource.Play();
+                    audioSource[audioSourceNum].clip = c;
+                    audioSource[audioSourceNum].Play();
 
                     break;
                 }
@@ -96,7 +98,7 @@ public static class MusicPlayer
     #region Return Track AudioClips
 
     // Returns an AudioClip based on a name.
-    public static AudioClip Track(string s)
+    public static AudioClip Track(int audioSourceNum, string s)
     {
         foreach (AudioClip c in trackList)
         {
@@ -108,7 +110,7 @@ public static class MusicPlayer
     }
 
     // Returns an AudioClip based on an int.
-    public static AudioClip Track(int i)
+    public static AudioClip Track(int audioSourceNum, int i)
     {
         try
         {
@@ -123,10 +125,10 @@ public static class MusicPlayer
     }
 
     // Returns the AudioClip that's playing.
-    public static AudioClip CurrentTrack()
+    public static AudioClip CurrentTrack(int audioSourceNum)
     {
-        if (audioSource.isPlaying)
-            return audioSource.clip;
+        if (audioSource[audioSourceNum].isPlaying)
+            return audioSource[audioSourceNum].clip;
 
         return null;
     }
@@ -134,78 +136,78 @@ public static class MusicPlayer
     #endregion
 
     // Returns whether there's anything playing.
-    public static bool IsPlaying()
+    public static bool IsPlaying(int audioSourceNum)
     {
-        return audioSource.isPlaying;
+        return audioSource[audioSourceNum].isPlaying;
     }
 
     // Changes the volume of the MusicPlayer.
-    public static void SetVolume(float f)
+    public static void SetVolume(int audioSourceNum, float f)
     {
-        volume = f;
-        audioSource.volume = volume / 3f;
+        volume[audioSourceNum] = f;
+        audioSource[audioSourceNum].volume = volume[audioSourceNum];
     }
 
-    public static void ChangeVolume(float f)
+    public static void ChangeVolume(int audioSourceNum, float f)
     {
-        volume -= f;
-        audioSource.volume = volume / 3f;
+        volume[audioSourceNum] -= f;
+        audioSource[audioSourceNum].volume = volume[audioSourceNum];
     }
 
     // Mutes the audio playback.
-    public static void Mute()
+    public static void Mute(int audioSourceNum)
     {
-        volume = 0f;
-        audioSource.volume = 0f;
+        volume[audioSourceNum] = 0f;
+        audioSource[audioSourceNum].volume = 0f;
     }
 
     #region Playback Controls
 
     // Stops the music playback and removes the current AudioClip.
-    public static void Pause()
+    public static void Pause(int audioSourceNum)
     {
-        audioSource.Stop();
+        audioSource[audioSourceNum].Stop();
     }
 
     // Stops the music playback and removes the current AudioClip.
-    public static void Stop()
+    public static void Stop(int audioSourceNum)
     {
-        audioSource.Stop();
-        audioSource.clip = null;
+        audioSource[audioSourceNum].Stop();
+        audioSource[audioSourceNum].clip = null;
     }
 
     // Restarts the current track.
-    public static void Restart()
+    public static void Restart(int audioSourceNum)
     {
-        audioSource.Stop();
-        audioSource.Play();
+        audioSource[audioSourceNum].Stop();
+        audioSource[audioSourceNum].Play();
     }
 
     // Goes to the next track.
-    public static void Next()
+    public static void Next(int audioSourceNum)
     {
         try
         {
-            audioSource.clip = trackList[trackList.IndexOf(audioSource.clip) + 1];
-            audioSource.Play();
+            audioSource[audioSourceNum].clip = trackList[trackList.IndexOf(audioSource[audioSourceNum].clip) + 1];
+            audioSource[audioSourceNum].Play();
         }
         catch
         {
-            Debug.LogError("There is no track after " + audioSource.clip.name + " in the Track List.");
+            Debug.LogError("There is no track after " + audioSource[audioSourceNum].clip.name + " in the Track List.");
         }
     }
 
     // Goes to the previous track.
-    public static void Previous()
+    public static void Previous(int audioSourceNum)
     {
         try
         {
-            audioSource.clip = trackList[trackList.IndexOf(audioSource.clip) - 1];
-            audioSource.Play();
+            audioSource[audioSourceNum].clip = trackList[trackList.IndexOf(audioSource[audioSourceNum].clip) - 1];
+            audioSource[audioSourceNum].Play();
         }
         catch
         {
-            Debug.LogError("There is no track before " + audioSource.clip.name + " in the Track List.");
+            Debug.LogError("There is no track before " + audioSource[audioSourceNum].clip.name + " in the Track List.");
         }
     }
 

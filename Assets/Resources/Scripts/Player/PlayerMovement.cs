@@ -248,6 +248,9 @@ public class PlayerMovement : MonoBehaviour
         float breath = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
         if (moveState == MoveState.Water)
         {
+            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], 0f, Time.deltaTime * 2f));
+            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], GameController.musicVolume2, Time.deltaTime * 2f));
+
             underwaterParticles.rateOverTime = 7.5f;
             breathingParticles.rateOverTime = 0f;
 
@@ -265,6 +268,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f));
+            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], GameController.musicVolume, Time.deltaTime * 2f));
+
             breathingParticles.rateOverTime = 100f;
             underwaterParticles.rateOverTime = 0f;
 

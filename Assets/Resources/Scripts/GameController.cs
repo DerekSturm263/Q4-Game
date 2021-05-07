@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
 
     public static float soundVolume;
     public static float musicVolume;
+    public static float musicVolume2;
     public static bool isFullscreen;
     public static bool useParticles;
 
@@ -29,10 +30,13 @@ public class GameController : MonoBehaviour
             MusicPlayer.Initialize();
             SoundPlayer.Initialize();
 
-            MusicPlayer.Play("Lost in the Woods (Main Theme)");
-            MusicPlayer.SetVolume(0.5f);
+            MusicPlayer.Play(0, "Lost in the Woods (Main Theme)");
+            MusicPlayer.Play(1, "Lost in the Ocean (Underwater Theme)");
+            MusicPlayer.SetVolume(0, 0.5f);
+            MusicPlayer.SetVolume(1, 0f);
 
-            musicVolume = MusicPlayer.volume;
+            musicVolume = MusicPlayer.volume[0];
+            musicVolume2 = MusicPlayer.volume[0] * 0.66f;
         }
 
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -65,11 +69,13 @@ public class GameController : MonoBehaviour
 
         if (UIController.timeTitle == "night")
         {
-            MusicPlayer.SetVolume(Mathf.Lerp(MusicPlayer.volume, 0f, Time.deltaTime));
+            musicVolume = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
         }
         else
         {
-            MusicPlayer.SetVolume(Mathf.Lerp(MusicPlayer.volume, musicVolume, Time.deltaTime));
+            musicVolume = Mathf.Lerp(0f, musicVolume, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(0f, musicVolume2, Time.deltaTime);
         }
     }
 
