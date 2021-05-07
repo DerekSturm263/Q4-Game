@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 
 public class GameController : MonoBehaviour
 {
@@ -15,11 +14,8 @@ public class GameController : MonoBehaviour
 
     public static GameObject savingIndicator;
 
-    public static float soundVolume;
     public static float musicVolume;
     public static float musicVolume2;
-    public static bool isFullscreen;
-    public static bool useParticles;
 
     private void Awake()
     {
@@ -70,12 +66,12 @@ public class GameController : MonoBehaviour
         if (UIController.timeTitle == "night")
         {
             musicVolume = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
-            musicVolume2 = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(musicVolume2, 0f, Time.deltaTime);
         }
         else
         {
-            musicVolume = Mathf.Lerp(0f, musicVolume, Time.deltaTime);
-            musicVolume2 = Mathf.Lerp(0f, musicVolume2, Time.deltaTime);
+            musicVolume = Mathf.Lerp(musicVolume, 0.5f, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(musicVolume2, 0.33f, Time.deltaTime);
         }
     }
 
