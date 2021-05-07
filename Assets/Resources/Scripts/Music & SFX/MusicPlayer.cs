@@ -140,9 +140,15 @@ public static class MusicPlayer
     }
 
     // Changes the volume of the MusicPlayer.
-    public static void ChangeVolume(float f)
+    public static void SetVolume(float f)
     {
         volume = f;
+        audioSource.volume = volume / 3f;
+    }
+
+    public static void ChangeVolume(float f)
+    {
+        volume -= f;
         audioSource.volume = volume / 3f;
     }
 

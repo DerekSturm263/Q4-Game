@@ -15,12 +15,25 @@ public class GameController : MonoBehaviour
 
     public static GameObject savingIndicator;
 
+    public static float soundVolume;
+    public static float musicVolume;
+    public static bool isFullscreen;
+    public static bool useParticles;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
 
-        MusicPlayer.Initialize();
-        SoundPlayer.Initialize();
+        if (!MusicPlayer.Exists())
+        {
+            MusicPlayer.Initialize();
+            SoundPlayer.Initialize();
+
+            MusicPlayer.Play("Lost in the Woods (Main Theme)");
+            MusicPlayer.SetVolume(0.5f);
+
+            musicVolume = MusicPlayer.volume;
+        }
 
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -48,6 +61,15 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U) || ((int) Time.realtimeSinceStartup % saveTime == 0 && !savingIndicator.activeSelf))
         {
             SaveGame();
+        }
+
+        if (UIController.timeTitle == "night")
+        {
+            MusicPlayer.SetVolume(Mathf.Lerp(MusicPlayer.volume, 0f, Time.deltaTime));
+        }
+        else
+        {
+            MusicPlayer.SetVolume(Mathf.Lerp(MusicPlayer.volume, musicVolume, Time.deltaTime));
         }
     }
 
