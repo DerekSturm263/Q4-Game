@@ -315,9 +315,9 @@ public class PlayerMovement : MonoBehaviour
             rb2D.velocity = rb2D.velocity.y <= swimMaxVelocity ? rb2D.velocity : new Vector2(0f, swimMaxVelocity);
         }
 
-        if (outsideVel.y > 0.01f)
+        if (outsideVel.y > 0.5f)
         {
-            maxYVelocity = outsideVel.y * 1.5f;
+            maxYVelocity = Mathf.Lerp(maxYVelocity, outsideVel.y * 1.5f, Time.deltaTime * 5f);
         }
         else
         {
@@ -332,17 +332,17 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                abilities ^= wallClimb;
+                abilities = 0b_0000_0001;
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                abilities ^= nightVision;
+                abilities = 0b_0000_0010;
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                abilities ^= longerUnderwater;
+                abilities = 0b_0000_0100;
             }
         }
 

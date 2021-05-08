@@ -12,10 +12,10 @@ public class WindZone : MonoBehaviour
     private ParticleSystem.ShapeModule shape;
     private ParticleSystem.VelocityOverLifetimeModule velocity;
 
-    [SerializeField] private Vector2 windVector = new Vector2(-2.5f, 0f);
+    [SerializeField] private List<Vector2> windVectors = new List<Vector2>();
     [SerializeField] private float windTime = 0f;
-    [SerializeField] private Vector2 windVector2 = new Vector2(2.5f, 0f);
 
+    private int vectorIterator;
     private Vector2 targetDirection;
 
     private void Awake()
@@ -28,16 +28,16 @@ public class WindZone : MonoBehaviour
         shape = ps.shape;
         velocity = ps.velocityOverLifetime;
 
-        emission.rateOverTime = Mathf.Abs(windVector.magnitude) * 37.5f;
+        emission.rateOverTime = Mathf.Abs(windVectors[0].magnitude) * 37.5f;
 
         shape.position = col.offset;
         shape.scale = col.size;
 
-        velocity.x = windVector.x * 2.5f;
-        velocity.y = windVector.y * 2.5f;
+        velocity.x = windVectors[0].x * 2.5f;
+        velocity.y = windVectors[0].y * 2.5f;
         velocity.z = -5f;
 
-        targetDirection = windVector;
+        targetDirection = windVectors[0];
         if (windTime != 0f)
         {
             InvokeRepeating("ChangeDirections", windTime, windTime);
@@ -55,14 +55,12 @@ public class WindZone : MonoBehaviour
 
     private void ChangeDirections()
     {
-        if (targetDirection == windVector)
+        if (++vectorIterator >= windVectors.Count)
         {
-            targetDirection = windVector2;
+            vectorIterator = 0;
         }
-        else
-        {
-            targetDirection = windVector;
-        }
+
+        targetDirection = windVectors[vectorIterator];
     }
 
     private void OnTriggerStay2D(Collider2D collision)
