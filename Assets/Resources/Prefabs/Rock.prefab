@@ -152,6 +152,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[12].y
       value: -0.62909156
       objectReference: {fileID: 0}
+    - target: {fileID: -4206241141814395559, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 644191261069594274, guid: 4a8554e4fc540bc429bac7dde3adf507,
         type: 3}
       propertyPath: m_Constraints
@@ -242,6 +247,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: landOnGround.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: waterSplash.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: landOnGround.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4185e1f8115746f46ba698a49f16820a, type: 3}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: landOnGround.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 405ebc5d12f96524282466475274997c, type: 3}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: landOnGround.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: c726580371a92f44c962cc6424806c80, type: 3}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: waterSplash.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d883412943259b2488e1d119517ffae3, type: 3}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: waterSplash.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 764794308fdeffe48a8c62d05de027fd, type: 3}
+    - target: {fileID: 644191261069594301, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: waterSplash.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: f06b101a4608919419fe8c2d40b3ee7e, type: 3}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.87
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a8554e4fc540bc429bac7dde3adf507, type: 3}
