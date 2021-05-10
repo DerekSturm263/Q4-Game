@@ -43348,7 +43348,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 1648593627}
   berryPrefab: {fileID: 1588518566}
   foodNumDisplay: {fileID: 809819400}
-  cycleLength: 1
+  cycleLength: 1000
 --- !u!114 &1909167037
 MonoBehaviour:
   m_ObjectHideFlags: 0
