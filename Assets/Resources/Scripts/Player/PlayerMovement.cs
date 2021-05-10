@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sprtRndr;
     private PolygonCollider2D col2D;
     private LineRenderer lineRndr;
+    private AudioSource audioSrc;
 
     [Header("Movement Settings")]
     [SerializeField] private LayerMask ground = 1 << 9; // Layermask for the ground that will trigger a grounded collision.
@@ -98,6 +99,13 @@ public class PlayerMovement : MonoBehaviour
     private float targetExposure;
     private float targetDOF;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip[] footstep = new AudioClip[3];
+    [SerializeField] private AudioClip[] jump = new AudioClip[3];
+    [SerializeField] public AudioClip[] landOnGround = new AudioClip[3];
+    [SerializeField] public AudioClip[] landOnIce = new AudioClip[3];
+    [SerializeField] private AudioClip[] waterSplash = new AudioClip[3];
+
     [Header("Miscellaneous")]
     public Vector2 carrySpot = new Vector2(0.25f, 0f);
 
@@ -175,6 +183,7 @@ public class PlayerMovement : MonoBehaviour
         sprtRndr = GetComponent<SpriteRenderer>();
         col2D = GetComponent<PolygonCollider2D>();
         lineRndr = GetComponent<LineRenderer>();
+        audioSrc = GetComponent<AudioSource>();
 
         vol = Camera.main.GetComponent<UnityEngine.Rendering.Volume>().profile;
         vol.TryGet(out vignette);
@@ -268,8 +277,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f));
             MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], GameController.musicVolume, Time.deltaTime * 2f));
+            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f));
 
             breathingParticles.rateOverTime = 100f;
             underwaterParticles.rateOverTime = 0f;
@@ -460,6 +469,11 @@ public class PlayerMovement : MonoBehaviour
             default:
                 currentSpeed = isRunning ? runSpeed : walkSpeed;
                 currentTurnAroundSpeed = isRunning ? runTurnAroundSpeed : walkTurnAroundSpeed;
+
+                if (Mathf.Abs(moveVel.x) > 0.1f)
+                {
+                    PlaySound(footstep, false, Mathf.Clamp(anim.GetCurrentAnimatorStateInfo(0).speedMultiplier, 0.5f, 1f));
+                }
                 break;
         }
 
@@ -552,14 +566,13 @@ public class PlayerMovement : MonoBehaviour
         if (jumpLeft == 0f)
         {
             jumpVel = 0f;
-            anim.ResetTrigger("Jump");
         }
     }
 
     private void Crouch(bool isCrouching)
     {
         // Only allows the player to crouch when walking or still.
-        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed || lockMovement)
+        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed || lockMovement || heldItem != null)
             return;
 
         anim.SetBool("Is Crouching", isCrouching);
@@ -620,6 +633,7 @@ public class PlayerMovement : MonoBehaviour
         if (moveState != MoveState.Water || lockMovement)
             return;
 
+        anim.SetTrigger("Jump");
         rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
 
         if (showDebugs)
@@ -899,6 +913,17 @@ public class PlayerMovement : MonoBehaviour
         abilities |= ability;
     }
 
+    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    {
+        if (audioSrc.isPlaying && !interuptSound)
+            return;
+
+        audioSrc.clip = sound[Random.Range(0, sound.Length)];
+        audioSrc.pitch = pitch;
+        audioSrc.volume = volume;
+        audioSrc.Play();
+    }
+
     // Checks if the player is grounded or not. Separate from Jump Coyote Time.
     private bool IsGrounded()
     {
@@ -911,6 +936,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         anim.SetBool("Grounded", isGrounded);
+
+        if (isGrounded)
+        {
+            anim.ResetTrigger("Jump");
+        }
 
         if (!isGrounded && moveState == MoveState.Ground)
         {
@@ -1038,6 +1068,7 @@ public class PlayerMovement : MonoBehaviour
         else if (collision.CompareTag("Water"))
         {
             waterSplashParticles.Play();
+            PlaySound(waterSplash, true);
         }
         else if (collision.CompareTag("Dark Area"))
         {
@@ -1090,6 +1121,7 @@ public class PlayerMovement : MonoBehaviour
         else if (collision.CompareTag("Water"))
         {
             waterSplashParticles.Play();
+            PlaySound(waterSplash, true);
         }
         else if (collision.CompareTag("Dark Area"))
         {

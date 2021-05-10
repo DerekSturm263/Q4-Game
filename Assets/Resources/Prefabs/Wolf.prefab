@@ -790,6 +790,10 @@ MonoBehaviour:
   minWanderSpeed: 2
   maxWanderSpeed: 4
   wanderDist: 2.5
+  footstep:
+  - {fileID: 8300000, guid: f971dec175607514ca59e66db8b0fb71, type: 3}
+  - {fileID: 8300000, guid: bcb1ec442d7a4fd4db49a8c2599c5c0a, type: 3}
+  - {fileID: 8300000, guid: 2e9ea43346ee4a341ae18990a0b85497, type: 3}
   walkRun: {fileID: 7897555190852412906}
 --- !u!1 &7897555190231667816
 GameObject:

@@ -20,6 +20,7 @@ public abstract class EntityAI : MonoBehaviour
     protected Rigidbody2D rb2D;
     protected Animator anim;
     protected SpriteRenderer sprtRndr;
+    protected AudioSource audioSrc;
 
     [SerializeField] private float underwaterGravity = 0.5f;
     private float aboveWaterGravity;
@@ -66,6 +67,7 @@ public abstract class EntityAI : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprtRndr = GetComponent<SpriteRenderer>();
+        audioSrc = GetComponent<AudioSource>();
 
         lastPos = transform.position;
         PlayerMovement.lastPosBeforeCaughtByEnemy = playerMov.transform.position;

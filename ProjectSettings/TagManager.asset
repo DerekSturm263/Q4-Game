@@ -22,6 +22,7 @@ TagManager:
   - Wind
   - Saving
   - Requested
+  - Music Player
   layers:
   - Default
   - TransparentFX

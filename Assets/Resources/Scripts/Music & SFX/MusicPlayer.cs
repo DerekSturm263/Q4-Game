@@ -21,13 +21,15 @@ public static class MusicPlayer
         audioSource[1] = new GameObject("Music Player 2").AddComponent<AudioSource>();
         audioSource[0].loop = true;
         audioSource[1].loop = true;
+        audioSource[0].tag = "Music Player";
+        audioSource[1].tag = "Music Player";
     }
 
     #region PlayTrack Methods
 
     public static bool Exists()
     {
-        return GameObject.FindObjectOfType<AudioSource>();
+        return GameObject.FindGameObjectWithTag("Music Player");
     }
 
     // Plays the current AudioClip.

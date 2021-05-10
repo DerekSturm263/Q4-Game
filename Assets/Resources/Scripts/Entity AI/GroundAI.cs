@@ -12,6 +12,9 @@ public class GroundAI : EntityAI
 
     [SerializeField] private float wanderDist;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip[] footstep = new AudioClip[3];
+
     [Header("Particle Settings")]
     [SerializeField] private ParticleSystem walkRun; // Particles for when the entity walks.
     private ParticleSystem.EmissionModule walkRunParticles;
@@ -34,6 +37,22 @@ public class GroundAI : EntityAI
 
         anim.SetFloat("Move Vel", moveVel.x * currentSpeed);
         anim.SetFloat("Move Speed", Mathf.Abs(rb2D.velocity.x) / 5f);
+
+        if (Mathf.Abs(moveVel.x) > 0.1f)
+        {
+            PlaySound(footstep, false, Mathf.Clamp(anim.GetCurrentAnimatorStateInfo(0).speedMultiplier, 0.5f, 1f));
+        }
+    }
+
+    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    {
+        if (audioSrc.isPlaying && !interuptSound)
+            return;
+
+        audioSrc.clip = sound[Random.Range(0, sound.Length)];
+        audioSrc.pitch = pitch;
+        audioSrc.volume = volume;
+        audioSrc.Play();
     }
 
     protected override void Chase(Transform target)

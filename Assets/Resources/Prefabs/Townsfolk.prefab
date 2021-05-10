@@ -4938,9 +4938,16 @@ MonoBehaviour:
   wanderTurnAroundSpeed: 5
   chaseTurnAroundSpeed: 2.5
   chaseWaitTime: 3
+  isSatisfied: 0
+  pickupNum: 0
+  carrySpot: {x: 0.25, y: 0}
   minWaitTime: 0
   maxWaitTime: 3
   minWanderSpeed: 2
   maxWanderSpeed: 4
   wanderDist: 5
+  footstep:
+  - {fileID: 8300000, guid: f971dec175607514ca59e66db8b0fb71, type: 3}
+  - {fileID: 8300000, guid: bcb1ec442d7a4fd4db49a8c2599c5c0a, type: 3}
+  - {fileID: 8300000, guid: 2e9ea43346ee4a341ae18990a0b85497, type: 3}
   walkRun: {fileID: 1818681665785979351}
