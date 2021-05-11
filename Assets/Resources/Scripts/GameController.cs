@@ -31,6 +31,8 @@ public class GameController : MonoBehaviour
             MusicPlayer.SetVolume(0, 0.5f);
             MusicPlayer.SetVolume(1, 0f);
 
+            SoundPlayer.SetVolume(0.5f);
+
             musicVolume = MusicPlayer.volume[0];
             musicVolume2 = MusicPlayer.volume[0] * 0.66f;
         }

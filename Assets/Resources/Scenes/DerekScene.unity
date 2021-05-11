@@ -6133,6 +6133,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubble (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5286085755292972586, guid: 210395532c8efed4b99f0e86deee2493,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5749498733414392565, guid: fa30309689aa36f40bec093994b0c0f0,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 210395532c8efed4b99f0e86deee2493, type: 3}
 --- !u!4 &294902979 stripped
@@ -41418,6 +41424,26 @@ PrefabInstance:
       propertyPath: weight
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 852679417091275865, guid: 4a8554e4fc540bc429bac7dde3adf507,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a8554e4fc540bc429bac7dde3adf507, type: 3}
 --- !u!1 &1847263391
@@ -43322,7 +43348,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 1648593627}
   berryPrefab: {fileID: 1588518566}
   foodNumDisplay: {fileID: 809819400}
-  cycleLength: 1
+  cycleLength: 1000
 --- !u!114 &1909167037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50132,6 +50158,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubble
       objectReference: {fileID: 0}
+    - target: {fileID: 5286085755292972586, guid: 210395532c8efed4b99f0e86deee2493,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5749498733414392565, guid: fa30309689aa36f40bec093994b0c0f0,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 210395532c8efed4b99f0e86deee2493, type: 3}
 --- !u!4 &2120585606 stripped

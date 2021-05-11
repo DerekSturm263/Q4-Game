@@ -786,6 +786,7 @@ MonoBehaviour:
   isSatisfied: 0
   pickupNum: 0
   carrySpot: {x: 0.75, y: 0}
+  alertSound: {fileID: 8300000, guid: 7c154cbc0866a6d45b891b2bd601d4bf, type: 3}
   minWaitTime: 0
   maxWaitTime: 3
   minWanderSpeed: 2
@@ -805,7 +806,8 @@ AudioSource:
   m_GameObject: {fileID: 7897555189441802157}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: fa30309689aa36f40bec093994b0c0f0,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

@@ -57,6 +57,8 @@ public abstract class EntityAI : MonoBehaviour
 
     public Vector2 carrySpot = new Vector2(0.25f, 0f);
 
+    [SerializeField] private AudioClip alertSound;
+
     protected virtual void Awake()
     {
         entities.Add(gameObject);
@@ -144,7 +146,7 @@ public abstract class EntityAI : MonoBehaviour
                     || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
-
+                    SoundPlayer.Play(alertSound);
                     chaseTime = chaseWaitTime;
                     break;
                 }
@@ -286,6 +288,17 @@ public abstract class EntityAI : MonoBehaviour
     private void ExitWater()
     {
         rb2D.gravityScale = aboveWaterGravity;
+    }
+
+    protected void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    {
+        if (audioSrc.isPlaying && !interuptSound)
+            return;
+
+        audioSrc.clip = sound[Random.Range(0, sound.Length)];
+        audioSrc.pitch = pitch;
+        audioSrc.volume = volume;
+        audioSrc.Play();
     }
 
     protected abstract void Chase(Transform chaseTarget);

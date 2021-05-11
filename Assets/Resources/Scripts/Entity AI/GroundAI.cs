@@ -44,17 +44,6 @@ public class GroundAI : EntityAI
         }
     }
 
-    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
-    {
-        if (audioSrc.isPlaying && !interuptSound)
-            return;
-
-        audioSrc.clip = sound[Random.Range(0, sound.Length)];
-        audioSrc.pitch = pitch;
-        audioSrc.volume = volume;
-        audioSrc.Play();
-    }
-
     protected override void Chase(Transform target)
     {
         if (Mathf.Abs(transform.position.x - target.position.x) > 0.5f)

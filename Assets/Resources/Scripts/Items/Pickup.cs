@@ -5,9 +5,12 @@ public class Pickup : MonoBehaviour
     private Rigidbody2D rb2D;
     private PolygonCollider2D col;
     private SpriteRenderer sprtRndr;
+    private AudioSource audioSrc;
 
     private ParticleSystem particles;
     private ParticleSystem.EmissionModule emission;
+
+    private ParticleSystem waterSplashParticles;
 
     private SpriteRenderer carrierSprtRndr;
 
@@ -27,13 +30,18 @@ public class Pickup : MonoBehaviour
 
     [HideInInspector] public Vector2 offset;
 
+    [SerializeField] public AudioClip[] landOnGround = new AudioClip[3];
+    [SerializeField] private AudioClip[] waterSplash = new AudioClip[3];
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
         col = GetComponent<PolygonCollider2D>();
         sprtRndr = GetComponent<SpriteRenderer>();
+        audioSrc = GetComponent<AudioSource>();
 
-        particles = GetComponentInChildren<ParticleSystem>();
+        particles = GetComponentsInChildren<ParticleSystem>()[0];
+        waterSplashParticles = GetComponentsInChildren<ParticleSystem>()[1];
         emission = particles.emission;
 
         aboveWaterGravity = rb2D.gravityScale;
@@ -100,6 +108,8 @@ public class Pickup : MonoBehaviour
                 Debug.Log(name + " Entered Water");
             }
 
+            waterSplashParticles.Play();
+            PlaySound(waterSplash, true, volume: weight);
             EnterWater();
         }
     }
@@ -113,8 +123,29 @@ public class Pickup : MonoBehaviour
                 Debug.Log(name + " Exited Water");
             }
 
+            waterSplashParticles.Play();
+            PlaySound(waterSplash, true, volume: weight);
             ExitWater();
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            PlaySound(landOnGround, true, volume: weight * 2f);
+        }
+    }
+
+    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    {
+        if (audioSrc.isPlaying && !interuptSound)
+            return;
+
+        audioSrc.clip = sound[Random.Range(0, sound.Length)];
+        audioSrc.pitch = pitch;
+        audioSrc.volume = volume;
+        audioSrc.Play();
     }
 
     private void EnterWater()
