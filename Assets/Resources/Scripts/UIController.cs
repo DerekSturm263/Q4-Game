@@ -18,6 +18,8 @@ public class UIController : MonoBehaviour
 
     public static float numFood;
 
+    public float takeAwayBerries;
+
     void Start()
     {
         cycleSeconds = cycleLength * 60;
@@ -43,7 +45,7 @@ public class UIController : MonoBehaviour
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
         {
             timeTitle = "dusk";
-            //TakeFood(5); // Food is taken away every day at dusk
+            TakeFood((int)takeAwayBerries); // Food is taken away every day at dusk
         } else if ((int)rotCalc == -30 && timeTitle != "day")
         {
             timeTitle = "day";
