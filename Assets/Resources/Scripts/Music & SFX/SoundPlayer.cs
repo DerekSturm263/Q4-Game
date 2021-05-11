@@ -10,7 +10,7 @@ public static class SoundPlayer
     // Used to set up the sound player.
     public static void Initialize()
     {
-        Object[] soundListArray = Resources.LoadAll("Sounds/ui", typeof(AudioClip));
+        Object[] soundListArray = Resources.LoadAll("Audio/SFX/", typeof(AudioClip));
         foreach (var c in soundListArray)
         {
             Debug.Log("Sound Player: Added " + c.name + " to the Sound List.");

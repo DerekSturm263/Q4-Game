@@ -11,6 +11,8 @@ public class CollectBerries : Interactable
     private ParticleSystem particles;
     private ParticleSystem.EmissionModule particlesEmission;
 
+    [SerializeField] private AudioClip berriesCollected;
+
     private void Awake()
     {
         particles = GetComponentInChildren<ParticleSystem>();
@@ -50,6 +52,7 @@ public class CollectBerries : Interactable
             Destroy(berry.gameObject);
         }
 
+        SoundPlayer.Play(berriesCollected);
         particlesEmission.rateOverTime = 0f;
         uiCont.GiveFood(numberOfBerries);
 

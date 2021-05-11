@@ -32,6 +32,7 @@ public class Pickup : MonoBehaviour
 
     [SerializeField] public AudioClip[] landOnGround = new AudioClip[3];
     [SerializeField] private AudioClip[] waterSplash = new AudioClip[3];
+    [SerializeField] private AudioClip[] whoosh = new AudioClip[3];
 
     private void Awake()
     {
@@ -96,6 +97,7 @@ public class Pickup : MonoBehaviour
         rb2D.gravityScale = aboveWaterGravity;
         rb2D.velocity = Vector2.zero;
 
+        PlaySound(whoosh, true);
         rb2D.AddForce(throwVec / weight, ForceMode2D.Impulse);
     }
 
@@ -133,7 +135,7 @@ public class Pickup : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player"))
         {
-            PlaySound(landOnGround, true, volume: weight * 2f);
+            PlaySound(landOnGround, false, volume: weight * 2f);
         }
     }
 

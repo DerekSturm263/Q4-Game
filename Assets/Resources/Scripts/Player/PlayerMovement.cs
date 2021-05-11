@@ -101,10 +101,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Audio Settings")]
     [SerializeField] private AudioClip[] footstep = new AudioClip[3];
-    [SerializeField] private AudioClip[] jump = new AudioClip[3];
     [SerializeField] public AudioClip[] landOnGround = new AudioClip[3];
-    [SerializeField] public AudioClip[] landOnIce = new AudioClip[3];
     [SerializeField] private AudioClip[] waterSplash = new AudioClip[3];
+    [SerializeField] private AudioClip[] swim = new AudioClip[3];
 
     [Header("Miscellaneous")]
     public Vector2 carrySpot = new Vector2(0.25f, 0f);
@@ -512,6 +511,7 @@ public class PlayerMovement : MonoBehaviour
             else if (timeSinceGround < coyoteTime && rb2D.gravityScale != 0f && !playerIsLookingUp)
             {
                 jumpLandParticles.Play();
+                PlaySound(landOnGround, true, 1f, 0.5f);
                 anim.SetTrigger("Jump");
 
                 if (isPouncing)
@@ -634,6 +634,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         anim.SetTrigger("Jump");
+        PlaySound(swim, true, 1f, 0.5f);
         rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
 
         if (showDebugs)

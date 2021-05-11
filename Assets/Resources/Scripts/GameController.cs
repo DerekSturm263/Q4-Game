@@ -2,6 +2,8 @@
 
 public class GameController : MonoBehaviour
 {
+    private AudioSource audioSrc;
+
     [SerializeField] private int saveTime = 120;
 
     public static Camera cam;
@@ -17,8 +19,15 @@ public class GameController : MonoBehaviour
     public static float musicVolume;
     public static float musicVolume2;
 
+    private float timeBetweenAmbientNoises = 2f;
+    private float timeSinceLastAmbientNoise = 0f;
+
+    [SerializeField] private AudioClip[] ambientSounds = new AudioClip[3];
+
     private void Awake()
     {
+        audioSrc = GetComponent<AudioSource>();
+
         DontDestroyOnLoad(gameObject);
 
         if (!MusicPlayer.Exists())
@@ -69,12 +78,33 @@ public class GameController : MonoBehaviour
         {
             musicVolume = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
             musicVolume2 = Mathf.Lerp(musicVolume2, 0f, Time.deltaTime);
+
+            timeSinceLastAmbientNoise += Time.deltaTime;
+
+            if (timeSinceLastAmbientNoise >= timeBetweenAmbientNoises)
+            {
+                timeSinceLastAmbientNoise = 0f;
+                timeBetweenAmbientNoises = Random.Range(5f, 10f);
+
+                PlaySound(ambientSounds, true);
+            }
         }
         else
         {
             musicVolume = Mathf.Lerp(musicVolume, 0.5f, Time.deltaTime);
             musicVolume2 = Mathf.Lerp(musicVolume2, 0.33f, Time.deltaTime);
         }
+    }
+
+    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    {
+        if (audioSrc.isPlaying && !interuptSound)
+            return;
+
+        audioSrc.clip = sound[Random.Range(0, sound.Length)];
+        audioSrc.pitch = pitch;
+        audioSrc.volume = volume;
+        audioSrc.Play();
     }
 
     private static void SaveGame()

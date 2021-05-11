@@ -58,6 +58,9 @@ public abstract class EntityAI : MonoBehaviour
     public Vector2 carrySpot = new Vector2(0.25f, 0f);
 
     [SerializeField] private AudioClip alertSound;
+    [SerializeField] private AudioClip[] idleSound = new AudioClip[3];
+
+    private bool hasUsedSound = false;
 
     protected virtual void Awake()
     {
@@ -124,7 +127,14 @@ public abstract class EntityAI : MonoBehaviour
         if (!isActive)
         {
             moveVel = Vector2.zero;
+            hasUsedSound = false;
             return;
+        }
+
+        if (!hasUsedSound)
+        {
+            PlaySound(idleSound, true);
+            hasUsedSound = true;
         }
 
         // Change vision direction based on sprite flip settings.
