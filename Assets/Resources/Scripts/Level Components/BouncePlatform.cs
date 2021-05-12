@@ -23,6 +23,12 @@ public class BouncePlatform : MonoBehaviour
             return;
 
         rb2D.velocity = new Vector2(rb2D.velocity.x, bounceForce);
+
+        if (collision.TryGetComponent(out PlayerMovement player))
+        {
+            player.maxYVelocity = bounceForce;
+        }
+
         PlaySound(bounce, true);
         anim.SetTrigger("Bounce");
     }

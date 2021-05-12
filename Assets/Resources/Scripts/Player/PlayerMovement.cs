@@ -329,7 +329,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            maxYVelocity = defaultMaxYVelocity;
+            maxYVelocity = Mathf.Lerp(maxYVelocity, defaultMaxYVelocity, Time.deltaTime);
         }
 
         anim.SetFloat("Y Vel", rb2D.velocity.y);
