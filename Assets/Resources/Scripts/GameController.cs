@@ -23,11 +23,10 @@ public class GameController : MonoBehaviour
     private float timeSinceLastAmbientNoise = 0f;
 
     [SerializeField] private AudioClip[] ambientSounds = new AudioClip[3];
+    private AudioSource camAudio;
 
     private void Awake()
     {
-        audioSrc = GetComponent<AudioSource>();
-
         DontDestroyOnLoad(gameObject);
 
         if (!MusicPlayer.Exists())
@@ -54,6 +53,8 @@ public class GameController : MonoBehaviour
         interactables = FindObjectsOfType<Interactable>();
         bubbles = FindObjectsOfType<AirBubble>();
 
+        camAudio = cam.GetComponent<AudioSource>();
+
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
 
@@ -76,8 +77,8 @@ public class GameController : MonoBehaviour
 
         if (UIController.timeTitle == "night")
         {
-            musicVolume = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
-            musicVolume2 = Mathf.Lerp(musicVolume2, 0f, Time.deltaTime);
+            musicVolume = 0f;
+            musicVolume2 = 0f;
 
             timeSinceLastAmbientNoise += Time.deltaTime;
 
@@ -86,25 +87,25 @@ public class GameController : MonoBehaviour
                 timeSinceLastAmbientNoise = 0f;
                 timeBetweenAmbientNoises = Random.Range(5f, 10f);
 
-                PlaySound(ambientSounds, true);
+                PlaySound(camAudio, ambientSounds, true);
             }
         }
         else
         {
-            musicVolume = Mathf.Lerp(musicVolume, 0.5f, Time.deltaTime);
-            musicVolume2 = Mathf.Lerp(musicVolume2, 0.33f, Time.deltaTime);
+            musicVolume = 0.5f;
+            musicVolume2 = 0.3f;
         }
     }
 
-    public void PlaySound(AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
+    public void PlaySound(AudioSource source, AudioClip[] sound, bool interuptSound = false, float pitch = 1f, float volume = 1f)
     {
-        if (audioSrc.isPlaying && !interuptSound)
+        if (source.isPlaying && !interuptSound)
             return;
 
-        audioSrc.clip = sound[Random.Range(0, sound.Length)];
-        audioSrc.pitch = pitch;
-        audioSrc.volume = volume;
-        audioSrc.Play();
+        source.clip = sound[Random.Range(0, sound.Length)];
+        source.pitch = pitch;
+        source.volume = volume;
+        source.Play();
     }
 
     private static void SaveGame()
@@ -164,7 +165,10 @@ public class GameController : MonoBehaviour
         // UI.
         UISaveData uiData = SaveDataController.LoadUI();
         UIController.time = uiData.time;
+        UIController.timeTitle = uiData.timeTitle;
         UIController.numFood = uiData.berryCount;
+
+        uiCont.foodNumDisplay.text = UIController.numFood.ToString();
 
         // Entities.
         for (int i = 0; i < entities.Length; ++i)

@@ -1,12 +1,16 @@
 ﻿[System.Serializable]
 public class UISaveData
 {
-    public float berryCount;
     public float time;
+    public string timeTitle;
+
+    public float berryCount;
 
     public UISaveData(UIController cont)
     {
-        berryCount = UIController.numFood;
         time = UIController.time;
+        timeTitle = UIController.timeTitle;
+
+        berryCount = UIController.numFood;
     }
 }

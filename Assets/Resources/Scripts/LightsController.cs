@@ -24,33 +24,45 @@ public class LightsController : MonoBehaviour
     {
         rotationLights.rotation = uiCont.timeDisplay.transform.rotation;
 
-        Color currentColor;
-        Color nextColor;
-
         if (UIController.timeTitle == "day")
         {
-            currentColor = day;
-            nextColor = dusk;
+            skyLight.color = day;
+
+            sunLight.intensity = 1f;
+            moonLight.intensity = 0f;
         }
         else if (UIController.timeTitle == "dusk")
         {
-            currentColor = dusk;
-            nextColor = night;
+            skyLight.color = CustomLerp(day, dusk, night, 1 - (rotationLights.rotation.eulerAngles.z + 150f) % 30f / 29f);
+
+            sunLight.intensity = Mathf.Lerp(0f, 1f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
+            moonLight.intensity = Mathf.Lerp(0.5f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
         }
         else if(UIController.timeTitle == "night")
         {
-            currentColor = night;
-            nextColor = dawn;
+            skyLight.color = night;
+
+            sunLight.intensity = 0f;
+            moonLight.intensity = 0.5f;
         }
         else
         {
-            currentColor = dawn;
-            nextColor = day;
+            skyLight.color = CustomLerp(night, dawn, day, 1 - (rotationLights.rotation.eulerAngles.z + 30f) % 30f / 29f);
+
+            sunLight.intensity = Mathf.Lerp(1f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
+            moonLight.intensity = Mathf.Lerp(0f, 0.5f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
         }
+    }
 
-        skyLight.color = Color.Lerp(currentColor, nextColor, rotationLights.rotation.eulerAngles.z % 90f / 89f);
-
-        sunLight.intensity = Mathf.Lerp(0f, 1f, rotationLights.rotation.eulerAngles.z % 180);
-        moonLight.intensity = Mathf.Lerp(1f, 0f, rotationLights.rotation.eulerAngles.z % 180);
+    private Color CustomLerp(Color a, Color b, Color c, float i)
+    {
+        if (i < 0.5f)
+        {
+            return Color.Lerp(a, b, i * 2f);
+        }
+        else
+        {
+            return Color.Lerp(b, c, (i - 0.5f) * 2f);
+        }
     }
 }
