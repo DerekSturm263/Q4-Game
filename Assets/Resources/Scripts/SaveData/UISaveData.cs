@@ -5,6 +5,7 @@ public class UISaveData
     public string timeTitle;
 
     public float berryCount;
+    public float sunRotation;
 
     public UISaveData(UIController cont)
     {
@@ -12,5 +13,6 @@ public class UISaveData
         timeTitle = UIController.timeTitle;
 
         berryCount = UIController.numFood;
+        sunRotation = cont.timeDisplay.transform.rotation.eulerAngles.z;
     }
 }

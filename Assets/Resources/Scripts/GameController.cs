@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioClip[] ambientSounds = new AudioClip[3];
     private AudioSource camAudio;
 
+    [SerializeField] private bool ignoreSave = false;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -42,7 +44,7 @@ public class GameController : MonoBehaviour
             SoundPlayer.SetVolume(0.5f);
 
             musicVolume = MusicPlayer.volume[0];
-            musicVolume2 = MusicPlayer.volume[0] * 0.66f;
+            musicVolume2 = MusicPlayer.volume[0] * 0.3f;
         }
 
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -58,13 +60,16 @@ public class GameController : MonoBehaviour
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
 
-        if (SaveDataController.HasSave())
+        if (!ignoreSave)
         {
-            LoadGame();
-        }
-        else
-        {
-            SaveGame();
+            if (SaveDataController.HasSave())
+            {
+                LoadGame();
+            }
+            else
+            {
+                SaveGame();
+            }
         }
     }
 
@@ -169,6 +174,7 @@ public class GameController : MonoBehaviour
         UIController.numFood = uiData.berryCount;
 
         uiCont.foodNumDisplay.text = UIController.numFood.ToString();
+        uiCont.timeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, uiData.sunRotation);
 
         // Entities.
         for (int i = 0; i < entities.Length; ++i)
