@@ -15,11 +15,12 @@ public abstract class EntityAI : MonoBehaviour
     [Header("Layer Mask Settings")]
     [SerializeField] protected LayerMask ground = 1 << 9;
     [SerializeField] protected LayerMask playerMask = 1 << 12;
-    [SerializeField] protected LayerMask notEnemy = ~(1 << 13 & 1 << 8 & 1 << 10);
+    [SerializeField] protected LayerMask notEnemy = ~(1 << 13 & 1 << 8 & 1 << 10 & 1 << 11);
 
     protected Rigidbody2D rb2D;
     protected Animator anim;
     protected SpriteRenderer sprtRndr;
+    protected BoxCollider2D col;
     protected AudioSource audioSrc;
 
     [SerializeField] private float underwaterGravity = 0.5f;
@@ -72,6 +73,7 @@ public abstract class EntityAI : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprtRndr = GetComponent<SpriteRenderer>();
+        col = GetComponent<BoxCollider2D>();
         audioSrc = GetComponent<AudioSource>();
 
         lastPos = transform.position;
@@ -261,7 +263,7 @@ public abstract class EntityAI : MonoBehaviour
 
     private bool CheckForObject(out Transform obj)
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 0f, Vector2.down, 0f, notEnemy);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + col.offset, new Vector2(col.size.x * transform.localScale.x, col.size.y * transform.localScale.y), 0f, Vector2.down, 0f, notEnemy);
         obj = hit.transform;
 
         return hit && likeableObjects.Contains(obj);

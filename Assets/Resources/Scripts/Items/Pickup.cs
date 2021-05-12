@@ -63,7 +63,7 @@ public class Pickup : MonoBehaviour
 
         timeSinceGrabbed += Time.deltaTime;
         transform.rotation = Quaternion.identity;
-        transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + offset * (carrierSprtRndr.flipX ? -1f : 1f), timeSinceGrabbed);
+        transform.position = Vector2.Lerp(transform.position, (Vector2) carrier.transform.position + new Vector2(offset.x * (carrierSprtRndr.flipX ? -1f : 1f), offset.y), timeSinceGrabbed);
     }
 
     public void Grab(GameObject carrier)
@@ -82,6 +82,7 @@ public class Pickup : MonoBehaviour
         carrierSprtRndr = carrier.GetComponent<SpriteRenderer>();
         timeSinceGrabbed = 0f;
         col.enabled = false;
+        transform.localScale = carrier.transform.localScale;
         rb2D.gravityScale = 0f;
         rb2D.velocity = Vector2.zero;
     }
@@ -94,6 +95,7 @@ public class Pickup : MonoBehaviour
         carrierSprtRndr = null;
         timeSinceGrabbed = 0f;
         col.enabled = true;
+        transform.localScale = Vector2.one;
         rb2D.gravityScale = aboveWaterGravity;
         rb2D.velocity = Vector2.zero;
 

@@ -97,7 +97,7 @@ public class GroundAI : EntityAI
 
         // Creates vectors for the linecast.
         Vector2 startPos = ogPos + new Vector2(randomDir, 0f);
-        Vector2 lineDist = Vector2.down * 2f;
+        Vector2 lineDist = Vector2.down * 2f * transform.localScale.y;
         
         RaycastHit2D hit = Physics2D.Linecast(startPos, startPos + lineDist, ground);
 

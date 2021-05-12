@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     }
     [HideInInspector] public MoveState moveState;
 
-    private Controls controls;
+    public static Controls controls;
 
     private Animator anim;
     private Rigidbody2D rb2D;
@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
     public static int deathCause; // 0 represents swimming or falling in a bottomless pit, 1 represents being caughtByAnEnemy, 2 represents running out of food.
 
-    public bool lockMovement = false;
+    public static bool lockMovement = false;
 
     private GameObject[] thorns;
 
@@ -210,6 +210,8 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Pounce.performed += _ => Pounce();
         controls.Player.Use.performed += _ => Use();
         controls.Player.Swim.performed += _ => Swim();
+
+        controls.UI.Select.performed += _ => LoadTutorial.Disable();
 
         fadeAnim = fade.GetComponent<Animator>();
 
@@ -492,7 +494,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water || lockMovement || playerIsCrouching)
+        if (moveState == MoveState.Water || lockMovement || playerIsCrouching || LoadTutorial.IsActive())
             return;
 
         // Jump button is held.
