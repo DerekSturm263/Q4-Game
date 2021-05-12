@@ -38,7 +38,7 @@ public class GroundAI : EntityAI
         anim.SetFloat("Move Vel", moveVel.x * currentSpeed);
         anim.SetFloat("Move Speed", Mathf.Abs(rb2D.velocity.x) / 5f);
 
-        if (Mathf.Abs(moveVel.x) > 0.1f)
+        if (Mathf.Abs(moveVel.x) > 0.1f && Mathf.Abs(rb2D.velocity.x) > 0.1f)
         {
             PlaySound(footstep, false, Mathf.Clamp(anim.GetCurrentAnimatorStateInfo(0).speedMultiplier, 0.5f, 1f));
         }
