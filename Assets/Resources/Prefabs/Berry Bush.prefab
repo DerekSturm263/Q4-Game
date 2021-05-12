@@ -125,7 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2156d9841a149824c9e9c4d37910deb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canUse: 1
   numberOfBerries: 3
+  berriesCollected: {fileID: 8300000, guid: 313f8fecf8b14cb47be60b86bbd80bd1, type: 3}
 --- !u!1 &2317829638282947725
 GameObject:
   m_ObjectHideFlags: 0
