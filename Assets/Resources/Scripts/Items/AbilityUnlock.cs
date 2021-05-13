@@ -10,6 +10,7 @@ public class AbilityUnlock : MonoBehaviour
         {
             PlayerMovement.UnlockAbility(ability);
             LoadTutorial.Display(AbilityTutorial.abilities[ability]);
+            SoundPlayer.Play("new_ability");
 
             gameObject.SetActive(false);
         }

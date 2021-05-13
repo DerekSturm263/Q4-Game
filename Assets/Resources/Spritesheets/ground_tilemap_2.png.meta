@@ -1,0 +1,740 @@
+fileFormatVersion: 2
+guid: 0ae44f67746ddd343926e2b9c991cd76
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6626563098955788696
+    second: ground_tilemap_2_0
+  - first:
+      213: 551767830881492018
+    second: ground_tilemap_2_1
+  - first:
+      213: 5207838932412656835
+    second: ground_tilemap_2_2
+  - first:
+      213: 4534671965995012044
+    second: ground_tilemap_2_3
+  - first:
+      213: 2504168094575344192
+    second: ground_tilemap_2_4
+  - first:
+      213: -4544822694062026144
+    second: ground_tilemap_2_5
+  - first:
+      213: -1348241970545600705
+    second: ground_tilemap_2_6
+  - first:
+      213: 2867584324826862416
+    second: ground_tilemap_2_7
+  - first:
+      213: 7990726379801987549
+    second: ground_tilemap_2_8
+  - first:
+      213: 4351433273971575799
+    second: ground_tilemap_2_9
+  - first:
+      213: 3789092167867603374
+    second: ground_tilemap_2_10
+  - first:
+      213: -609106181760293389
+    second: ground_tilemap_2_11
+  - first:
+      213: -528358034926063484
+    second: ground_tilemap_2_12
+  - first:
+      213: -3266028496702107998
+    second: ground_tilemap_2_13
+  - first:
+      213: 6147687429292112207
+    second: ground_tilemap_2_14
+  - first:
+      213: -7179261669187801686
+    second: ground_tilemap_2_15
+  - first:
+      213: 5796504297405501922
+    second: ground_tilemap_2_16
+  - first:
+      213: 8581181995796614334
+    second: ground_tilemap_2_17
+  - first:
+      213: 125163431450596992
+    second: ground_tilemap_2_18
+  - first:
+      213: -5211848105953938303
+    second: ground_tilemap_2_19
+  - first:
+      213: -802281704772389766
+    second: ground_tilemap_2_20
+  - first:
+      213: -3881923793390778364
+    second: ground_tilemap_2_21
+  - first:
+      213: -1726437991062686561
+    second: ground_tilemap_2_22
+  - first:
+      213: 5253899294887352284
+    second: ground_tilemap_2_23
+  - first:
+      213: 6216224764614451596
+    second: ground_tilemap_2_24
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 0
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ground_tilemap_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2384
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86e470578f7b904a0800000000000000
+      internalID: -6626563098955788696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_1
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 2384
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23cdd263be548a700800000000000000
+      internalID: 551767830881492018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_2
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 2384
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cce7edaae5f54840800000000000000
+      internalID: 5207838932412656835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_3
+      rect:
+        serializedVersion: 2
+        x: 1770
+        y: 2384
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccf0e0a90246eee30800000000000000
+      internalID: 4534671965995012044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_4
+      rect:
+        serializedVersion: 2
+        x: 1329
+        y: 1187
+        width: 292
+        height: 607
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 169, z: 0, w: 176}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04ab7074d9790c220800000000000000
+      internalID: 2504168094575344192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1788
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0629c49d6db8de0c0800000000000000
+      internalID: -4544822694062026144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_6
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 1350
+        width: 1027
+        height: 1034
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 272, z: 285, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f375b5232151a4de0800000000000000
+      internalID: -1348241970545600705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_7
+      rect:
+        serializedVersion: 2
+        x: 1330
+        y: 1351
+        width: 288
+        height: 720
+      alignment: 9
+      pivot: {x: 0.5000004, y: 1.0071665}
+      border: {x: 0, y: 269, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05398c410c4bbc720800000000000000
+      internalID: 2867584324826862416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_8
+      rect:
+        serializedVersion: 2
+        x: 1331
+        y: 1350
+        width: 1029
+        height: 1034
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 284, y: 269, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd9c0754e43c4ee60800000000000000
+      internalID: 7990726379801987549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_9
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 1788
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fb04eef185636c30800000000000000
+      internalID: 4351433273971575799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1192
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea996fe404f859430800000000000000
+      internalID: 3789092167867603374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_11
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 1192
+        width: 1029
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 284, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f5eea5a7250c87f0800000000000000
+      internalID: -609106181760293389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_12
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 1192
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 153, y: 158, z: 152, w: 168}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4803206aa25eaa8f0800000000000000
+      internalID: -528358034926063484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_13
+      rect:
+        serializedVersion: 2
+        x: 1335
+        y: 1192
+        width: 1025
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 282, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ae84cbe26cbca2d0800000000000000
+      internalID: -3266028496702107998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_14
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 1192
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4937152529f05550800000000000000
+      internalID: 6147687429292112207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 596
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aadab7a9c832e5c90800000000000000
+      internalID: -7179261669187801686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_16
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 596
+        width: 1027
+        height: 1021
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 282, w: 265}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e151e182f1517050800000000000000
+      internalID: 5796504297405501922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_17
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 596
+        width: 590
+        height: 1024
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 267}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebc4f646f8b761770800000000000000
+      internalID: 8581181995796614334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_18
+      rect:
+        serializedVersion: 2
+        x: 1335
+        y: 596
+        width: 1025
+        height: 1021
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 282, y: 0, z: 0, w: 265}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0865b7e4a7bacb100800000000000000
+      internalID: 125163431450596992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_19
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 596
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 184b25dd2cbcba7b0800000000000000
+      internalID: -5211848105953938303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a743f394a09bdd4f0800000000000000
+      internalID: -802281704772389766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_21
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 0
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4084ec190e2a02ac0800000000000000
+      internalID: -3881923793390778364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_22
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 0
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9438ff4bc57a08e0800000000000000
+      internalID: -1726437991062686561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_23
+      rect:
+        serializedVersion: 2
+        x: 1770
+        y: 0
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd79f65829999e840800000000000000
+      internalID: 5253899294887352284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ground_tilemap_2_24
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 0
+        width: 590.4
+        height: 596
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c81a4da0d77744650800000000000000
+      internalID: 6216224764614451596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

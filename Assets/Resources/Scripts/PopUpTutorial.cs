@@ -7,7 +7,11 @@ public class PopUpTutorial : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        LoadTutorial.Display(label, description);
-        gameObject.SetActive(false);
+        if (collision.CompareTag("Player"))
+        {
+            LoadTutorial.Display(label, description);
+            gameObject.SetActive(false);
+            SoundPlayer.Play("berry_picked");
+        }
     }
 }
