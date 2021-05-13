@@ -16,6 +16,9 @@ public class UIController : MonoBehaviour
     private float cycleSeconds;
     private Quaternion timeDisplayRoation;
 
+    public static bool isPaused = false;
+    public GameObject pauseMenu;
+
     public static float numFood;
 
     public float takeAwayBerries; //How many berries are taken away each dusk
@@ -28,7 +31,7 @@ public class UIController : MonoBehaviour
         foodNumDisplay.text = "" + numFood;
     }
     
-    void FixedUpdate()
+    void Update()
     {
         time += Time.deltaTime;
         float rotCalc = -((time / cycleSeconds) * 360);
@@ -58,6 +61,19 @@ public class UIController : MonoBehaviour
         //Debug.Log((int)rotCalc + ": " + timeTitle);
         //Debug.Log(timeTitle);
         //Debug.Log(timeDisplayRoation.eulerAngles);
+
+        //Pause Menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
     }
 
     public void GiveFood(int numFoodToGive)
@@ -100,5 +116,24 @@ public class UIController : MonoBehaviour
         }
     }
 
-   
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
+
+        //if (settingsMenu.activeSelf)
+        //    CloseSettings();
+    }
+
+    void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+    }
 }
