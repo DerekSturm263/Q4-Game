@@ -11,14 +11,14 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI foodNumDisplay;
 
     public static float time;
-    public static string timeTitle;
-    public float cycleLength;
+    public static string timeTitle;  //Ex: "dawn", "day" ...
+    public float cycleLength;  //Minutes for a full day/night cycle
     private float cycleSeconds;
     private Quaternion timeDisplayRoation;
 
     public static float numFood;
 
-    public float takeAwayBerries;
+    public float takeAwayBerries; //How many berries are taken away each dusk
 
     void Start()
     {

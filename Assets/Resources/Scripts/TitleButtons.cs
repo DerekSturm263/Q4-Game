@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TitleButtons : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject startButton;
+    public GameObject gameButtons;
+
+    public void ClickStart()
     {
-        
+        startButton.GetComponent<Animator>().enabled = true;
+        gameButtons.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadScene(string sceneToLoad)
     {
-        
+        SceneManager.LoadScene(sceneToLoad);
     }
 }
