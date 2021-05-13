@@ -7599,7 +7599,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  ignoreSave: 0
+  ignoreSave: 1
 --- !u!4 &511434910
 Transform:
   m_ObjectHideFlags: 0
