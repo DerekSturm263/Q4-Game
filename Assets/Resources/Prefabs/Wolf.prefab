@@ -788,9 +788,9 @@ MonoBehaviour:
   carrySpot: {x: 3.4, y: 1.2}
   alertSound: {fileID: 8300000, guid: 7c154cbc0866a6d45b891b2bd601d4bf, type: 3}
   idleSound:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: f66e618710834f04e9972a828c97232e, type: 3}
+  - {fileID: 8300000, guid: f66e618710834f04e9972a828c97232e, type: 3}
+  - {fileID: 8300000, guid: f66e618710834f04e9972a828c97232e, type: 3}
   minWaitTime: 0
   maxWaitTime: 3
   minWanderSpeed: 2

@@ -28,17 +28,28 @@ public class LoadTutorial : MonoBehaviour
         // Make the continue text match the name of the device that's being used.
         InputSystem.onDeviceChange += (device, change) =>
         {
-            ChangeContinueText(device.displayName);
+            ChangeContinueText(PlayerMovement.controls.UI.Select.name);
         };
 
+        ChangeContinueText("SPACE");
+        Abilities.Initialize();
         tutorial.SetActive(false);
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place." +
+                "Monsters will begin spawning in unsual places, and you must be prepared for anything;" +
+                "however, each night that you succesfully survive grants you extra berries.");
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Display("Big Chungus", "E");
+            Display("Feeding The Tribe", "Each night, you must have enough berries to feed the tribe, otherwise it's game over." +
+                "The tribe requires 10 berries every night to survive." +
+                "You can find berries around the world by solving puzzles and exploring.");
         }
     }
 
@@ -49,7 +60,17 @@ public class LoadTutorial : MonoBehaviour
         labelText.text = label;
         descriptionText.text = description;
 
-        PlayerMovement.lockMovement = true;
+        PlayerMovement.Freeze();
+    }
+
+    public static void Display(AbilityTutorial ability)
+    {
+        tutorial.SetActive(true);
+
+        labelText.text = ability.name;
+        descriptionText.text = ability.description;
+
+        PlayerMovement.Freeze();
     }
 
     public static void Disable()
@@ -57,13 +78,13 @@ public class LoadTutorial : MonoBehaviour
         if (!tutorial.activeSelf)
             return;
 
-        PlayerMovement.lockMovement = false;
+        PlayerMovement.UnFreeze();
         anim.SetTrigger("Exit");
     }
 
     private static void ChangeContinueText(string newName)
     {
-        continueText.text = "Press " + newName + " to Continue";
+        continueText.text = "Press ENTER to Continue";
     }
 
     public static bool IsActive()

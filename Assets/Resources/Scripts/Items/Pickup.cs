@@ -29,6 +29,7 @@ public class Pickup : MonoBehaviour
     [HideInInspector] public float defaultMaxYVelocity;
 
     [HideInInspector] public Vector2 offset;
+    private Vector2 ogSize;
 
     [SerializeField] public AudioClip[] landOnGround = new AudioClip[3];
     [SerializeField] private AudioClip[] waterSplash = new AudioClip[3];
@@ -45,6 +46,7 @@ public class Pickup : MonoBehaviour
         waterSplashParticles = GetComponentsInChildren<ParticleSystem>()[1];
         emission = particles.emission;
 
+        ogSize = transform.localScale;
         aboveWaterGravity = rb2D.gravityScale;
     }
 
@@ -82,7 +84,7 @@ public class Pickup : MonoBehaviour
         carrierSprtRndr = carrier.GetComponent<SpriteRenderer>();
         timeSinceGrabbed = 0f;
         col.enabled = false;
-        transform.localScale = carrier.transform.localScale;
+        transform.localScale = carrier.transform.localScale * ogSize;
         rb2D.gravityScale = 0f;
         rb2D.velocity = Vector2.zero;
     }
@@ -95,7 +97,7 @@ public class Pickup : MonoBehaviour
         carrierSprtRndr = null;
         timeSinceGrabbed = 0f;
         col.enabled = true;
-        transform.localScale = Vector2.one;
+        transform.localScale = ogSize;
         rb2D.gravityScale = aboveWaterGravity;
         rb2D.velocity = Vector2.zero;
 

@@ -13,6 +13,8 @@ public static class SaveDataController
     public const string PickupPath = "/pickup";
     public const string InteractablePath = "/interactable";
     public const string BubblePath = "/bubble";
+    public const string AbilityPath = "/ability";
+    public const string TutorialPath = "/tutorial";
 
     public static bool HasSave()
     {
@@ -337,6 +339,100 @@ public static class SaveDataController
             stream.Close();
 
             Debug.Log("Succesfully Loaded Bubble " + i);
+            return data;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Abilities
+
+    public static void SaveAbility(int i)
+    {
+        try
+        {
+            string path = Application.persistentDataPath + AbilityPath + i + Extension;
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Create);
+            AbilitySaveData data = new AbilitySaveData(GameController.abilities[i]);
+
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            Debug.Log("Succesfully Saved Ability " + i);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Could Not Save Ability\n" + e.Message);
+        }
+    }
+
+    public static AbilitySaveData LoadAbility(int i)
+    {
+        string path = Application.persistentDataPath + AbilityPath + i + Extension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            AbilitySaveData data = formatter.Deserialize(stream) as AbilitySaveData;
+
+            stream.Close();
+
+            Debug.Log("Succesfully Loaded Abilty " + i);
+            return data;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region Tutorials
+
+    public static void SaveTutorial(int i)
+    {
+        try
+        {
+            string path = Application.persistentDataPath + TutorialPath + i + Extension;
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Create);
+            TutorialSaveData data = new TutorialSaveData(GameController.tutorials[i]);
+
+            formatter.Serialize(stream, data);
+            stream.Close();
+
+            Debug.Log("Succesfully Saved Tutorial " + i);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Could Not Save Tutorial\n" + e.Message);
+        }
+    }
+
+    public static TutorialSaveData LoadTutorial(int i)
+    {
+        string path = Application.persistentDataPath + TutorialPath + i + Extension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            TutorialSaveData data = formatter.Deserialize(stream) as TutorialSaveData;
+
+            stream.Close();
+
+            Debug.Log("Succesfully Loaded Tutorial " + i);
             return data;
         }
         else

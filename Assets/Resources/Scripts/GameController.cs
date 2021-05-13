@@ -2,8 +2,6 @@
 
 public class GameController : MonoBehaviour
 {
-    private AudioSource audioSrc;
-
     [SerializeField] private int saveTime = 120;
 
     public static Camera cam;
@@ -13,6 +11,8 @@ public class GameController : MonoBehaviour
     public static Pickup[] pickups;
     public static Interactable[] interactables;
     public static AirBubble[] bubbles;
+    public static GameObject[] abilities;
+    public static GameObject[] tutorials;
 
     public static GameObject savingIndicator;
 
@@ -54,6 +54,8 @@ public class GameController : MonoBehaviour
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
         bubbles = FindObjectsOfType<AirBubble>();
+        abilities = GameObject.FindGameObjectsWithTag("Ability");
+        tutorials = GameObject.FindGameObjectsWithTag("Tutorial");
 
         camAudio = cam.GetComponent<AudioSource>();
 
@@ -140,6 +142,16 @@ public class GameController : MonoBehaviour
         {
             SaveDataController.SaveBubble(i);
         }
+
+        for (int i = 0; i < abilities.Length; ++i)
+        {
+            SaveDataController.SaveAbility(i);
+        }
+
+        for (int i = 0; i < tutorials.Length; ++i)
+        {
+            SaveDataController.SaveTutorial(i);
+        }
     }
 
     private static void LoadGame()
@@ -209,6 +221,20 @@ public class GameController : MonoBehaviour
         {
             BubbleSaveData bubbleSaveData = SaveDataController.LoadBubble(i);
             bubbles[i].timeSincePopped = bubbleSaveData.timeSincePopped;
+        }
+
+        // Abilities.
+        for (int i = 0; i < abilities.Length; ++i)
+        {
+            AbilitySaveData abilitySaveData = SaveDataController.LoadAbility(i);
+            abilities[i].SetActive(!abilitySaveData.hasUsed);
+        }
+
+        // Tutorials.
+        for (int i = 0; i < tutorials.Length; ++i)
+        {
+            TutorialSaveData tutorialData = SaveDataController.LoadTutorial(i);
+            tutorials[i].SetActive(!tutorialData.hasUsed);
         }
     }
 }

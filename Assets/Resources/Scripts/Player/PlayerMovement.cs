@@ -1032,7 +1032,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
-        lockMovement = false;
+        if (!LoadTutorial.tutorial.activeSelf)
+        {
+            lockMovement = false;
+        }
         fadeAnim.ResetTrigger("Death");
 
         switch (deathCause)
@@ -1060,6 +1063,24 @@ public class PlayerMovement : MonoBehaviour
     public void GameOver()
     {
         anim.SetTrigger("Death");
+    }
+
+    public static void Freeze()
+    {
+        lockMovement = true;
+
+        GameController.player.moveVel = Vector2.zero;
+        GameController.player.jumpVel = 0f;
+        GameController.player.pounceVel = Vector2.zero;
+    }
+
+    public static void UnFreeze()
+    {
+        lockMovement = false;
+
+        GameController.player.moveVel = Vector2.zero;
+        GameController.player.jumpVel = 0f;
+        GameController.player.pounceVel = Vector2.zero;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

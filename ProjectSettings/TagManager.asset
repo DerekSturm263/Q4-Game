@@ -23,6 +23,8 @@ TagManager:
   - Saving
   - Requested
   - Music Player
+  - Ability
+  - Tutorial
   layers:
   - Default
   - TransparentFX

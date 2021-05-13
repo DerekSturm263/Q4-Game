@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-public class AbilityUnlock : Interactable
+public class AbilityUnlock : MonoBehaviour
 {
     [SerializeField] private byte ability;
 
-    public override void Effect()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!canUse)
-            return;
+        if (collision.CompareTag("Player"))
+        {
+            PlayerMovement.UnlockAbility(ability);
+            LoadTutorial.Display(AbilityTutorial.abilities[ability]);
 
-        Debug.Log("Button Pressed");
-        PlayerMovement.UnlockAbility(ability);
-
-        canUse = false;
+            gameObject.SetActive(false);
+        }
     }
 }

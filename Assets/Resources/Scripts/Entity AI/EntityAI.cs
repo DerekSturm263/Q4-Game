@@ -158,7 +158,10 @@ public abstract class EntityAI : MonoBehaviour
                     || Vector2.Distance(transform.position, likeableObjects[i].transform.position) <= viewDist / 3f)) // The enemy is facing towards the target.
                 {
                     target = likeableObjects[i];
-                    SoundPlayer.Play(alertSound);
+                    if (target == player)
+                    {
+                        SoundPlayer.Play(alertSound);
+                    }
                     chaseTime = chaseWaitTime;
                     break;
                 }
