@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Resources/Scenes/DerekScene.unity
-    guid: 0a92d7364e1226b4ab209a5c8caaa2e3
+    path: Assets/Resources/Scenes/Title.unity
+    guid: 426ef3f4989c3a340925a74030f8ffe5
   - enabled: 1
     path: Assets/Resources/Scenes/AidanScene.unity
     guid: 10ecd280320c9ef4e96f0db796e03fd4
+  - enabled: 1
+    path: Assets/Resources/Scenes/Results.unity
+    guid: f28b511f44de78d48a9e7accaf1fa359
+  - enabled: 1
+    path: Assets/Resources/Scenes/Credits.unity
+    guid: 5273cc4eeec1fc441b0ec57b5ce7f4ce
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: b4c26a12377a1e34f8fe40ff1b462865,
       type: 2}
