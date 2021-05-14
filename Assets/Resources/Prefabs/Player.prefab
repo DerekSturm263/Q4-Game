@@ -9783,7 +9783,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -9827,7 +9827,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.75
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -9930,29 +9930,25 @@ MonoBehaviour:
   defaultVignette: 0
   defaultColAdj: {r: 1, g: 1, b: 1, a: 1}
   underwaterColorAdj: {r: 0.8, g: 0.8, b: 1, a: 1}
-  nightVisionColorAdj: {r: 0.5, g: 1, b: 0.5, a: 1}
-  nightVisionExposure: 7
+  nightVisionColorAdj: {r: 0.66999996, g: 1, b: 0.66999996, a: 1}
+  nightVisionExposure: 4
   defaultDOF: 0
   footstep:
   - {fileID: 8300000, guid: f971dec175607514ca59e66db8b0fb71, type: 3}
   - {fileID: 8300000, guid: bcb1ec442d7a4fd4db49a8c2599c5c0a, type: 3}
   - {fileID: 8300000, guid: 2e9ea43346ee4a341ae18990a0b85497, type: 3}
-  jump:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   landOnGround:
   - {fileID: 8300000, guid: 4185e1f8115746f46ba698a49f16820a, type: 3}
   - {fileID: 8300000, guid: 405ebc5d12f96524282466475274997c, type: 3}
   - {fileID: 8300000, guid: c726580371a92f44c962cc6424806c80, type: 3}
-  landOnIce:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   waterSplash:
   - {fileID: 8300000, guid: d883412943259b2488e1d119517ffae3, type: 3}
   - {fileID: 8300000, guid: 764794308fdeffe48a8c62d05de027fd, type: 3}
   - {fileID: 8300000, guid: f06b101a4608919419fe8c2d40b3ee7e, type: 3}
+  swim:
+  - {fileID: 8300000, guid: 8538b1cd13d004a4c88074c7c3c2e69e, type: 3}
+  - {fileID: 8300000, guid: a61e82ce78cb56745a1d65c2ec3f352d, type: 3}
+  - {fileID: 8300000, guid: 63fe481a440782a46bc094428ad1c79e, type: 3}
   carrySpot: {x: 0.75, y: 0}
   maxYVelocity: 15
   defaultMaxYVelocity: 0
@@ -9971,7 +9967,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  lockMovement: 0
 --- !u!1 &8221768545389802812
 GameObject:
   m_ObjectHideFlags: 0
