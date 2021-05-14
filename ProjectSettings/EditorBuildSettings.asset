@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Resources/Scenes/DerekScene.unity
     guid: 0a92d7364e1226b4ab209a5c8caaa2e3
   - enabled: 1
