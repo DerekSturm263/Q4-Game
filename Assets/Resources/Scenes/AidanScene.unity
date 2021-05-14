@@ -72160,7 +72160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375889519}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -73.3, y: 0, z: -12.5}
+  m_LocalPosition: {x: -74.00006, y: 0.099998474, z: -12.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1558386239}
@@ -84526,12 +84526,12 @@ PrefabInstance:
     - target: {fileID: 8221768544477038131, guid: 2806807e892e8b441bc1d804a9bae922,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -73.29994
+      value: -74
       objectReference: {fileID: 0}
     - target: {fileID: 8221768544477038131, guid: 2806807e892e8b441bc1d804a9bae922,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8221768544477038131, guid: 2806807e892e8b441bc1d804a9bae922,
         type: 3}
@@ -94994,7 +94994,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 80157263}
   berryPrefab: {fileID: 1445613103}
   foodNumDisplay: {fileID: 636260014}
-  cycleLength: 5
+  cycleLength: 0.25
   pauseMenu: {fileID: 0}
   takeAwayBerries: 10
 --- !u!114 &2083880825
