@@ -1055,7 +1055,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         cam.gameObject.transform.position = transform.position + cam.GetOffset();
-        anim.ResetTrigger("Jump");
+
+        anim.enabled = false;
+        anim.enabled = true;
 
         ExitWater(false);
     }

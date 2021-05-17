@@ -40,6 +40,15 @@ public class FlyingAI : EntityAI
             direction = 1f;
         }
 
+        anim.SetBool("Is Diving", true);
+        if (sprtRndr.flipX)
+        {
+            transform.right = -moveVel.normalized;
+        }
+        else
+        {
+            transform.right = moveVel.normalized;
+        }
         moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -0.8f, direction).normalized, Time.deltaTime * chaseTurnAroundSpeed);
     }
 
@@ -52,7 +61,10 @@ public class FlyingAI : EntityAI
         }
 
         isDiving = false;
+
         // Applies proper velocity.
+        anim.SetBool("Is Diving", false);
+        transform.right = Vector2.right;
         moveVel = Vector2.Lerp(moveVel, -((Vector2) transform.position - currentGoal).normalized, Time.deltaTime * wanderTurnAroundSpeed);
     }
 
