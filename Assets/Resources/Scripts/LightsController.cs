@@ -15,7 +15,8 @@ public class LightsController : MonoBehaviour
     [SerializeField] private Color night;
     [SerializeField] private Color dawn;
 
-    public static float strength = 1f;
+    public static float targetStrength = 1f;
+    private static float strength = 1f;
 
     private void Awake()
     {
@@ -24,7 +25,9 @@ public class LightsController : MonoBehaviour
 
     private void Update()
     {
+        strength = Mathf.Lerp(strength, targetStrength, Time.deltaTime * 5f);
         rotationLights.rotation = uiCont.timeDisplay.transform.rotation;
+        skyLight.intensity = 0.9f * strength;
 
         if (UIController.timeTitle == "day")
         {

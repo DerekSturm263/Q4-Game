@@ -109,9 +109,9 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 carrySpot = new Vector2(0.25f, 0f);
 
     public static byte abilities = 0b_0000_0000; // Byte value representing unlocked abilities that the player has.
-    private readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
-    private readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
-    private readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
+    public static readonly byte wallClimb = 0b_0000_0001; // Byte value representing unlocked abilities that the player has. 1.
+    public static readonly byte nightVision = 0b_0000_0010; // Byte value representing unlocked abilities that the player has. 2.
+    public static readonly byte longerUnderwater = 0b_0000_0100; // Byte value representing unlocked abilities that the player has. 4.
 
     public float maxYVelocity = 15f;
     [HideInInspector] public float defaultMaxYVelocity;

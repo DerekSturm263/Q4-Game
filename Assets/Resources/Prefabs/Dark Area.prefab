@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2628000082898693198}
   - component: {fileID: 8612448705767656447}
   - component: {fileID: 8778739777379117048}
+  - component: {fileID: 8108372528213356247}
   m_Layer: 14
   m_Name: Dark Area
   m_TagString: Dark Area
@@ -260,3 +261,15 @@ PolygonCollider2D:
       - {x: -28.170303, y: -14.594658}
       - {x: -28.553635, y: -14.313369}
       - {x: -28.795376, y: -14.126806}
+--- !u!114 &8108372528213356247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294648285937127686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9520d81cc7f1569479c81834a69b23fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
