@@ -156,7 +156,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 1315350181}
   berryPrefab: {fileID: 1885386307}
   foodNumDisplay: {fileID: 1006325918}
-  cycleLength: 5
+  cycleLength: 0.5
   pauseMenu: {fileID: 1697703171}
   takeAwayBerries: 2
 --- !u!114 &105308037
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -387,10 +387,10 @@ RectTransform:
   m_Father: {fileID: 1315350182}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.025, y: 1}
-  m_AnchorMax: {x: 0.025, y: 1}
-  m_AnchoredPosition: {x: -55, y: -48.226395}
-  m_SizeDelta: {x: 35.762146, y: 35.762146}
+  m_AnchorMin: {x: 0, y: 0.40280652}
+  m_AnchorMax: {x: 0.089, y: 0.5918066}
+  m_AnchoredPosition: {x: -9, y: 0.5}
+  m_SizeDelta: {x: 17, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &782969015
 GameObject:
@@ -974,10 +974,10 @@ RectTransform:
   m_Father: {fileID: 1205112885}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -22.099945, y: -115.99644}
-  m_SizeDelta: {x: 16.362663, y: 17.550594}
+  m_AnchorMin: {x: 0.42200002, y: 0.110327825}
+  m_AnchorMax: {x: 0.42200002, y: 0.110327825}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 16.362663, y: 17.550598}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1006325918
 MonoBehaviour:
@@ -1313,10 +1313,10 @@ RectTransform:
   m_Father: {fileID: 105308040}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -270, y: 104}
-  m_SizeDelta: {x: 300.6721, y: 300.6721}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: -315}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1205112886
 MonoBehaviour:
@@ -1417,7 +1417,7 @@ RectTransform:
   m_GameObject: {fileID: 1315350181}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.75, y: 2.75, z: 2.75}
   m_Children:
   - {fileID: 706245363}
   - {fileID: 2038169047}
@@ -1426,7 +1426,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.7, y: 73.49999}
+  m_AnchoredPosition: {x: -10.1, y: 127.9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1351954566
@@ -1581,7 +1581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1367818267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1841,17 +1841,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038169046}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1315350182}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.025, y: 1}
-  m_AnchorMax: {x: 0.025, y: 1}
-  m_AnchoredPosition: {x: 149.1, y: -48.226395}
-  m_SizeDelta: {x: 26.099579, y: 25.22107}
+  m_AnchorMin: {x: 0.93500006, y: 0.42979026}
+  m_AnchorMax: {x: 1, y: 0.5648066}
+  m_AnchoredPosition: {x: 6.5, y: 0.5}
+  m_SizeDelta: {x: 12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2038169048
 MonoBehaviour:
@@ -1866,9 +1866,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+  m_Color: {r: 0.41424885, g: 0.7150631, b: 0.8207547, a: 1}
   m_RaycastTarget: 1
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1878,7 +1878,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0.654
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
