@@ -15,6 +15,8 @@ public class LightsController : MonoBehaviour
     [SerializeField] private Color night;
     [SerializeField] private Color dawn;
 
+    public static float strength = 1f;
+
     private void Awake()
     {
         uiCont = FindObjectOfType<UIController>();
@@ -28,29 +30,29 @@ public class LightsController : MonoBehaviour
         {
             skyLight.color = day;
 
-            sunLight.intensity = 1f;
-            moonLight.intensity = 0f;
+            sunLight.intensity = 1f * strength;
+            moonLight.intensity = 0f * strength;
         }
         else if (UIController.timeTitle == "dusk")
         {
             skyLight.color = CustomLerp(day, dusk, night, 1 - (rotationLights.rotation.eulerAngles.z + 150f) % 30f / 29f);
 
-            sunLight.intensity = Mathf.Lerp(0f, 1f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
-            moonLight.intensity = Mathf.Lerp(0.5f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
+            sunLight.intensity = Mathf.Lerp(0f, 1f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            moonLight.intensity = Mathf.Lerp(0.5f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
         }
         else if(UIController.timeTitle == "night")
         {
             skyLight.color = night;
 
-            sunLight.intensity = 0f;
-            moonLight.intensity = 0.5f;
+            sunLight.intensity = 0f * strength;
+            moonLight.intensity = 0.5f * strength;
         }
         else
         {
             skyLight.color = CustomLerp(night, dawn, day, 1 - (rotationLights.rotation.eulerAngles.z + 30f) % 30f / 29f);
 
-            sunLight.intensity = Mathf.Lerp(1f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
-            moonLight.intensity = Mathf.Lerp(0f, 0.5f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f);
+            sunLight.intensity = Mathf.Lerp(1f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            moonLight.intensity = Mathf.Lerp(0f, 0.5f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
         }
     }
 

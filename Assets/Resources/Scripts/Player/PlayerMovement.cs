@@ -147,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float breathLeftUnderwater;
     [SerializeField] private LayerMask itemMask = 1 << 11;
 
-    private bool isInDarkZone = false;
+    public static bool isInDarkZone = false;
 
     [SerializeField] private ParticleSystem[] snowfall = new ParticleSystem[3];
     private ParticleSystem.EmissionModule[] snowfallParticles = new ParticleSystem.EmissionModule[3];
@@ -1097,10 +1097,6 @@ public class PlayerMovement : MonoBehaviour
             waterSplashParticles.Play();
             PlaySound(waterSplash, true);
         }
-        else if (collision.CompareTag("Dark Area"))
-        {
-            isInDarkZone = true;
-        }
         else if (collision.CompareTag("Thorns"))
         {
             Die(3);
@@ -1149,10 +1145,6 @@ public class PlayerMovement : MonoBehaviour
         {
             waterSplashParticles.Play();
             PlaySound(waterSplash, true);
-        }
-        else if (collision.CompareTag("Dark Area"))
-        {
-            isInDarkZone = false;
         }
         else if (collision.CompareTag("Pickup"))
         {

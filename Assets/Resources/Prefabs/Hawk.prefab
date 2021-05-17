@@ -774,7 +774,7 @@ MonoBehaviour:
   underwaterGravity: 0.5
   isHostile: 1
   isActive: 0
-  viewDist: 8.5
+  viewDist: 0
   likeableObjects:
   - {fileID: 0}
   chaseSpeed: 10
