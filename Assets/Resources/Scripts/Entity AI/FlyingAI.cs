@@ -70,7 +70,7 @@ public class FlyingAI : EntityAI
 
     protected override Vector2 NewPosition()
     {
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log(name + ": New Position");
         }

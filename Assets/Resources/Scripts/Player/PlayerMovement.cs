@@ -5,7 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private CameraFollow cam;
 
-    [SerializeField] private bool showDebugs = false;
+    [SerializeField] private bool useDebugs = false;
+    [SerializeField] private bool useCheats = false;
 
     public enum MoveState
     {
@@ -340,22 +341,11 @@ public class PlayerMovement : MonoBehaviour
 
         #region Debug
 
-        if (showDebugs)
+        if (useCheats)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                abilities = 0b_0000_0001;
-            }
+            abilities = 0b_0000_0111;
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                abilities = 0b_0000_0010;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                abilities = 0b_0000_0100;
-            }
+            breathLeftUnderwater = maxUnderwaterBreath;
         }
 
         #endregion
@@ -447,7 +437,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetFloat("Move Vel", moveVel.x);
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Movement" + moveVel);
         }
@@ -487,7 +477,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetBool("Is Running", isRunning);
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Speed: " + currentSpeed);
         }
@@ -545,7 +535,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             timeSinceGround = coyoteTime;
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log("Player Is Jumping");
             }
@@ -555,7 +545,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpLeft = 0f;
 
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log("Player Is Not Jumping");
             }
@@ -592,7 +582,7 @@ public class PlayerMovement : MonoBehaviour
             col2D.points = colCrouchingPoints;
             groundedBoxSize = new Vector2(1.75f, 0.05f);
 
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log("Player Is Crouching");
             }
@@ -620,7 +610,7 @@ public class PlayerMovement : MonoBehaviour
             currentTurnAroundSpeed = 20f;
             cam.SetOffset(CameraFollow.lookUpOffset);
 
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log("Player Is Looking Up");
             }
@@ -641,7 +631,7 @@ public class PlayerMovement : MonoBehaviour
         PlaySound(swim, true, 1f, 0.5f);
         rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Is Swimming");
         }
@@ -659,7 +649,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetTrigger("Pounce");
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Pounced");
         }
@@ -685,7 +675,7 @@ public class PlayerMovement : MonoBehaviour
         pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
         rb2D.gravityScale = moveState == MoveState.Ground ? aboveGroundGravity : underwaterGravity;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Slowing Pounce");
         }
@@ -707,7 +697,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetBool("Is Climbing", true);
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Began Climbing");
         }
@@ -725,7 +715,7 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetBool("Is Climbing", false);
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Ended Climbing");
         }
@@ -744,7 +734,7 @@ public class PlayerMovement : MonoBehaviour
             // Pickup Item.
             if (overlappingItem.CompareTag("Pickup"))
             {
-                if (showDebugs)
+                if (useDebugs)
                 {
                     Debug.Log("Player Picked Up An Item");
                 }
@@ -796,7 +786,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Threw An Item");
         }
@@ -935,7 +925,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position + groundedBoxOffset, groundedBoxSize, 0f, Vector2.down, 0f, ground);
         bool isGrounded = hit;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Grounded: " + isGrounded);
         }
@@ -960,7 +950,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position + dir, wallBoxSize, 0f, Vector2.zero, 0f, wall);
         bool isWall = hit;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Wall: " + isWall);
         }
@@ -974,7 +964,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, transform.localScale, 0f, Vector2.down, 0f, itemMask);
         bool isItem = hit;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Item Detected");
         }
@@ -993,7 +983,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, waterBoxSize, 0f, Vector2.down, 0f, water);
         bool isWater = hit;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Water Detected");
         }
@@ -1027,7 +1017,7 @@ public class PlayerMovement : MonoBehaviour
         fade.gameObject.SetActive(true);
         fadeAnim.SetTrigger("Death");
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Died");
         }
@@ -1109,7 +1099,7 @@ public class PlayerMovement : MonoBehaviour
             overlappingItem = collision.gameObject;
         }
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Entered: " + collision.name);
         }
@@ -1154,7 +1144,7 @@ public class PlayerMovement : MonoBehaviour
             overlappingItem = null;
         }
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log("Player Exited: " + collision.name);
         }
@@ -1172,7 +1162,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isSliding = targetVel.x != 0f && Mathf.Abs(rb2D.velocity.magnitude) < 0.1f && !IsGrounded();
 
-        if (showDebugs && isSliding)
+        if (useDebugs && isSliding)
         {
             Debug.Log("Player is Sliding");
         }

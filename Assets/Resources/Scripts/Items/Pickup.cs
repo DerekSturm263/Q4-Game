@@ -20,7 +20,7 @@ public class Pickup : MonoBehaviour
     [HideInInspector] public GameObject carrier;
     public float weight = 1f;
 
-    [SerializeField] private bool showDebugs;
+    [SerializeField] private bool useDebugs;
     [HideInInspector] public float timeSinceGrabbed;
 
     [HideInInspector] public Vector2 outsideVel;
@@ -109,7 +109,7 @@ public class Pickup : MonoBehaviour
     {
         if (collision.CompareTag("Water"))
         {
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log(name + " Entered Water");
             }
@@ -124,7 +124,7 @@ public class Pickup : MonoBehaviour
     {
         if (collision.CompareTag("Water"))
         {
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log(name + " Exited Water");
             }

@@ -42,7 +42,7 @@ public class LoadTutorial : MonoBehaviour
         {
             Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place." +
                 "Monsters will begin spawning in unsual places, and you must be prepared for anything;" +
-                "however, each night that you succesfully survive grants you extra berries.");
+                "however, it is easier to spot berries and other items at night");
         }
 
         if (Input.GetKeyDown(KeyCode.P))

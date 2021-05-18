@@ -6,7 +6,7 @@ public abstract class EntityAI : MonoBehaviour
 {
     public static List<GameObject> entities = new List<GameObject>();
 
-    [SerializeField] protected bool showDebugs;
+    [SerializeField] protected bool useDebugs;
 
     private Camera cam;
     private PlayerMovement playerMov;
@@ -121,7 +121,7 @@ public abstract class EntityAI : MonoBehaviour
         Vector2 camView = cam.WorldToViewportPoint(transform.position);
         isActive = camView.x > -0.25f && camView.x < 1.25f && camView.y > -0.25f && camView.y < 1.25f;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log(name + " is " + (isActive ? "active" : "not active"));
         }
@@ -179,7 +179,7 @@ public abstract class EntityAI : MonoBehaviour
             }
         }
 
-        if (showDebugs && target)
+        if (useDebugs && target)
         {
             Debug.Log(target.name);
         }
@@ -228,7 +228,7 @@ public abstract class EntityAI : MonoBehaviour
         // Checks if it's touching the player or an object. If it's the player, it kills the player, if it's an object then it grabs the object.
         if (!isSatisfied && isHostile && CheckForObject(out Transform obj))
         {
-            if (showDebugs)
+            if (useDebugs)
             {
                 Debug.Log(obj);
             }
@@ -281,7 +281,7 @@ public abstract class EntityAI : MonoBehaviour
     {
         transform.position = lastPos;
 
-        if (showDebugs)
+        if (useDebugs)
         {
             Debug.Log(name + " Respawned");
         }
