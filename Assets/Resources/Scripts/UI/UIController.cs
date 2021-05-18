@@ -136,6 +136,8 @@ public class UIController : MonoBehaviour
 
     public static void TryPause()
     {
+        Debug.Log("Pause");
+
         if (isPaused)
         {
             ui.Resume();
