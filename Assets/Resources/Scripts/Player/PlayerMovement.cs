@@ -167,6 +167,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2[] colPoints = new Vector2[8];
     private Vector2[] colCrouchingPoints = new Vector2[8];
 
+    public static uint deathCount = 0;
+
     private void Awake()
     {
         cam = Camera.main.GetComponent<CameraFollow>();
@@ -1020,6 +1022,7 @@ public class PlayerMovement : MonoBehaviour
         moveVel = Vector2.zero;
         jumpVel = 0f;
         pounceVel = Vector2.zero;
+        deathCount++;
 
         fade.gameObject.SetActive(true);
         fadeAnim.SetTrigger("Death");
