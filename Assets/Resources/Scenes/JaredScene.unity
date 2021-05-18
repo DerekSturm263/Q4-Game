@@ -156,7 +156,7 @@ MonoBehaviour:
   timeDisplay: {fileID: 1315350181}
   berryPrefab: {fileID: 1885386307}
   foodNumDisplay: {fileID: 1006325918}
-  cycleLength: 0.5
+  cycleLength: 1
   pauseMenu: {fileID: 1697703171}
   takeAwayBerries: 2
 --- !u!114 &105308037

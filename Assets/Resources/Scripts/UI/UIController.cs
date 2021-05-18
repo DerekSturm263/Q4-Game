@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     public static float time;
     public static string timeTitle;  //Ex: "dawn", "day" ...
     public float cycleLength;  //Minutes for a full day/night cycle
+    public static float numDays;
     private float cycleSeconds;
     private Quaternion timeDisplayRoation;
 
@@ -23,12 +24,17 @@ public class UIController : MonoBehaviour
 
     public float takeAwayBerries; //How many berries are taken away each dusk
 
+    public static bool sendDuskMessage = true;
+    public static bool sendNightMessage = true;
+
     void Start()
     {
         cycleSeconds = cycleLength * 60;
         timeDisplayRoation = Quaternion.identity;
 
         foodNumDisplay.text = "" + numFood;
+
+        time = cycleSeconds * 0.075f;
     }
     
     void Update()
@@ -36,7 +42,10 @@ public class UIController : MonoBehaviour
         time += Time.deltaTime;
         float rotCalc = -((time / cycleSeconds) * 360);
         if (rotCalc <= -360)
+        {
             time = 0;
+            numDays++;
+        }
         Vector3 rotationVector = new Vector3(0, 0, rotCalc);
         timeDisplayRoation.eulerAngles = rotationVector;
 
@@ -45,10 +54,26 @@ public class UIController : MonoBehaviour
         if ((int)rotCalc == -180 && timeTitle != "night")
         {
             timeTitle = "night";
+            TakeFood((int)takeAwayBerries); // Food is taken away every day at night
+            SoundPlayer.Play("food_time");
+
+            if (sendNightMessage)
+            {
+                LoadTutorial.Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place." +
+                    "Monsters will begin spawning in unusual places, and you must be prepared for anything;" +
+                    "however, it is easier to spot berries and other items at night");
+                sendNightMessage = false;
+            }
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
         {
             timeTitle = "dusk";
-            TakeFood((int)takeAwayBerries); // Food is taken away every day at dusk
+            if (sendDuskMessage)
+            {
+                LoadTutorial.Display("Feeding The Tribe", "Each night, you must have enough berries to feed the tribe, otherwise it's game over." +
+                "The tribe requires 10 berries every night to survive." +
+                "You can find berries around the world by solving puzzles and exploring.");
+                sendDuskMessage = false;
+            }
         } else if ((int)rotCalc == -30 && timeTitle != "day")
         {
             timeTitle = "day";
