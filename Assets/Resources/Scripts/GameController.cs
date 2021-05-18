@@ -77,11 +77,6 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U) || ((int) Time.realtimeSinceStartup % saveTime == 0 && !savingIndicator.activeSelf))
-        {
-            SaveGame();
-        }
-
         if (UIController.timeTitle == "night")
         {
             musicVolume = 0f;
@@ -113,6 +108,14 @@ public class GameController : MonoBehaviour
         source.pitch = pitch;
         source.volume = volume;
         source.Play();
+    }
+
+    public static void TrySaveGame()
+    {
+        if (savingIndicator.activeSelf)
+            return;
+
+        SaveGame();
     }
 
     private static void SaveGame()

@@ -6,6 +6,8 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
+    private static UIController ui;
+
     public GameObject timeDisplay;
     public GameObject berryPrefab;
     public TextMeshProUGUI foodNumDisplay;
@@ -29,6 +31,8 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
+        ui = this;
+
         cycleSeconds = cycleLength * 60;
         timeDisplayRoation = Quaternion.identity;
 
@@ -88,17 +92,6 @@ public class UIController : MonoBehaviour
         //Debug.Log(timeDisplayRoation.eulerAngles);
 
         //Pause Menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
-        }
     }
 
     public void GiveFood(int numFoodToGive)
@@ -138,6 +131,18 @@ public class UIController : MonoBehaviour
 
             foodNumDisplay.text = "" + numFood;
             //Debug.Log(numFood);
+        }
+    }
+
+    public static void TryPause()
+    {
+        if (isPaused)
+        {
+            ui.Resume();
+        }
+        else
+        {
+            ui.Pause();
         }
     }
 

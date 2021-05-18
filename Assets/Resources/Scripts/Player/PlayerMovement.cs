@@ -215,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Swim.performed += _ => Swim();
 
         controls.UI.Select.performed += _ => LoadTutorial.Disable();
+        controls.UI.Select.performed += _ => UIController.TryPause();
 
         fadeAnim = fade.GetComponent<Animator>();
 
