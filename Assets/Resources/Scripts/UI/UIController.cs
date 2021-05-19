@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour
     public static float time;
     public static string timeTitle;  //Ex: "dawn", "day" ...
     public float cycleLength;  //Minutes for a full day/night cycle
-    public static float numDays;
+    public static int numDays = 1;
     private float cycleSeconds;
     private Quaternion timeDisplayRoation;
 
@@ -23,6 +23,7 @@ public class UIController : MonoBehaviour
     public GameObject pauseMenu;
 
     public static float numFood;
+    public static float timePassedSinceGameBegun = 0f;
 
     public float takeAwayBerries; //How many berries are taken away each dusk
 
@@ -44,11 +45,14 @@ public class UIController : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
+        timePassedSinceGameBegun += Time.deltaTime;
+
         float rotCalc = -((time / cycleSeconds) * 360);
         if (rotCalc <= -360)
         {
             time = 0;
             numDays++;
+            GameController.TryAutoSaveGame();
         }
         Vector3 rotationVector = new Vector3(0, 0, rotCalc);
         timeDisplayRoation.eulerAngles = rotationVector;
@@ -61,7 +65,7 @@ public class UIController : MonoBehaviour
             TakeFood((int)takeAwayBerries); // Food is taken away every day at night
             SoundPlayer.Play("food_time");
 
-            if (sendNightMessage)
+            if (sendNightMessage && numDays == 1)
             {
                 LoadTutorial.Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place. " +
                     "Monsters will begin spawning in unusual places, and you must be prepared for anything. " +
@@ -71,7 +75,7 @@ public class UIController : MonoBehaviour
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
         {
             timeTitle = "dusk";
-            if (sendDuskMessage)
+            if (sendDuskMessage && numDays == 1)
             {
                 LoadTutorial.Display("Feeding The Tribe", "Each night, you must have enough berries to feed the tribe, otherwise it's game over." +
                 "The tribe requires 10 berries every night to survive." +

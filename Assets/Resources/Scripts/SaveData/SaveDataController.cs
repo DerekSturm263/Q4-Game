@@ -6,6 +6,9 @@ public static class SaveDataController
 {
     public const string Extension = ".data";
 
+    public const string AutoSavePath = "/Auto Save";
+    public const string ManualSavePath = "/Manual Save";
+
     public const string CameraPath = "/camera" + Extension;
     public const string PlayerPath = "/player" + Extension;
     public const string UIPath = "/ui" + Extension;
@@ -18,18 +21,19 @@ public static class SaveDataController
 
     public static bool HasSave()
     {
-        return File.Exists(Application.persistentDataPath + PlayerPath);
+        return File.Exists(Application.persistentDataPath + AutoSavePath + PlayerPath) && File.Exists(Application.persistentDataPath + ManualSavePath + PlayerPath);
     }
 
     #region Camera
 
-    public static void SaveCamera()
+    public static void SaveCamera(string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + CameraPath;
+            string path = filePath + CameraPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             CameraSaveData data = new CameraSaveData(GameController.cam);
 
@@ -44,13 +48,14 @@ public static class SaveDataController
         }
     }
 
-    public static CameraSaveData LoadCamera()
+    public static CameraSaveData LoadCamera(string filePath)
     {
-        string path = Application.persistentDataPath + CameraPath;
+        string path = filePath + CameraPath;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             CameraSaveData data = formatter.Deserialize(stream) as CameraSaveData;
 
@@ -70,13 +75,14 @@ public static class SaveDataController
 
     #region Player
 
-    public static void SavePlayer()
+    public static void SavePlayer(string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + PlayerPath;
+            string path = filePath + PlayerPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             PlayerSaveData data = new PlayerSaveData(GameController.player);
 
@@ -91,13 +97,14 @@ public static class SaveDataController
         }
     }
 
-    public static PlayerSaveData LoadPlayer()
+    public static PlayerSaveData LoadPlayer(string filePath)
     {
-        string path = Application.persistentDataPath + PlayerPath;
+        string path = filePath + PlayerPath;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             PlayerSaveData data = formatter.Deserialize(stream) as PlayerSaveData;
 
@@ -117,13 +124,14 @@ public static class SaveDataController
 
     #region UI
 
-    public static void SaveUI()
+    public static void SaveUI(string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + UIPath;
+            string path = filePath + UIPath;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             UISaveData data = new UISaveData(GameController.uiCont);
 
@@ -138,13 +146,14 @@ public static class SaveDataController
         }
     }
 
-    public static UISaveData LoadUI()
+    public static UISaveData LoadUI(string filePath)
     {
-        string path = Application.persistentDataPath + UIPath;
+        string path = filePath + UIPath;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             UISaveData data = formatter.Deserialize(stream) as UISaveData;
 
@@ -164,13 +173,14 @@ public static class SaveDataController
 
     #region Entities
 
-    public static void SaveEntity(int i)
+    public static void SaveEntity(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + EntityPath + i + Extension;
+            string path = filePath + EntityPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             EntitySaveData data = new EntitySaveData(GameController.entities[i]);
 
@@ -185,13 +195,14 @@ public static class SaveDataController
         }
     }
 
-    public static EntitySaveData LoadEntity(int i)
+    public static EntitySaveData LoadEntity(int i, string filePath)
     {
-        string path = Application.persistentDataPath + EntityPath + i + Extension;
+        string path = filePath + EntityPath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             EntitySaveData data = formatter.Deserialize(stream) as EntitySaveData;
 
@@ -211,13 +222,14 @@ public static class SaveDataController
 
     #region Pickups
 
-    public static void SavePickup(int i)
+    public static void SavePickup(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + PickupPath + i + Extension;
+            string path = filePath + PickupPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             PickupSaveData data = new PickupSaveData(GameController.pickups[i]);
 
@@ -232,13 +244,14 @@ public static class SaveDataController
         }
     }
 
-    public static PickupSaveData LoadPickup(int i)
+    public static PickupSaveData LoadPickup(int i, string filePath)
     {
-        string path = Application.persistentDataPath + PickupPath + i + Extension;
+        string path = filePath + PickupPath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             PickupSaveData data = formatter.Deserialize(stream) as PickupSaveData;
 
@@ -258,13 +271,14 @@ public static class SaveDataController
 
     #region Interactables
 
-    public static void SaveInteractable(int i)
+    public static void SaveInteractable(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + InteractablePath + i + Extension;
+            string path = filePath + InteractablePath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             InteractableSaveData data = new InteractableSaveData(GameController.interactables[i]);
 
@@ -279,13 +293,14 @@ public static class SaveDataController
         }
     }
 
-    public static InteractableSaveData LoadInteractable(int i)
+    public static InteractableSaveData LoadInteractable(int i, string filePath)
     {
-        string path = Application.persistentDataPath + InteractablePath + i + Extension;
+        string path = filePath + InteractablePath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             InteractableSaveData data = formatter.Deserialize(stream) as InteractableSaveData;
 
@@ -305,13 +320,14 @@ public static class SaveDataController
 
     #region Bubbles
 
-    public static void SaveBubble(int i)
+    public static void SaveBubble(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + BubblePath + i + Extension;
+            string path = filePath + BubblePath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             BubbleSaveData data = new BubbleSaveData(GameController.bubbles[i]);
 
@@ -326,13 +342,14 @@ public static class SaveDataController
         }
     }
 
-    public static BubbleSaveData LoadBubble(int i)
+    public static BubbleSaveData LoadBubble(int i, string filePath)
     {
-        string path = Application.persistentDataPath + BubblePath + i + Extension;
+        string path = filePath + BubblePath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             BubbleSaveData data = formatter.Deserialize(stream) as BubbleSaveData;
 
@@ -352,13 +369,14 @@ public static class SaveDataController
 
     #region Abilities
 
-    public static void SaveAbility(int i)
+    public static void SaveAbility(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + AbilityPath + i + Extension;
+            string path = filePath + AbilityPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             AbilitySaveData data = new AbilitySaveData(GameController.abilities[i]);
 
@@ -373,13 +391,14 @@ public static class SaveDataController
         }
     }
 
-    public static AbilitySaveData LoadAbility(int i)
+    public static AbilitySaveData LoadAbility(int i, string filePath)
     {
-        string path = Application.persistentDataPath + AbilityPath + i + Extension;
+        string path = filePath + AbilityPath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             AbilitySaveData data = formatter.Deserialize(stream) as AbilitySaveData;
 
@@ -399,13 +418,14 @@ public static class SaveDataController
 
     #region Tutorials
 
-    public static void SaveTutorial(int i)
+    public static void SaveTutorial(int i, string filePath)
     {
         try
         {
-            string path = Application.persistentDataPath + TutorialPath + i + Extension;
+            string path = filePath + TutorialPath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
             TutorialSaveData data = new TutorialSaveData(GameController.tutorials[i]);
 
@@ -420,13 +440,14 @@ public static class SaveDataController
         }
     }
 
-    public static TutorialSaveData LoadTutorial(int i)
+    public static TutorialSaveData LoadTutorial(int i, string filePath)
     {
-        string path = Application.persistentDataPath + TutorialPath + i + Extension;
+        string path = filePath + TutorialPath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
+            Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
             TutorialSaveData data = formatter.Deserialize(stream) as TutorialSaveData;
 

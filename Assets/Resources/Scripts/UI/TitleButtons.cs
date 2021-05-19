@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class TitleButtons : MonoBehaviour
 {
+    public Animator anim;
+
     public GameObject startButton;
     public GameObject gameButtons;
 
@@ -15,8 +13,30 @@ public class TitleButtons : MonoBehaviour
         gameButtons.SetActive(true);
     }
 
-    public void LoadScene(string sceneToLoad)
+    public void Credits()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        anim.SetTrigger("Exit");
+    }
+
+    public void NewGame()
+    {
+        anim.SetTrigger("Exit2");
+        GameController.newGame = true;
+    }
+
+    public void LoadGame()
+    {
+        anim.SetTrigger("Exit2");
+        GameController.newGame = false;
+    }
+
+    public void OpenSettings()
+    {
+
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

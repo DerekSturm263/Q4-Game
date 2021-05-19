@@ -7,12 +7,18 @@ public class UISaveData
     public float berryCount;
     public float sunRotation;
 
+    public int daysPassed;
+    public float timePassed;
+
     public UISaveData(UIController cont)
     {
-        time = UIController.time;
-        timeTitle = UIController.timeTitle;
-
-        berryCount = UIController.numFood;
-        sunRotation = cont.timeDisplay.transform.rotation.eulerAngles.z;
+        this.time = UIController.time;
+        this.timeTitle = UIController.timeTitle;
+        
+        this.berryCount = UIController.numFood;
+        this.sunRotation = cont.timeDisplay.transform.rotation.eulerAngles.z;
+        
+        this.daysPassed = UIController.numDays;
+        this.timePassed = UIController.timePassedSinceGameBegun;
     }
 }

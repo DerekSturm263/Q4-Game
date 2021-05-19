@@ -11,6 +11,9 @@ public class PlayerSaveData
     public float[] lastPosBeforeFoodRunsOut = new float[2];
     public float[] lastPosBeforeThorns = new float[2];
 
+    public uint deathCount;
+    public uint berriesCollected;
+
     public PlayerSaveData(PlayerMovement player)
     {
         this.position[0] = player.transform.position.x;
@@ -30,5 +33,8 @@ public class PlayerSaveData
         this.lastPosBeforeFoodRunsOut[1] = PlayerMovement.lastPosBeforeFoodRunsOut.y;
         this.lastPosBeforeThorns[0] = PlayerMovement.lastPosBeforeThorns.x;
         this.lastPosBeforeThorns[1] = PlayerMovement.lastPosBeforeThorns.y;
+
+        this.deathCount = PlayerMovement.deathCount;
+        this.berriesCollected = CollectBerries.berriesCollectedNum;
     }
 }
