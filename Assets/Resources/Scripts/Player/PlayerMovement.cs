@@ -372,7 +372,7 @@ public class PlayerMovement : MonoBehaviour
         targetVel.y += jumpVel;
         targetVel += pounceVel;
 
-        if (targetVel.x != 0f)
+        if (targetVel.x != 0f && moveState != MoveState.Wall)
         {
             sprtRndr.flipX = targetVel.x < 0f;
         }
@@ -408,10 +408,12 @@ public class PlayerMovement : MonoBehaviour
                 if (IsBackgroundWall(moveVal * 1.5f))
                 {
                     moveVel = Vector2.Lerp(moveVel, moveVal, Time.deltaTime * currentTurnAroundSpeed);
+                    anim.SetFloat("Climbing Vel", moveVel.magnitude);
                 }
                 else
                 {
                     moveVel = Vector2.zero;
+                    anim.SetFloat("Climbing Vel", 0f);
                 }
                 break;
             // Walking/Running/Swimming.

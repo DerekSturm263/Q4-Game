@@ -64,8 +64,8 @@ public class UIController : MonoBehaviour
             if (sendNightMessage)
             {
                 LoadTutorial.Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place. " +
-                    "Monsters will begin spawning in unusual places, and you must be prepared for anything; " +
-                    "however, it is easier to spot berries and other items at night");
+                    "Monsters will begin spawning in unusual places, and you must be prepared for anything. " +
+                    "However, it is easier to spot berries and other items at night.");
                 sendNightMessage = false;
             }
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
