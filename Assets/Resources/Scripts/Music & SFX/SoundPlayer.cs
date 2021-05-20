@@ -18,6 +18,7 @@ public static class SoundPlayer
         }
 
         audioSource = new GameObject("Sound Player").AddComponent<AudioSource>();
+        GameObject.DontDestroyOnLoad(audioSource.gameObject);
     }
 
     #region PlaySound Methods

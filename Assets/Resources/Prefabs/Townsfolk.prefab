@@ -4830,7 +4830,7 @@ SpriteRenderer:
   m_SortingLayerID: -643632887
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7711884721034271394, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0,
+  m_Sprite: {fileID: 1037095391050255364, guid: 827c607047f75ce4d934e75ea6daea36,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4873,7 +4873,7 @@ Animator:
   m_GameObject: {fileID: 1818681666195074300}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 22dcb385d2402d04581098aba8abc915, type: 2}
+  m_Controller: {fileID: 22100000, guid: 6ba3610cc6279dc4b9f011f78634a6d6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4920,7 +4920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 981632794c1faa545980a9c0ea6b264e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showDebugs: 0
+  useDebugs: 0
   ground:
     serializedVersion: 2
     m_Bits: 512
@@ -4942,6 +4942,11 @@ MonoBehaviour:
   isSatisfied: 0
   pickupNum: 0
   carrySpot: {x: 0.25, y: 0}
+  alertSound: {fileID: 0}
+  idleSound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   minWaitTime: 0
   maxWaitTime: 3
   minWanderSpeed: 2

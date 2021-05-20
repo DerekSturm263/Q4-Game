@@ -23,6 +23,9 @@ public static class MusicPlayer
         audioSource[1].loop = true;
         audioSource[0].tag = "Music Player";
         audioSource[1].tag = "Music Player";
+
+        GameObject.DontDestroyOnLoad(audioSource[0].gameObject);
+        GameObject.DontDestroyOnLoad(audioSource[1].gameObject);
     }
 
     #region PlayTrack Methods

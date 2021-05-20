@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Townsfolk
+  m_Controller: {fileID: 9100000, guid: 22dcb385d2402d04581098aba8abc915, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 1e983e32236d9b4408230c44956b54a7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 64d077afa5670ca419624edc543e52a2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2864132a4dfa867499d5ec96ecfbf3a2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5ff3bd7f5bb9d6e41a5f84f7f519f03a, type: 2}
