@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float newMaxUnderwaterBreath = 20f; // How long (in seconds) you can breath underwater for after upgrading.
     [SerializeField] private float swimMaxVelocity = 15f; // Maximum velocity you can achieve whilst going upwards underwater.
     [SerializeField] private UnityEngine.UI.Image breathMeter;
+    [SerializeField] private UnityEngine.UI.Image breathMeter2;
 
     [Header("Throwing Settings")]
     [SerializeField] private float minThrowForce = 1f; // Minimum force applied when throwing an item.
@@ -200,6 +201,11 @@ public class PlayerMovement : MonoBehaviour
         targetColAdj = defaultColAdj;
         targetDOF = defaultDOF;
 
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            dof.active = false;
+        }
+
         walkRunParticles = walkRun.emission;
         breathingParticles = breathing.emission;
         underwaterParticles = underwater.emission;
@@ -234,21 +240,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f);
-        LookUp(controls.Player.LookUp.ReadValue<float>() == 1f);
+        bool isGrounded = IsGrounded();
+
+        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f, isGrounded);
+        LookUp(controls.Player.LookUp.ReadValue<float>() == 1f, isGrounded);
         Throw(controls.Player.Throw.ReadValue<float>() == 1f);
-        Move(controls.Player.Move.ReadValue<Vector2>());
-        Run(controls.Player.Run.ReadValue<float>() == 1f);
+        Move(controls.Player.Move.ReadValue<Vector2>(), isGrounded);
+        Run(controls.Player.Run.ReadValue<float>() == 1f, isGrounded);
 
         // Slows the pounce down once the player hits the ground.
-        if (isPouncing && IsGrounded() || rb2D.velocity == Vector2.zero || pounceVel.y > 0f)
+        if (isPouncing && isGrounded || rb2D.velocity == Vector2.zero || pounceVel.y > 0f)
         {
-            SlowPounce();
+            SlowPounce(isGrounded);
         }
         pounceTrail.emitting = isPouncing;
 
         // Applies coyote time.
-        if (IsGrounded() && jumpVel == 0f)
+        if (isGrounded && jumpVel == 0f)
         {
             timeSinceGround = 0f;
         }
@@ -288,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
             breathingParticles.rateOverTime = 100f;
             underwaterParticles.rateOverTime = 0f;
 
-            if (IsGrounded())
+            if (isGrounded)
             {
                 lastPosBeforeSwimOrPit = transform.position;
             }
@@ -316,7 +324,7 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         // Check to see if there are any thorns in the player's camera.
-        if (IsGrounded() && !AreThornsPresent())
+        if (isGrounded && !AreThornsPresent())
         {
             lastPosBeforeThorns = transform.position;
         }
@@ -392,7 +400,7 @@ public class PlayerMovement : MonoBehaviour
         rb2D.velocity = targetVel;
     }
 
-    private void Move(Vector2 moveVal)
+    private void Move(Vector2 moveVal, bool isGrounded)
     {
         // Locks movement while pouncing.
         if (Mathf.Abs(pounceVel.x) > 1f || lockMovement)
@@ -429,7 +437,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Displays walking/running particles.
-        if (moveVal.x != 0f && IsGrounded() && moveState == MoveState.Ground)
+        if (moveVal.x != 0f && isGrounded && moveState == MoveState.Ground)
         {
             walkRunParticles.rateOverTime = 25f;
         }
@@ -446,10 +454,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Run(bool isRunning)
+    private void Run(bool isRunning, bool isGrounded)
     {
         // Doesn't let the player run under these circumstances.
-        if ((!IsGrounded() && moveState == MoveState.Ground) || playerIsLookingUp || lockMovement || playerIsCrouching)
+        if ((!isGrounded && moveState == MoveState.Ground) || playerIsLookingUp || lockMovement || playerIsCrouching)
             return;
 
         switch (moveState)
@@ -566,10 +574,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Crouch(bool isCrouching)
+    private void Crouch(bool isCrouching, bool isGrounded)
     {
         // Only allows the player to crouch when walking or still.
-        if (moveState != MoveState.Ground || !IsGrounded() || currentSpeed > walkSpeed || lockMovement || heldItem != null)
+        if (moveState != MoveState.Ground || !isGrounded || currentSpeed > walkSpeed || lockMovement || heldItem != null)
             return;
 
         anim.SetBool("Is Crouching", isCrouching);
@@ -597,10 +605,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void LookUp(bool isLookingUp)
+    private void LookUp(bool isLookingUp, bool isGrounded)
     {
         // Only allows player to look up while standing still and grounded.
-        if (moveState != MoveState.Ground || !IsGrounded() || Mathf.Abs(moveVel.x) > 0.1f || lockMovement)
+        if (moveState != MoveState.Ground || !isGrounded || Mathf.Abs(moveVel.x) > 0.1f || lockMovement)
             return;
 
         anim.SetBool("Is Looking Up", isLookingUp);
@@ -658,7 +666,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void SlowPounce()
+    private void SlowPounce(bool isGrounded)
     {
         // Stops slowing pounce once a certain speed is hit.
         if (Mathf.Abs(pounceVel.x) <= 0.01f)
@@ -670,7 +678,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Displays particles.
-        if (IsGrounded())
+        if (isGrounded)
         {
             walkRunParticles.rateOverTime = 25f;
         }
@@ -845,6 +853,8 @@ public class PlayerMovement : MonoBehaviour
 
         breathMeter.gameObject.SetActive(false);
         breathMeter.gameObject.SetActive(true);
+        breathMeter2.gameObject.SetActive(false);
+        breathMeter2.gameObject.SetActive(true);
 
         pounceVel = Vector2.zero;
         rb2D.velocity = new Vector2(rb2D.velocity.x, rb2D.velocity.y / 10f);
@@ -883,6 +893,7 @@ public class PlayerMovement : MonoBehaviour
         breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
 
         breathMeter.GetComponent<Animator>().SetTrigger("Exit");
+        breathMeter2.GetComponent<Animator>().SetTrigger("Exit");
         anim.SetBool("Is Underwater", false);
     }
 

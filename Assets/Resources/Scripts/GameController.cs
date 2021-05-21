@@ -49,6 +49,8 @@ public class GameController : MonoBehaviour
         {
             if (newGame)
             {
+
+
                 SaveGame(SaveDataController.AutoSavePath);
                 SaveGame(SaveDataController.ManualSavePath);
             }
