@@ -11,9 +11,9 @@ public class Results : MonoBehaviour
 
     private void Awake()
     {
-        completionTime.text = (int) UIController.timePassedSinceGameBegun % 60 + ":" + (int) UIController.timePassedSinceGameBegun / 60;
+        completionTime.text = ((int) UIController.timePassedSinceGameBegun / 60).ToString().PadLeft(2, '0') + ":" + ((int) UIController.timePassedSinceGameBegun % 60).ToString().PadLeft(2, '0');
         daysPassed.text = System.Convert.ToString(UIController.numDays);
-        berriesCollected.text = CollectBerries.berriesCollectedNum + "/" + CollectBerries.totalBerries;
+        berriesCollected.text = CollectBerries.berriesCollectedNum + "/60";
         deathCount.text = System.Convert.ToString(PlayerMovement.deathCount);
     }
 

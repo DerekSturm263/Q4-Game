@@ -1,8 +1,13 @@
 ﻿public static class Abilities
 {
-    public static AbilityTutorial wallClimbing;
-    public static AbilityTutorial nightVision;
-    public static AbilityTutorial underwaterBreath;
+    public static AbilityTutorial wallClimbing = null;
+    public static AbilityTutorial nightVision = null;
+    public static AbilityTutorial underwaterBreath = null;
+
+    public static bool Exists()
+    {
+        return wallClimbing != null;
+    }
 
     public static void Initialize()
     {

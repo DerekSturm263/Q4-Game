@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class UIController : MonoBehaviour
 {
     private static UIController ui;
+    private EventSystem events;
 
     public GameObject timeDisplay;
     public GameObject berryPrefab;
@@ -30,10 +29,14 @@ public class UIController : MonoBehaviour
     public static bool sendDuskMessage = true;
     public static bool sendNightMessage = true;
 
+    private void Awake()
+    {
+        events = EventSystem.current;
+        ui = this;
+    }
+
     void Start()
     {
-        ui = this;
-
         cycleSeconds = cycleLength * 60;
         timeDisplayRoation = Quaternion.identity;
 
@@ -152,24 +155,32 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void ToCredits()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Credits");
+    }
+
+    public void ToTitle()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+    }
+
+    public void OpenSettings()
+    {
+
+    }
+
     public void Resume()
     {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+        pauseMenu.GetComponent<Animator>().SetTrigger("Exit");
         isPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
-
-        //if (settingsMenu.activeSelf)
-        //    CloseSettings();
     }
 
     void Pause()
     {
         pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
         isPaused = true;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = false;
+
+        events.SetSelectedGameObject(pauseMenu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
 }

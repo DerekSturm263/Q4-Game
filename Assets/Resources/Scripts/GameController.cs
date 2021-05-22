@@ -49,7 +49,10 @@ public class GameController : MonoBehaviour
         {
             if (newGame)
             {
-
+                UIController.numDays = 1;
+                UIController.timePassedSinceGameBegun = 0f;
+                CollectBerries.berriesCollectedNum = 0;
+                PlayerMovement.deathCount = 0;
 
                 SaveGame(SaveDataController.AutoSavePath);
                 SaveGame(SaveDataController.ManualSavePath);
@@ -106,6 +109,11 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Loading Auto Save Game");
         LoadGame(SaveDataController.AutoSavePath);
+    }
+
+    public void Save()
+    {
+        TrySaveGame();
     }
 
     public static void TrySaveGame()

@@ -65,7 +65,11 @@ public abstract class EntityAI : MonoBehaviour
 
     protected virtual void Awake()
     {
-        entities.Add(gameObject);
+        if (!entities.Contains(gameObject))
+        {
+            entities.Add(gameObject);
+        }
+
         playerMov = FindObjectOfType<PlayerMovement>();
         player = playerMov.transform;
         ogPos = transform.position;

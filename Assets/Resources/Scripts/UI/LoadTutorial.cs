@@ -32,7 +32,10 @@ public class LoadTutorial : MonoBehaviour
         };
 
         ChangeContinueText("SPACE");
-        Abilities.Initialize();
+        if (!Abilities.Exists())
+        {
+            Abilities.Initialize();
+        }
         tutorial.SetActive(false);
     }
 

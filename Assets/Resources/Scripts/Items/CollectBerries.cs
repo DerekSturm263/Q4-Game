@@ -13,12 +13,9 @@ public class CollectBerries : Interactable
 
     [SerializeField] private AudioClip berriesCollected;
     public static uint berriesCollectedNum = 0;
-    public static uint totalBerries = 0;
 
     private void Awake()
     {
-        totalBerries += 3;
-
         particles = GetComponentInChildren<ParticleSystem>();
         particlesEmission = particles.emission;
         uiCont = FindObjectOfType<UIController>();
@@ -59,7 +56,7 @@ public class CollectBerries : Interactable
         SoundPlayer.Play(berriesCollected);
         particlesEmission.rateOverTime = 0f;
         uiCont.GiveFood(numberOfBerries);
-        berriesCollectedNum++;
+        berriesCollectedNum += 3;
 
         canUse = false;
     }

@@ -734,7 +734,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Use()
     {
-        if (lockMovement || heldItem != null)
+        if (lockMovement || heldItem != null || !IsGrounded())
             return;
 
         GameObject item = null;

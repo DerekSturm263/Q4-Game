@@ -16,7 +16,8 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, followObj.position + offset, Time.deltaTime * speed);
+        Vector3 camPos = new Vector3(Mathf.Clamp(followObj.position.x + offset.x, -478f, 563f), followObj.position.y + offset.y, followObj.position.z + offset.z);
+        transform.position = Vector3.Lerp(transform.position, camPos, Time.deltaTime * speed);
     }
 
     public void SetOffset(Vector3 newOffset)
