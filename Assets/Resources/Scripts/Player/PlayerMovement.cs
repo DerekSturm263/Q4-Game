@@ -1020,13 +1020,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die(int death)
     {
+        if (fade.gameObject.activeSelf)
+            return;
+
+        deathCount++;
         lockMovement = true;
         anim.SetTrigger("Death");
         deathCause = death;
         moveVel = Vector2.zero;
         jumpVel = 0f;
         pounceVel = Vector2.zero;
-        deathCount++;
 
         fade.gameObject.SetActive(true);
         fadeAnim.SetTrigger("Death");
@@ -1039,10 +1042,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
-        if (!LoadTutorial.tutorial.activeSelf)
-        {
-            lockMovement = false;
-        }
         fadeAnim.ResetTrigger("Death");
 
         switch (deathCause)

@@ -33,15 +33,9 @@ public class UIController : MonoBehaviour
     {
         events = EventSystem.current;
         ui = this;
-    }
 
-    void Start()
-    {
         cycleSeconds = cycleLength * 60;
-        timeDisplayRoation = Quaternion.identity;
-
         foodNumDisplay.text = "" + numFood;
-
         time = cycleSeconds * 0.075f;
     }
     
@@ -107,7 +101,7 @@ public class UIController : MonoBehaviour
         {
             numFood++;
             // need to change this out later to be based on screen size
-            Instantiate(berryPrefab, new Vector3(-2.5f, 10, 0), Quaternion.identity);
+            //Instantiate(berryPrefab, new Vector3(-2.5f, 10, 0), Quaternion.identity);
         }
 
         foodNumDisplay.text = "" + numFood; 
@@ -157,12 +151,20 @@ public class UIController : MonoBehaviour
 
     public void ToCredits()
     {
+        Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Credits");
     }
 
     public void ToTitle()
     {
+        Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+    }
+
+    public void Save()
+    {
+        GameController.TrySaveGame();
+        Resume();
     }
 
     public void OpenSettings()

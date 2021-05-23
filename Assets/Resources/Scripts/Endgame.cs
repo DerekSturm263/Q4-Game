@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class Endgame : MonoBehaviour
 {
+    public GameObject fadeOut;
+
     void OnTriggerEnter2D()
     {
-        SceneManager.LoadScene(2);
+        fadeOut.SetActive(true);
     }
 }

@@ -111,11 +111,6 @@ public class GameController : MonoBehaviour
         LoadGame(SaveDataController.AutoSavePath);
     }
 
-    public void Save()
-    {
-        TrySaveGame();
-    }
-
     public static void TrySaveGame()
     {
         if (savingIndicator.activeSelf)
