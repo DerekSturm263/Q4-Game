@@ -74,8 +74,8 @@ public class UIController : MonoBehaviour
             timeTitle = "dusk";
             if (sendDuskMessage && numDays == 1)
             {
-                LoadTutorial.Display("Feeding The Tribe", "Each night, you must have enough berries to feed the tribe, otherwise it's game over." +
-                "The tribe requires 10 berries every night to survive." +
+                LoadTutorial.Display("Feeding The Tribe", "Each night, you must have enough berries to feed the tribe, otherwise it's game over. " +
+                "The tribe requires 10 berries every night to survive. " +
                 "You can find berries around the world by solving puzzles and exploring.");
                 sendDuskMessage = false;
             }
