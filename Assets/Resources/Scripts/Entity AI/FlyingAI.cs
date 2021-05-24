@@ -58,6 +58,7 @@ public class FlyingAI : EntityAI
         if (Vector2.Distance(transform.position, currentGoal) <= 0.25f)
         {
             currentGoal = NewPosition();
+            Debug.Log("Hello world");
         }
 
         isDiving = false;
