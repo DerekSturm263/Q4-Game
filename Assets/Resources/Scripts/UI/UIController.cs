@@ -29,6 +29,8 @@ public class UIController : MonoBehaviour
     public static bool sendDuskMessage = true;
     public static bool sendNightMessage = true;
 
+    public GameObject GameOverImage;
+
     private void Awake()
     {
         events = EventSystem.current;
@@ -112,22 +114,23 @@ public class UIController : MonoBehaviour
     // the other berries are gone
     public void TakeFood(int numFoodToTake)
     {
-        GameObject[] berries;
-        berries = GameObject.FindGameObjectsWithTag("UIBerry");
+        //GameObject[] berries;
+        //berries = GameObject.FindGameObjectsWithTag("UIBerry");
 
-        Debug.Log("Berries Found: " + berries.Length);
+        //Debug.Log("Berries Found: " + berries.Length);
 
         // Check if has enough food (use this area for player punishment)
         if (numFoodToTake > numFood)
         {
-            Debug.Log("NOT ENOUGH FOOD");
+            GameOver();
+            //Debug.Log("NOT ENOUGH FOOD");
         }
 
         for (int i = 0; i < numFoodToTake; i++)
         {
             if (numFood == 0)
                 break;
-            berries[berries.Length - 1 - i].GetComponent<Rigidbody2D>().gravityScale = -1;
+            //berries[berries.Length - 1 - i].GetComponent<Rigidbody2D>().gravityScale = -1;
             numFood--;
 
             foodNumDisplay.text = "" + numFood;
@@ -184,5 +187,10 @@ public class UIController : MonoBehaviour
         isPaused = true;
 
         events.SetSelectedGameObject(pauseMenu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
+    }
+
+    public void GameOver()
+    {
+        GameOverImage.SetActive(true);
     }
 }
