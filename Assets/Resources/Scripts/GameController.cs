@@ -2,7 +2,6 @@
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private int saveTime = 120;
     public static bool newGame; // Controlled by title screen.
 
     public static Camera cam;
@@ -12,7 +11,7 @@ public class GameController : MonoBehaviour
     public static Pickup[] pickups;
     public static Interactable[] interactables;
     public static AirBubble[] bubbles;
-    public static GameObject[] abilities;
+    public static GameObject[] cutscenes;
     public static GameObject[] tutorials;
 
     public static GameObject savingIndicator;
@@ -37,7 +36,7 @@ public class GameController : MonoBehaviour
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
         bubbles = FindObjectsOfType<AirBubble>();
-        abilities = GameObject.FindGameObjectsWithTag("Ability");
+        cutscenes = GameObject.FindGameObjectsWithTag("Cutscene");
         tutorials = GameObject.FindGameObjectsWithTag("Tutorial");
 
         camAudio = cam.GetComponent<AudioSource>();
@@ -157,9 +156,9 @@ public class GameController : MonoBehaviour
             SaveDataController.SaveBubble(i, Application.persistentDataPath + path);
         }
 
-        for (int i = 0; i < abilities.Length; ++i)
+        for (int i = 0; i < cutscenes.Length; ++i)
         {
-            SaveDataController.SaveAbility(i, Application.persistentDataPath + path);
+            SaveDataController.SaveCutscene(i, Application.persistentDataPath + path);
         }
 
         for (int i = 0; i < tutorials.Length; ++i)
@@ -241,11 +240,11 @@ public class GameController : MonoBehaviour
             bubbles[i].timeSincePopped = bubbleSaveData.timeSincePopped;
         }
 
-        // Abilities.
-        for (int i = 0; i < abilities.Length; ++i)
+        // Cutscenes.
+        for (int i = 0; i < cutscenes.Length; ++i)
         {
-            AbilitySaveData abilitySaveData = SaveDataController.LoadAbility(i, Application.persistentDataPath + path);
-            abilities[i].SetActive(!abilitySaveData.hasUsed);
+            CutsceneSaveData cutsceneSaveData = SaveDataController.LoadCutscene(i, Application.persistentDataPath + path);
+            cutscenes[i].SetActive(cutsceneSaveData.enabled);
         }
 
         // Tutorials.

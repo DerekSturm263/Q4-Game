@@ -16,7 +16,7 @@ public static class SaveDataController
     public const string PickupPath = "/pickup";
     public const string InteractablePath = "/interactable";
     public const string BubblePath = "/bubble";
-    public const string AbilityPath = "/ability";
+    public const string CutscenePath = "/cutscene";
     public const string TutorialPath = "/tutorial";
 
     public static bool HasSave()
@@ -367,44 +367,44 @@ public static class SaveDataController
 
     #endregion
 
-    #region Abilities
+    #region Cutscenes
 
-    public static void SaveAbility(int i, string filePath)
+    public static void SaveCutscene(int i, string filePath)
     {
         try
         {
-            string path = filePath + AbilityPath + i + Extension;
+            string path = filePath + CutscenePath + i + Extension;
 
             BinaryFormatter formatter = new BinaryFormatter();
             Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Create);
-            AbilitySaveData data = new AbilitySaveData(GameController.abilities[i]);
+            CutsceneSaveData data = new CutsceneSaveData(GameController.cutscenes[i]);
 
             formatter.Serialize(stream, data);
             stream.Close();
 
-            Debug.Log("Succesfully Saved Ability " + i);
+            Debug.Log("Succesfully Saved Cutscene " + i);
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Could Not Save Ability\n" + e.Message);
+            Debug.LogError("Could Not Save Cutscene\n" + e.Message);
         }
     }
 
-    public static AbilitySaveData LoadAbility(int i, string filePath)
+    public static CutsceneSaveData LoadCutscene(int i, string filePath)
     {
-        string path = filePath + AbilityPath + i + Extension;
+        string path = filePath + CutscenePath + i + Extension;
 
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             Directory.CreateDirectory(filePath);
             FileStream stream = new FileStream(path, FileMode.Open);
-            AbilitySaveData data = formatter.Deserialize(stream) as AbilitySaveData;
+            CutsceneSaveData data = formatter.Deserialize(stream) as CutsceneSaveData;
 
             stream.Close();
 
-            Debug.Log("Succesfully Loaded Abilty " + i);
+            Debug.Log("Succesfully Loaded Cutscene " + i);
             return data;
         }
         else

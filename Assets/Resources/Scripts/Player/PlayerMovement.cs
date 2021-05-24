@@ -1092,6 +1092,20 @@ public class PlayerMovement : MonoBehaviour
         GameController.player.pounceVel = Vector2.zero;
     }
 
+    public void StartCutscene(GameObject target)
+    {
+        targetVignette = 0.3f;
+        cam.followObj = target.transform;
+        cam.SetOffset(new Vector3(0f, 0f, -9.5f));
+    }
+
+    public void EndCutscene()
+    {
+        targetVignette = defaultVignette;
+        cam.followObj = transform;
+        cam.SetOffset(new Vector3(0f, 0f, -10f));
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Wall"))

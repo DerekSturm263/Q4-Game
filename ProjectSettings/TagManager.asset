@@ -25,6 +25,7 @@ TagManager:
   - Music Player
   - Ability
   - Tutorial
+  - Cutscene
   layers:
   - Default
   - TransparentFX
