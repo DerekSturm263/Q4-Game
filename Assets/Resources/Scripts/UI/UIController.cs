@@ -170,6 +170,11 @@ public class UIController : MonoBehaviour
         Resume();
     }
 
+    public void LoadScene()
+    {
+        GameController.TryLoadGame();
+    }
+
     public void OpenSettings()
     {
 
