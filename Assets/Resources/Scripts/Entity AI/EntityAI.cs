@@ -63,6 +63,8 @@ public abstract class EntityAI : MonoBehaviour
 
     private bool hasUsedSound = false;
 
+    public float activeDist = 0.25f; 
+
     protected virtual void Awake()
     {
         if (!entities.Contains(gameObject))
@@ -123,7 +125,7 @@ public abstract class EntityAI : MonoBehaviour
     {
         // Make the enemy active if they are within the camera view.
         Vector2 camView = cam.WorldToViewportPoint(transform.position);
-        isActive = camView.x > -0.25f && camView.x < 1.25f && camView.y > -0.25f && camView.y < 1.25f;
+        isActive = camView.x > -activeDist && camView.x < activeDist+1f && camView.y > -activeDist && camView.y < activeDist+1f;
 
         if (useDebugs)
         {
