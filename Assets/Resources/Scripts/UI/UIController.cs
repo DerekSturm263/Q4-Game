@@ -30,6 +30,7 @@ public class UIController : MonoBehaviour
     public static bool sendNightMessage = true;
 
     public GameObject GameOverImage;
+    public GameObject settings;
 
     private void Awake()
     {
@@ -177,7 +178,17 @@ public class UIController : MonoBehaviour
 
     public void OpenSettings()
     {
+        settings.SetActive(true);
+        Time.timeScale = 1f;
 
+        events.SetSelectedGameObject(settings.GetComponentInChildren<UnityEngine.UI.Toggle>().gameObject);
+    }
+
+    public void Back()
+    {
+        settings.GetComponent<Animator>().SetTrigger("Exit");
+
+        events.SetSelectedGameObject(settings.GetComponentsInChildren<UnityEngine.UI.Button>()[1].gameObject);
     }
 
     public void Resume()

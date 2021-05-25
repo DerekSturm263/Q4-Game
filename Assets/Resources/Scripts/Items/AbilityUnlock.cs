@@ -48,7 +48,6 @@ public class AbilityUnlock : Interactable
         player.GetComponent<PlayerMovement>().StartCutscene(gameObject);
         anim.enabled = true;
 
-        SoundPlayer.Play("new_ability");
         PlayerMovement.Freeze();
         PlayerMovement.UnlockAbility(ability);
 
@@ -68,6 +67,7 @@ public class AbilityUnlock : Interactable
 
     public void Unlock()
     {
+        SoundPlayer.Play("new_ability");
         LoadTutorial.Display(AbilityTutorial.abilities[ability]);
     }
 }
