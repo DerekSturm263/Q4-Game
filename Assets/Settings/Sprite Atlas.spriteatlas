@@ -62,7 +62,8 @@ SpriteAtlas:
     - {fileID: 2800000, guid: bbb040c06b0b22d41b8ae0cec48adef0, type: 3}
     - {fileID: 2800000, guid: af1c05d9e09785d408f60ebdc7757392, type: 3}
     - {fileID: -2048609360999879671, guid: 9d361183c3e593b4eaee8ca294bd1341, type: 3}
-    totalSpriteSurfaceArea: 31830512
+    - {fileID: 2800000, guid: bc0358e872a2b5347b0d22ee88a403fa, type: 3}
+    totalSpriteSurfaceArea: 32202612
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -95,6 +96,10 @@ SpriteAtlas:
   - {fileID: 613601938791539414, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
   - {fileID: 7711884721034271394, guid: 32808fb7c6dd33341a3d93b5f1b6d0f0, type: 3}
   - {fileID: 21300000, guid: f480d9d7b92fa8d40ae02c0ca3729800, type: 3}
+  - {fileID: 6827129917857100369, guid: bc0358e872a2b5347b0d22ee88a403fa, type: 3}
+  - {fileID: -6279860264735741404, guid: bc0358e872a2b5347b0d22ee88a403fa, type: 3}
+  - {fileID: 7713447826491367627, guid: bc0358e872a2b5347b0d22ee88a403fa, type: 3}
+  - {fileID: 3406869459658823560, guid: bc0358e872a2b5347b0d22ee88a403fa, type: 3}
   - {fileID: -1673732733077124514, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
   - {fileID: 7915683653226457324, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
   - {fileID: -497406288967409369, guid: 1a9681597ad9dc249a672891e6f02077, type: 3}
@@ -172,6 +177,10 @@ SpriteAtlas:
   - Racoon_idle_1
   - Racoon_idle_0
   - bush_etw
+  - Racoon_pounce_3
+  - Racoon_pounce_2
+  - Racoon_pounce_1
+  - Racoon_pounce_0
   - trees_0
   - trees_9
   - trees_8
