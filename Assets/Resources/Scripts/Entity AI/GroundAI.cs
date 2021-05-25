@@ -56,7 +56,8 @@ public class GroundAI : EntityAI
             }
             moveVel = Vector2.Lerp(moveVel, new Vector2((transform.position.x - target.position.x) * -1f, 0f).normalized, Time.deltaTime * chaseTurnAroundSpeed * iceSlipperiness);
 
-            walkRunParticles.rateOverTime = 25f;
+            if (Settings.useParticles)
+                walkRunParticles.rateOverTime = 25f;
         }
         else
         {
@@ -75,7 +76,9 @@ public class GroundAI : EntityAI
         {
             if ((waitTime -= Time.deltaTime) <= 0f)
             {
-                walkRunParticles.rateOverTime = 25f;
+                if (Settings.useParticles)
+                    walkRunParticles.rateOverTime = 25f;
+
                 currentGoal = NewPosition();
             }
             else

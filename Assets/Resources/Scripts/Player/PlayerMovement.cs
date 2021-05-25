@@ -273,7 +273,9 @@ public class PlayerMovement : MonoBehaviour
             MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], 0f, Time.deltaTime * 2f));
             MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], GameController.musicVolume2, Time.deltaTime * 2f));
 
-            underwaterParticles.rateOverTime = 7.5f;
+            if (Settings.useParticles)
+                underwaterParticles.rateOverTime = 7.5f;
+
             breathingParticles.rateOverTime = 0f;
 
             vignette.intensity.value = 0.55f - (breathLeftUnderwater / breath) * 0.35f;
@@ -293,7 +295,9 @@ public class PlayerMovement : MonoBehaviour
             MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], GameController.musicVolume, Time.deltaTime * 2f));
             MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f));
 
-            breathingParticles.rateOverTime = 100f;
+            if (Settings.useParticles)
+                breathingParticles.rateOverTime = 100f;
+
             underwaterParticles.rateOverTime = 0f;
 
             if (isGrounded)
@@ -439,7 +443,8 @@ public class PlayerMovement : MonoBehaviour
         // Displays walking/running particles.
         if (moveVal.x != 0f && isGrounded && moveState == MoveState.Ground)
         {
-            walkRunParticles.rateOverTime = 25f;
+            if (Settings.useParticles)
+                walkRunParticles.rateOverTime = 25f;
         }
         else
         {
@@ -515,7 +520,9 @@ public class PlayerMovement : MonoBehaviour
             // Jump while grounded.
             else if (timeSinceGround < coyoteTime && rb2D.gravityScale != 0f && !playerIsLookingUp)
             {
-                jumpLandParticles.Play();
+                if (Settings.useParticles)
+                    jumpLandParticles.Play();
+
                 PlaySound(landOnGround, true, 1f, 0.5f);
                 anim.SetTrigger("Jump");
 
@@ -680,7 +687,8 @@ public class PlayerMovement : MonoBehaviour
         // Displays particles.
         if (isGrounded)
         {
-            walkRunParticles.rateOverTime = 25f;
+            if (Settings.useParticles)
+                walkRunParticles.rateOverTime = 25f;
         }
 
         pounceVel = Vector2.Lerp(pounceVel, Vector2.zero, Time.deltaTime * 5f);
@@ -872,7 +880,8 @@ public class PlayerMovement : MonoBehaviour
 
         for (int i = 0; i < snowfallParticles.Length; ++i)
         {
-            snowfallParticles[i].rateOverTime = 5f;
+            if (Settings.useParticles)
+                snowfallParticles[i].rateOverTime = 5f;
         }
 
         currentTurnAroundSpeed = aerialTurnAroundSpeed;
@@ -1114,7 +1123,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (collision.CompareTag("Water"))
         {
-            waterSplashParticles.Play();
+            if (Settings.useParticles)
+                waterSplashParticles.Play();
+
             PlaySound(waterSplash, true);
         }
         else if (collision.CompareTag("Thorns"))
@@ -1163,7 +1174,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (collision.CompareTag("Water"))
         {
-            waterSplashParticles.Play();
+            if (Settings.useParticles)
+                waterSplashParticles.Play();
+
             PlaySound(waterSplash, true);
         }
         else if (collision.CompareTag("Pickup"))

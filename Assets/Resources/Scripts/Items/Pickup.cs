@@ -92,7 +92,9 @@ public class Pickup : MonoBehaviour
     public void Throw(Vector2 throwVec)
     {
         carrier = null;
-        emission.rateOverTime = 10f;
+
+        if (Settings.useParticles)
+            emission.rateOverTime = 10f;
 
         carrierSprtRndr = null;
         timeSinceGrabbed = 0f;
@@ -114,7 +116,9 @@ public class Pickup : MonoBehaviour
                 Debug.Log(name + " Entered Water");
             }
 
-            waterSplashParticles.Play();
+            if (Settings.useParticles)
+                waterSplashParticles.Play();
+
             PlaySound(waterSplash, true, volume: weight);
             EnterWater();
         }
@@ -129,7 +133,9 @@ public class Pickup : MonoBehaviour
                 Debug.Log(name + " Exited Water");
             }
 
-            waterSplashParticles.Play();
+            if (Settings.useParticles)
+                waterSplashParticles.Play();
+
             PlaySound(waterSplash, true, volume: weight);
             ExitWater();
         }

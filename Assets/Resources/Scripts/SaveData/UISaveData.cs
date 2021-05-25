@@ -10,6 +10,12 @@ public class UISaveData
     public int daysPassed;
     public float timePassed;
 
+    public bool useFullscreen;
+    public bool useParticles;
+    public bool usePostProcessing;
+    public float musicVolume;
+    public float sfxVolume;
+
     public UISaveData(UIController cont)
     {
         this.time = UIController.time;
@@ -20,5 +26,11 @@ public class UISaveData
         
         this.daysPassed = UIController.numDays;
         this.timePassed = UIController.timePassedSinceGameBegun;
+
+        this.useFullscreen = Settings.useFullscreen;
+        this.useParticles = Settings.useParticles;
+        this.usePostProcessing = Settings.usePostProcessing;
+        this.musicVolume = MusicPlayer.volume[0];
+        this.sfxVolume = SoundPlayer.volume;
     }
 }

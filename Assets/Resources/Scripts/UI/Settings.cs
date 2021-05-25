@@ -1,0 +1,95 @@
+﻿using UnityEngine;
+
+public class Settings : MonoBehaviour
+{
+    public static bool useFullscreen = true;
+    public static bool useParticles = true;
+    public static bool usePostProcessing = true;
+
+    public UnityEngine.Audio.AudioMixer mixer;
+
+    public UnityEngine.UI.Toggle fullscreenToggle;
+    public UnityEngine.UI.Toggle particlesToggle;
+    public UnityEngine.UI.Toggle postProcessingToggle;
+
+    public UnityEngine.UI.Slider musicSlider;
+    public UnityEngine.UI.Slider sfxSlider;
+
+    private ParticleSystem[] particles;
+    private System.Collections.Generic.List<float> particleEmissionRates = new System.Collections.Generic.List<float>();
+
+    private void Awake()
+    {
+        particles = FindObjectsOfType<ParticleSystem>();
+        
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            particleEmissionRates.Add(particles[i].emission.rateOverTime.constant);
+            Debug.Log(particles[i].emission.rateOverTime.constant);
+        }
+    }
+
+    private void Start()
+    {
+        ToggleFullscreen(useFullscreen);
+        ToggleParticles(useParticles);
+        TogglePostProcessing(usePostProcessing);
+
+        AdjustMusicVolume(MusicPlayer.volume[0]);
+        AdjustSFXVolume(SoundPlayer.volume);
+
+        fullscreenToggle.isOn = useFullscreen;
+        particlesToggle.isOn = useParticles;
+        postProcessingToggle.isOn = usePostProcessing;
+
+        musicSlider.value = MusicPlayer.volume[0];
+        sfxSlider.value = SoundPlayer.volume;
+    }
+
+    public void ToggleFullscreen(bool isOn)
+    {
+        useFullscreen = isOn;
+        Screen.fullScreen = useFullscreen;
+    }
+
+    public void ToggleParticles(bool isOn)
+    {
+        useParticles = isOn;
+
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            ParticleSystem.EmissionModule emission = particles[i].emission;
+
+            if (isOn)
+            {
+                emission.rateOverTime = particleEmissionRates[i];
+            }
+            else
+            {
+                emission.rateOverTime = 0f;
+            }
+        }
+    }   
+    
+    public void TogglePostProcessing(bool isOn)
+    {
+        usePostProcessing = isOn;
+
+        if (Camera.main.GetComponent<UnityEngine.Rendering.Volume>() != null)
+        {
+            Camera.main.GetComponent<UnityEngine.Rendering.Volume>().enabled = usePostProcessing;
+        }
+    }
+
+    public void AdjustMusicVolume(float newVolume)
+    {
+        MusicPlayer.SetVolume(0, newVolume);
+        MusicPlayer.SetVolume(1, newVolume * 0.6f);
+    }
+
+    public void AdjustSFXVolume(float newVolume)
+    {
+        SoundPlayer.SetVolume(newVolume);
+        mixer.SetFloat("Volume", Mathf.Lerp(-80f, 20f, newVolume));
+    }
+}

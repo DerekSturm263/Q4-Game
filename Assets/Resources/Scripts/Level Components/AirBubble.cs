@@ -55,6 +55,8 @@ public class AirBubble : MonoBehaviour
 
         anim.SetTrigger("Pop");
         player.RestoreBreath();
-        ps.Play();
+
+        if (Settings.useParticles)
+            ps.Play();
     }
 }

@@ -202,6 +202,13 @@ public class GameController : MonoBehaviour
         UIController.numDays = uiData.daysPassed;
         UIController.timePassedSinceGameBegun = uiData.timePassed;
 
+        Settings.useFullscreen = uiData.useFullscreen;
+        Settings.useParticles = uiData.useParticles;
+        Settings.usePostProcessing = uiData.usePostProcessing;
+        MusicPlayer.SetVolume(0, uiData.musicVolume);
+        MusicPlayer.SetVolume(1, uiData.musicVolume * 0.6f);
+        SoundPlayer.SetVolume(uiData.sfxVolume);
+
         uiCont.foodNumDisplay.text = UIController.numFood.ToString();
         uiCont.timeDisplay.transform.rotation = Quaternion.Euler(0f, 0f, uiData.sunRotation);
 

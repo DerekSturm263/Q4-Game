@@ -28,7 +28,10 @@ public class WindZone : MonoBehaviour
         shape = ps.shape;
         velocity = ps.velocityOverLifetime;
 
-        emission.rateOverTime = Mathf.Abs(windVectors[0].magnitude) * 37.5f;
+        if (Settings.useParticles)
+            emission.rateOverTime = Mathf.Abs(windVectors[0].magnitude) * 37.5f;
+        else
+            emission.rateOverTime = 0f;
 
         shape.position = col.offset;
         shape.scale = col.size;
