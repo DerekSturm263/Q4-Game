@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     private AudioSource camAudio;
 
     [SerializeField] private bool ignoreSave = false;
+
     public static GameObject nighttimeEnemiesObj;
     public static System.Collections.Generic.List<GameObject> nighttimeEnemies;
 
@@ -44,6 +45,11 @@ public class GameController : MonoBehaviour
         camAudio = cam.GetComponent<AudioSource>();
 
         nighttimeEnemiesObj = GameObject.FindGameObjectWithTag("Enemies2");
+        foreach (Transform enemy in nighttimeEnemiesObj.GetComponentsInChildren<Transform>())
+        {
+            nighttimeEnemies.Add(enemy.gameObject);
+            Debug.Log(enemy.name);
+        }
 
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
@@ -55,6 +61,7 @@ public class GameController : MonoBehaviour
                 UIController.numFood = 0;
                 UIController.numDays = 1;
                 UIController.time = 0f;
+                UIController.timeTitle = "dawn";
                 UIController.timePassedSinceGameBegun = 0f;
                 uiCont.timeDisplay.transform.Rotate(new Vector3(0f, 0f, 0f));
                 CollectBerries.berriesCollectedNum = 0;
@@ -67,11 +74,6 @@ public class GameController : MonoBehaviour
             {
                 TryLoadGame();
             }
-        }
-
-        foreach (Transform enemy in nighttimeEnemiesObj.GetComponentsInChildren<Transform>())
-        {
-            nighttimeEnemies.Add(enemy.gameObject);
         }
 
         if (UIController.timeTitle == "night")
