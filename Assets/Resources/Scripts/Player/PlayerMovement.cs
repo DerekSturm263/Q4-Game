@@ -957,7 +957,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Checks if the player is grounded or not. Separate from Jump Coyote Time.
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         RaycastHit2D hit = Physics2D.BoxCast((Vector2)transform.position + groundedBoxOffset, groundedBoxSize, 0f, Vector2.down, 0f, ground);
         bool isGrounded = hit;

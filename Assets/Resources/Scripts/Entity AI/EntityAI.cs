@@ -148,7 +148,7 @@ public abstract class EntityAI : MonoBehaviour
         // Change vision direction based on sprite flip settings.
         Vector2 transformDir = sprtRndr.flipX ? Vector2.left : Vector2.right;
 
-        if (Vector2.Distance(transform.position, playerMov.transform.position) > viewDist)
+        if (Vector2.Distance(transform.position, playerMov.transform.position) > viewDist && playerMov.IsGrounded() && !PlayerMovement.isDead)
         {
             SetVectors();
         }

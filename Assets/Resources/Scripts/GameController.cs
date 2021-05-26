@@ -47,8 +47,11 @@ public class GameController : MonoBehaviour
         nighttimeEnemiesObj = GameObject.FindGameObjectWithTag("Enemies2");
         foreach (Transform enemy in nighttimeEnemiesObj.GetComponentsInChildren<Transform>())
         {
-            nighttimeEnemies.Add(enemy.gameObject);
-            Debug.Log(enemy.name);
+            if (enemy.gameObject != nighttimeEnemiesObj)
+            {
+                nighttimeEnemies.Add(enemy.gameObject);
+                Debug.Log(enemy.name);
+            }
         }
 
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
@@ -79,6 +82,10 @@ public class GameController : MonoBehaviour
         if (UIController.timeTitle == "night")
         {
             SpawnEnemies();
+        }
+        else
+        {
+            DespawnEnemies();
         }
     }
 
