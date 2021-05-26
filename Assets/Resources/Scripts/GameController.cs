@@ -118,6 +118,11 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Loading Auto Save Game");
         LoadGame(SaveDataController.AutoSavePath);
+
+        foreach (CollectBerries berry in FindObjectsOfType<CollectBerries>())
+        {
+            berry.CheckBerries();
+        }
     }
 
     public static void TrySaveGame()

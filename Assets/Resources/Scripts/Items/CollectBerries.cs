@@ -31,14 +31,28 @@ public class CollectBerries : Interactable
 
     private void Start()
     {
+        CheckBerries();
+    }
+
+    public void CheckBerries()
+    {
         if (!canUse)
         {
             foreach (GameObject berry in berries)
             {
-                Destroy(berry.gameObject);
+                berry.gameObject.SetActive(false);
             }
 
             particlesEmission.rateOverTime = 0f;
+        }
+        else
+        {
+            foreach (GameObject berry in berries)
+            {
+                berry.gameObject.SetActive(true);
+            }
+
+            particlesEmission.rateOverTime = 10f;
         }
     }
 
@@ -50,7 +64,7 @@ public class CollectBerries : Interactable
         Debug.Log("Berries Collected");
         foreach (GameObject berry in berries)
         {
-            Destroy(berry.gameObject);
+            berry.SetActive(false);
         }
 
         SoundPlayer.Play(berriesCollected);
