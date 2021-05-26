@@ -196,6 +196,7 @@ public class UIController : MonoBehaviour
 
     public void LoadScene()
     {
+        Time.timeScale = 1f;
         SoundPlayer.Play("ui_select");
         GameController.TryLoadGame();
     }
