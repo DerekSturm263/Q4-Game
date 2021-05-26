@@ -76,7 +76,7 @@ public class UIController : MonoBehaviour
             GameController.SpawnEnemies();
             TakeFood(takeAwayBerries); // Food is taken away every day at night
 
-            if (sendNightMessage && numDays == 1)
+            if (sendNightMessage && numDays == 1 && numFood >= 10)
             {
                 LoadTutorial.Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place. " +
                     "Monsters will begin spawning in unusual places, and you must be prepared for anything. " +
