@@ -199,6 +199,7 @@ public class UIController : MonoBehaviour
         Time.timeScale = 1f;
         SoundPlayer.Play("ui_select");
         GameController.TryLoadAutoSaveGame();
+        GameOverImage.SetActive(false);
     }
 
     public void OpenSettings()
