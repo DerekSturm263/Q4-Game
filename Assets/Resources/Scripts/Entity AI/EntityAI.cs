@@ -272,7 +272,7 @@ public abstract class EntityAI : MonoBehaviour
 
     private bool CheckForObject(out Transform obj)
     {
-        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + col.offset, new Vector2(col.size.x * transform.localScale.x, col.size.y * transform.localScale.y), 0f, Vector2.down, 0f, notEnemy);
+        RaycastHit2D hit = Physics2D.BoxCast((Vector2) transform.position + col.offset, new Vector2(col.size.x * transform.localScale.x * 1.05f, col.size.y * transform.localScale.y * 1.05f), 0f, Vector2.down, 0f, notEnemy);
         obj = hit.transform;
 
         return hit && likeableObjects.Contains(obj);

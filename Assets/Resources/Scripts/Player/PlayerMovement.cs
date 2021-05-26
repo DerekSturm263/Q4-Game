@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask itemMask = 1 << 11;
 
     public static bool isInDarkZone = false;
+    public static bool isDead = false;
 
     [SerializeField] private ParticleSystem[] snowfall = new ParticleSystem[3];
     private ParticleSystem.EmissionModule[] snowfallParticles = new ParticleSystem.EmissionModule[3];
@@ -665,7 +666,6 @@ public class PlayerMovement : MonoBehaviour
         pounceVel = Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), pounceForce);
         isPouncing = true;
 
-        anim.SetBool("Is Pouncing", true);
         anim.SetTrigger("Pounce");
 
         if (useDebugs)
@@ -681,7 +681,6 @@ public class PlayerMovement : MonoBehaviour
         {
             pounceVel = Vector2.zero;
             isPouncing = false;
-            anim.SetBool("Is Pouncing", false);
 
             return;
         }
@@ -897,6 +896,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
             rb2D.AddForce(new Vector2(moveVel.x * currentSpeed, 15f), ForceMode2D.Impulse);
+
+            anim.SetTrigger("Jump");
         }
 
         // Sets gravity.
@@ -905,6 +906,7 @@ public class PlayerMovement : MonoBehaviour
 
         breathMeter.GetComponent<Animator>().SetTrigger("Exit");
         breathMeter2.GetComponent<Animator>().SetTrigger("Exit");
+
         anim.SetBool("Is Underwater", false);
     }
 
@@ -1034,6 +1036,7 @@ public class PlayerMovement : MonoBehaviour
         if (fade.gameObject.activeSelf)
             return;
 
+        isDead = true;
         deathCount++;
         lockMovement = true;
         anim.SetTrigger("Death");
@@ -1053,6 +1056,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        isDead = false;
         fadeAnim.ResetTrigger("Death");
 
         switch (deathCause)
