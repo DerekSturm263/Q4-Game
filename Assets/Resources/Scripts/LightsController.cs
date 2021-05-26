@@ -51,8 +51,8 @@ public class LightsController : MonoBehaviour
             skyLight.color = CustomLerp(day, dusk, night, 1 - (rotationLights.rotation.eulerAngles.z + 150f) % 30f / 29f);
             newColor = duskColorUI;
 
-            sunLight.intensity = Mathf.Lerp(0f, 1f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
-            moonLight.intensity = Mathf.Lerp(0.5f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            sunLight.intensity = Mathf.Lerp(0f, 0.8f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            moonLight.intensity = Mathf.Lerp(0.625f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
         }
         else if(UIController.timeTitle == "night")
         {
@@ -67,8 +67,8 @@ public class LightsController : MonoBehaviour
             skyLight.color = CustomLerp(night, dawn, day, 1 - (rotationLights.rotation.eulerAngles.z + 30f) % 30f / 29f);
             newColor = dawnColorUI;
 
-            sunLight.intensity = Mathf.Lerp(1f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
-            moonLight.intensity = Mathf.Lerp(0f, 0.5f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            sunLight.intensity = Mathf.Lerp(0.8f, 0f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
+            moonLight.intensity = Mathf.Lerp(0f, 0.625f, (rotationLights.rotation.eulerAngles.z - 150f) % 30f / 29f) * strength;
         }
 
         uiColor.color = Color.Lerp(uiColor.color, newColor, Time.deltaTime);
