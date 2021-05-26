@@ -15,7 +15,6 @@ public static class SaveDataController
     public const string EntityPath = "/entity";
     public const string PickupPath = "/pickup";
     public const string InteractablePath = "/interactable";
-    public const string BubblePath = "/bubble";
     public const string CutscenePath = "/cutscene";
     public const string TutorialPath = "/tutorial";
 
@@ -307,55 +306,6 @@ public static class SaveDataController
             stream.Close();
 
             Debug.Log("Succesfully Loaded Interactable " + i);
-            return data;
-        }
-        else
-        {
-            Debug.LogError("Save file not found in " + path);
-            return null;
-        }
-    }
-
-    #endregion
-
-    #region Bubbles
-
-    public static void SaveBubble(int i, string filePath)
-    {
-        try
-        {
-            string path = filePath + BubblePath + i + Extension;
-
-            BinaryFormatter formatter = new BinaryFormatter();
-            Directory.CreateDirectory(filePath);
-            FileStream stream = new FileStream(path, FileMode.Create);
-            BubbleSaveData data = new BubbleSaveData(GameController.bubbles[i]);
-
-            formatter.Serialize(stream, data);
-            stream.Close();
-
-            Debug.Log("Succesfully Saved Bubble " + i);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Could Not Save Bubble\n" + e.Message);
-        }
-    }
-
-    public static BubbleSaveData LoadBubble(int i, string filePath)
-    {
-        string path = filePath + BubblePath + i + Extension;
-
-        if (File.Exists(path))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            Directory.CreateDirectory(filePath);
-            FileStream stream = new FileStream(path, FileMode.Open);
-            BubbleSaveData data = formatter.Deserialize(stream) as BubbleSaveData;
-
-            stream.Close();
-
-            Debug.Log("Succesfully Loaded Bubble " + i);
             return data;
         }
         else

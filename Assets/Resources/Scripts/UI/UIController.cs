@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 
 public class UIController : MonoBehaviour
 {
+    private PlayerMovement player;
+
     private static UIController ui;
     private EventSystem events;
 
@@ -38,6 +40,7 @@ public class UIController : MonoBehaviour
 
     private void Awake()
     {
+        player = FindObjectOfType<PlayerMovement>();
         events = EventSystem.current;
         ui = this;
         isPaused = false;
@@ -81,7 +84,7 @@ public class UIController : MonoBehaviour
             if (sendNightMessage && numDays == 1 && numFood >= 10)
             {
                 LoadTutorial.Display("Nighttime Dangers", "As night approaches, the forest becomes a dangerous place. " +
-                    "Monsters will begin spawning in unusual places, and you must be prepared for anything. " +
+                    "Red monsters will begin spawning in unusual places, and you must be prepared for anything. " +
                     "However, it is easier to spot berries and other items at night.");
                 sendNightMessage = false;
             }
@@ -198,6 +201,7 @@ public class UIController : MonoBehaviour
     {
         Time.timeScale = 1f;
         SoundPlayer.Play("ui_select");
+        player.Respawn();
         GameController.TryLoadAutoSaveGame();
         GameOverImage.SetActive(false);
     }

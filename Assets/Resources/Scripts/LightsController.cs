@@ -43,7 +43,7 @@ public class LightsController : MonoBehaviour
             skyLight.color = day;
             newColor = dayColorUI;
 
-            sunLight.intensity = 1f * strength;
+            sunLight.intensity = 0.8f * strength;
             moonLight.intensity = 0f * strength;
         }
         else if (UIController.timeTitle == "dusk")
@@ -60,7 +60,7 @@ public class LightsController : MonoBehaviour
             newColor = nightColorUI;
 
             sunLight.intensity = 0f * strength;
-            moonLight.intensity = 0.5f * strength;
+            moonLight.intensity = 0.625f * strength;
         }
         else
         {

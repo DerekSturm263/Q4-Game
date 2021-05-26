@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour
     public static EntityAI[] entities;
     public static Pickup[] pickups;
     public static Interactable[] interactables;
-    public static AirBubble[] bubbles;
     public static GameObject[] cutscenes;
     public static GameObject[] tutorials;
 
@@ -28,7 +27,8 @@ public class GameController : MonoBehaviour
     private AudioSource camAudio;
 
     [SerializeField] private bool ignoreSave = false;
-    public static GameObject nighttimeEnemies;
+    public static GameObject nighttimeEnemiesObj;
+    public static System.Collections.Generic.List<GameObject> nighttimeEnemies;
 
     private void Awake()
     {
@@ -38,13 +38,12 @@ public class GameController : MonoBehaviour
         entities = FindObjectsOfType<EntityAI>();
         pickups = FindObjectsOfType<Pickup>();
         interactables = FindObjectsOfType<Interactable>();
-        bubbles = FindObjectsOfType<AirBubble>();
         cutscenes = GameObject.FindGameObjectsWithTag("Cutscene");
         tutorials = GameObject.FindGameObjectsWithTag("Tutorial");
 
         camAudio = cam.GetComponent<AudioSource>();
 
-        nighttimeEnemies = GameObject.FindGameObjectWithTag("Enemies2");
+        nighttimeEnemiesObj = GameObject.FindGameObjectWithTag("Enemies2");
 
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
@@ -70,15 +69,23 @@ public class GameController : MonoBehaviour
             }
         }
 
-        nighttimeEnemies.SetActive(UIController.timeTitle == "night");
+        foreach (Transform enemy in nighttimeEnemiesObj.GetComponentsInChildren<Transform>())
+        {
+            nighttimeEnemies.Add(enemy.gameObject);
+        }
+
+        if (UIController.timeTitle == "night")
+        {
+            SpawnEnemies();
+        }
     }
 
     private void Update()
     {
         if (UIController.timeTitle == "night")
         {
-            musicVolume = 0f;
-            musicVolume2 = 0f;
+            musicVolume = Mathf.Lerp(musicVolume, 0f, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(musicVolume2, 0f, Time.deltaTime);
 
             timeSinceLastAmbientNoise += Time.deltaTime;
 
@@ -92,8 +99,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            musicVolume = 1f;
-            musicVolume2 = 0.5f;
+            musicVolume = Mathf.Lerp(musicVolume, 1f, Time.deltaTime);
+            musicVolume2 = Mathf.Lerp(musicVolume, 0.5f, Time.deltaTime);
         }
     }
 
@@ -164,11 +171,6 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < interactables.Length; ++i)
         {
             SaveDataController.SaveInteractable(i, Application.persistentDataPath + path);
-        }
-
-        for (int i = 0; i < bubbles.Length; ++i)
-        {
-            SaveDataController.SaveBubble(i, Application.persistentDataPath + path);
         }
 
         for (int i = 0; i < cutscenes.Length; ++i)
@@ -256,13 +258,6 @@ public class GameController : MonoBehaviour
             interactables[i].canUse = interactableSaveData.canUse;
         }
 
-        // Bubbles.
-        for (int i = 0; i < bubbles.Length; ++i)
-        {
-            BubbleSaveData bubbleSaveData = SaveDataController.LoadBubble(i, Application.persistentDataPath + path);
-            bubbles[i].timeSincePopped = bubbleSaveData.timeSincePopped;
-        }
-
         // Cutscenes.
         for (int i = 0; i < cutscenes.Length; ++i)
         {
@@ -280,11 +275,20 @@ public class GameController : MonoBehaviour
 
     public static void SpawnEnemies()
     {
-        nighttimeEnemies.SetActive(true);
+        nighttimeEnemies.ForEach(x =>
+        {
+            if (Vector2.Distance(x.transform.position, player.transform.position) > 10f)
+            {
+                x.SetActive(true);
+            }
+        });
     }
 
     public static void DespawnEnemies()
     {
-        nighttimeEnemies.SetActive(false);
+        nighttimeEnemies.ForEach(x =>
+        {
+            x.SetActive(false);
+        });
     }
 }

@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Color defaultColAdj = new Color(1f, 1f, 1f);
     [SerializeField] private Color underwaterColorAdj = new Color(0.8f, 0.8f, 1f);
     [SerializeField] private Color nightVisionColorAdj = new Color(0f, 1f, 1f);
-    [SerializeField] private float nightVisionExposure = 7f;
+    [SerializeField] private float nightVisionExposure = 2.5f;
     [SerializeField] private float defaultDOF = 4f;
 
     private float targetVignette;
@@ -496,8 +496,6 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed /= heldItem.weight;
         }
 
-        anim.SetBool("Is Running", isRunning);
-
         if (useDebugs)
         {
             Debug.Log("Player Speed: " + currentSpeed);
@@ -623,7 +621,6 @@ public class PlayerMovement : MonoBehaviour
         if (moveState != MoveState.Ground || !isGrounded || Mathf.Abs(moveVel.x) > 0.1f || lockMovement || UIController.isPaused)
             return;
 
-        anim.SetBool("Is Looking Up", isLookingUp);
         playerIsLookingUp = isLookingUp;
 
         // Applies proper speed and camera offset.
@@ -919,7 +916,6 @@ public class PlayerMovement : MonoBehaviour
         breathMeter2.GetComponent<Animator>().SetTrigger("Exit");
 
         anim.SetBool("Is Underwater", false);
-        anim.SetTrigger("Exit Water");
     }
 
     private void ActivateNightVision()
@@ -1093,12 +1089,6 @@ public class PlayerMovement : MonoBehaviour
 
         ExitWater(false);
         EndClimb(false);
-    }
-
-    // Makes you restart the day if the tribe runs out of food.
-    public void GameOver()
-    {
-        anim.SetTrigger("Death");
     }
 
     public static void Freeze()
