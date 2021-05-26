@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
 
     public static bool sendDuskMessage = true;
     public static bool sendNightMessage = true;
+    public static bool startSunLate = true;
 
     public GameObject GameOverImage;
     public GameObject settings;
@@ -43,7 +44,12 @@ public class UIController : MonoBehaviour
 
         cycleSeconds = cycleLength * 60;
         foodNumDisplay.text = "" + numFood;
-        time = cycleSeconds * 0.075f;
+
+        if (startSunLate)
+        {
+            time = cycleSeconds * 0.075f;
+            startSunLate = false;
+        }
     }
     
     void Update()
