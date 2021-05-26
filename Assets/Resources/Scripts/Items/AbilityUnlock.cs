@@ -49,7 +49,6 @@ public class AbilityUnlock : Interactable
         anim.enabled = true;
 
         PlayerMovement.Freeze();
-        PlayerMovement.UnlockAbility(ability);
 
         canUse = false;
     }
@@ -68,6 +67,7 @@ public class AbilityUnlock : Interactable
     public void Unlock()
     {
         SoundPlayer.Play("new_ability");
+        PlayerMovement.UnlockAbility(ability);
         LoadTutorial.Display(AbilityTutorial.abilities[ability]);
     }
 }

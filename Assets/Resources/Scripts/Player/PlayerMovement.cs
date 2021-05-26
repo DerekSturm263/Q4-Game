@@ -87,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
     private UnityEngine.Rendering.Universal.Vignette vignette;
     private UnityEngine.Rendering.Universal.ColorAdjustments colAdj;
     private UnityEngine.Rendering.Universal.DepthOfField dof;
+    private UnityEngine.Rendering.Universal.FilmGrain filmGrain;
 
     [Header("Volume Settings")]
     [SerializeField] private float defaultVignette = 0.2f;
@@ -175,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         cam = Camera.main.GetComponent<CameraFollow>();
+        cam.SetOffset(CameraFollow.defaultOffset);
 
         PlayerRespawn.player = this;
 
@@ -190,9 +192,11 @@ public class PlayerMovement : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
 
         vol = Camera.main.GetComponent<UnityEngine.Rendering.Volume>().profile;
+
         vol.TryGet(out vignette);
         vol.TryGet(out colAdj);
         vol.TryGet(out dof);
+        vol.TryGet(out filmGrain);
 
         defaultVignette = vignette.intensity.value;
         defaultColAdj = colAdj.colorFilter.value;
@@ -243,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isGrounded = IsGrounded();
 
-        Crouch(controls.Player.Crouch.ReadValue<float>() == 1f, isGrounded);
+        //Crouch(controls.Player.Crouch.ReadValue<float>() == 1f, isGrounded);
         LookUp(controls.Player.LookUp.ReadValue<float>() == 1f, isGrounded);
         Throw(controls.Player.Throw.ReadValue<float>() == 1f);
         Move(controls.Player.Move.ReadValue<Vector2>(), isGrounded);
@@ -512,7 +516,7 @@ public class PlayerMovement : MonoBehaviour
             // Lets player jump off wall.
             if (moveState == MoveState.Wall)
             {
-                EndClimb();
+                EndClimb(true);
 
                 jumpVel = jumpForce;
                 moveVel = new Vector2(rb2D.velocity.x / 5f, moveVel.y);
@@ -625,9 +629,9 @@ public class PlayerMovement : MonoBehaviour
         // Applies proper speed and camera offset.
         if (isLookingUp)
         {
-            currentSpeed = 0f;
-            currentTurnAroundSpeed = 20f;
-            cam.SetOffset(CameraFollow.lookUpOffset);
+            //currentSpeed = 0f;
+            //currentTurnAroundSpeed = 20f;
+            //cam.SetOffset(CameraFollow.lookUpOffset);
 
             if (useDebugs)
             {
@@ -646,9 +650,9 @@ public class PlayerMovement : MonoBehaviour
         if (moveState != MoveState.Water || lockMovement)
             return;
 
-        anim.SetTrigger("Jump");
         PlaySound(swim, true, 1f, 0.5f);
         rb2D.AddForce(new Vector2(0f, swimForce), ForceMode2D.Impulse);
+        anim.SetTrigger("Swim");
 
         if (useDebugs)
         {
@@ -715,6 +719,7 @@ public class PlayerMovement : MonoBehaviour
         pounceVel = Vector2.zero;
         moveVel = Vector2.zero;
 
+        anim.SetTrigger("Start Climbing");
         anim.SetBool("Is Climbing", true);
 
         if (useDebugs)
@@ -723,10 +728,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void EndClimb()
+    private void EndClimb(bool useJump)
     {
         moveState = MoveState.Ground;
         rb2D.gravityScale = aboveGroundGravity;
+
+        if (useJump)
+        {
+            anim.SetTrigger("Jump");
+        }
 
         // Cancels other velocity.
         jumpVel = 0f;
@@ -873,6 +883,7 @@ public class PlayerMovement : MonoBehaviour
         breathLeftUnderwater = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath: newMaxUnderwaterBreath;
 
         anim.SetBool("Is Underwater", true);
+        anim.SetTrigger("Enter Water");
     }
 
     private void ExitWater(bool useJump = true)
@@ -908,6 +919,7 @@ public class PlayerMovement : MonoBehaviour
         breathMeter2.GetComponent<Animator>().SetTrigger("Exit");
 
         anim.SetBool("Is Underwater", false);
+        anim.SetTrigger("Exit Water");
     }
 
     private void ActivateNightVision()
@@ -918,7 +930,7 @@ public class PlayerMovement : MonoBehaviour
 
         targetExposure = nightVisionExposure;
         targetColAdj = nightVisionColorAdj;
-        cam.GetComponent<UnityEngine.Rendering.Universal.FilmGrain>().intensity.value = 0f;
+        filmGrain.intensity.value = 0f;
     }
 
     private void DeactivateNightVision()
@@ -929,7 +941,7 @@ public class PlayerMovement : MonoBehaviour
 
         targetExposure = 0f;
         targetColAdj = moveState == MoveState.Water ? underwaterColorAdj : defaultColAdj;
-        cam.GetComponent<UnityEngine.Rendering.Universal.FilmGrain>().intensity.value = 0.5f;
+        filmGrain.intensity.value = 0.5f;
     }
 
     public static void UnlockAbility(byte ability)
@@ -1079,10 +1091,8 @@ public class PlayerMovement : MonoBehaviour
 
         cam.gameObject.transform.position = transform.position + cam.GetOffset();
 
-        anim.enabled = false;
-        anim.enabled = true;
-
         ExitWater(false);
+        EndClimb(false);
     }
 
     // Makes you restart the day if the tribe runs out of food.
