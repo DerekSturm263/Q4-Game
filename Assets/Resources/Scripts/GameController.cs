@@ -16,10 +16,10 @@ public class GameController : MonoBehaviour
 
     public static GameObject savingIndicator;
 
-    public static float musicScalar;
+    public static float musicScalar = 0.5f;
 
-    public static float musicVolume;
-    public static float musicVolume2;
+    public static float musicVolume = 1f;
+    public static float musicVolume2 = 0.6f;
 
     private float timeBetweenAmbientNoises = 2f;
     private float timeSinceLastAmbientNoise = 0f;
@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     private AudioSource camAudio;
 
     [SerializeField] private bool ignoreSave = false;
+    public static GameObject nighttimeEnemies;
 
     private void Awake()
     {
@@ -43,6 +44,8 @@ public class GameController : MonoBehaviour
 
         camAudio = cam.GetComponent<AudioSource>();
 
+        nighttimeEnemies = GameObject.FindGameObjectWithTag("Enemies2");
+
         savingIndicator = GameObject.FindGameObjectWithTag("Saving");
         savingIndicator.SetActive(false);
 
@@ -53,6 +56,7 @@ public class GameController : MonoBehaviour
                 UIController.numFood = 0;
                 UIController.numDays = 1;
                 UIController.timePassedSinceGameBegun = 0f;
+                uiCont.timeDisplay.transform.Rotate(new Vector3(0f, 0f, 0f));
                 CollectBerries.berriesCollectedNum = 0;
                 PlayerMovement.deathCount = 0;
 
@@ -64,14 +68,16 @@ public class GameController : MonoBehaviour
                 TryLoadGame();
             }
         }
+
+        nighttimeEnemies.SetActive(UIController.timeTitle == "night");
     }
 
     private void Update()
     {
         if (UIController.timeTitle == "night")
         {
-            musicVolume = 0f * musicScalar;
-            musicVolume2 = 0f * musicScalar;
+            musicVolume = 0f;
+            musicVolume2 = 0f;
 
             timeSinceLastAmbientNoise += Time.deltaTime;
 
@@ -85,8 +91,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            musicVolume = 0.5f * musicScalar;
-            musicVolume2 = 0.3f * musicScalar;
+            musicVolume = 1f;
+            musicVolume2 = 0.6f;
         }
     }
 
@@ -264,5 +270,15 @@ public class GameController : MonoBehaviour
             TutorialSaveData tutorialData = SaveDataController.LoadTutorial(i, Application.persistentDataPath + path);
             tutorials[i].SetActive(!tutorialData.hasUsed);
         }
+    }
+
+    public static void SpawnEnemies()
+    {
+        nighttimeEnemies.SetActive(true);
+    }
+
+    public static void DespawnEnemies()
+    {
+        nighttimeEnemies.SetActive(false);
     }
 }

@@ -37,6 +37,7 @@ public class UIController : MonoBehaviour
     {
         events = EventSystem.current;
         ui = this;
+        isPaused = false;
 
         pauseMenuStatic = pauseMenu;
 
@@ -65,8 +66,9 @@ public class UIController : MonoBehaviour
         if ((int)rotCalc == -180 && timeTitle != "night")
         {
             timeTitle = "night";
-            TakeFood(takeAwayBerries); // Food is taken away every day at night
+            GameController.SpawnEnemies();
             SoundPlayer.Play("food_time");
+            TakeFood(takeAwayBerries); // Food is taken away every day at night
 
             if (sendNightMessage && numDays == 1)
             {
@@ -87,6 +89,7 @@ public class UIController : MonoBehaviour
             }
         } else if ((int)rotCalc == -30 && timeTitle != "day")
         {
+            GameController.DespawnEnemies();
             timeTitle = "day";
             //GiveFood(5); //Simulating the player finding food
         } else if ((int)rotCalc == 0 && timeTitle != "dawn")

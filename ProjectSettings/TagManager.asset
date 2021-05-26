@@ -26,6 +26,7 @@ TagManager:
   - Ability
   - Tutorial
   - Cutscene
+  - Enemies2
   layers:
   - Default
   - TransparentFX

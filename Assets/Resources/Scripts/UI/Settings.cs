@@ -30,9 +30,19 @@ public class Settings : MonoBehaviour
 
     private void Start()
     {
-        ToggleFullscreen(useFullscreen);
-        ToggleParticles(useParticles);
-        TogglePostProcessing(usePostProcessing);
+        Screen.fullScreen = useFullscreen;
+
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            ParticleSystem.EmissionModule emission = particles[i].emission;
+
+            emission.rateOverTime = useParticles ? particleEmissionRates[i] : 0f;
+        }
+
+        if (Camera.main.GetComponent<UnityEngine.Rendering.Volume>() != null)
+        {
+            Camera.main.GetComponent<UnityEngine.Rendering.Volume>().enabled = usePostProcessing;
+        }
 
         AdjustMusicVolume(MusicPlayer.volume[0]);
         AdjustSFXVolume(SoundPlayer.volume);
@@ -48,6 +58,7 @@ public class Settings : MonoBehaviour
     public void ToggleFullscreen(bool isOn)
     {
         SoundPlayer.Play("ui_select");
+
         useFullscreen = isOn;
         Screen.fullScreen = useFullscreen;
     }
@@ -55,26 +66,21 @@ public class Settings : MonoBehaviour
     public void ToggleParticles(bool isOn)
     {
         SoundPlayer.Play("ui_select");
+
         useParticles = isOn;
 
         for (int i = 0; i < particles.Length; ++i)
         {
             ParticleSystem.EmissionModule emission = particles[i].emission;
 
-            if (isOn)
-            {
-                emission.rateOverTime = particleEmissionRates[i];
-            }
-            else
-            {
-                emission.rateOverTime = 0f;
-            }
+            emission.rateOverTime = isOn ? particleEmissionRates[i] : 0f;
         }
     }   
     
     public void TogglePostProcessing(bool isOn)
     {
         SoundPlayer.Play("ui_select");
+
         usePostProcessing = isOn;
 
         if (Camera.main.GetComponent<UnityEngine.Rendering.Volume>() != null)
@@ -85,12 +91,12 @@ public class Settings : MonoBehaviour
 
     public void AdjustMusicVolume(float newVolume)
     {
-        GameController.musicScalar = newVolume * 2f;
+        GameController.musicScalar = newVolume;
     }
 
     public void AdjustSFXVolume(float newVolume)
     {
         SoundPlayer.SetVolume(newVolume);
-        mixer.SetFloat("Volume", Mathf.Lerp(-80f, 20f, newVolume));
+        mixer.SetFloat("Volume", Mathf.Lerp(-40f, 20f, newVolume));
     }
 }
