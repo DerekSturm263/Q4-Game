@@ -64,6 +64,7 @@ public class LoadTutorial : MonoBehaviour
         if (!tutorial.activeSelf)
             return;
 
+        SoundPlayer.Play("ui_select");
         PlayerMovement.UnFreeze();
         anim.SetTrigger("Exit");
     }

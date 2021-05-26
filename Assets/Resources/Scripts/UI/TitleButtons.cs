@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TitleButtons : MonoBehaviour
 {
+    private EventSystem events;
     public Animator anim;
 
     public GameObject startButton;
@@ -9,8 +11,12 @@ public class TitleButtons : MonoBehaviour
 
     public GameObject loadGameButton;
 
+    public GameObject settings;
+
     private void Awake()
     {
+        events = EventSystem.current;
+
         if (!MusicPlayer.Exists())
         {
             MusicPlayer.Initialize();
@@ -32,34 +38,48 @@ public class TitleButtons : MonoBehaviour
 
     public void ClickStart()
     {
+        SoundPlayer.Play("ui_select");
         startButton.GetComponent<Animator>().enabled = true;
         gameButtons.SetActive(true);
     }
 
     public void Credits()
     {
+        SoundPlayer.Play("ui_select");
         anim.SetTrigger("Exit");
     }
 
     public void NewGame()
     {
+        SoundPlayer.Play("ui_select");
         anim.SetTrigger("Exit2");
         GameController.newGame = true;
     }
 
     public void LoadGame()
     {
+        SoundPlayer.Play("ui_select");
         anim.SetTrigger("Exit2");
         GameController.newGame = false;
     }
 
     public void OpenSettings()
     {
-
+        SoundPlayer.Play("ui_select");
+        settings.SetActive(true);
     }
 
     public void Quit()
     {
+        SoundPlayer.Play("ui_select");
         Application.Quit();
+    }
+
+    public void Back()
+    {
+        SoundPlayer.Play("ui_select");
+
+        settings.GetComponent<Animator>().SetTrigger("Exit");
+        events.SetSelectedGameObject(GetComponentsInChildren<UnityEngine.UI.Button>()[1].gameObject);
     }
 }

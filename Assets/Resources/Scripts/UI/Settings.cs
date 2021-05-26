@@ -25,7 +25,6 @@ public class Settings : MonoBehaviour
         for (int i = 0; i < particles.Length; ++i)
         {
             particleEmissionRates.Add(particles[i].emission.rateOverTime.constant);
-            Debug.Log(particles[i].emission.rateOverTime.constant);
         }
     }
 
@@ -48,12 +47,14 @@ public class Settings : MonoBehaviour
 
     public void ToggleFullscreen(bool isOn)
     {
+        SoundPlayer.Play("ui_select");
         useFullscreen = isOn;
         Screen.fullScreen = useFullscreen;
     }
 
     public void ToggleParticles(bool isOn)
     {
+        SoundPlayer.Play("ui_select");
         useParticles = isOn;
 
         for (int i = 0; i < particles.Length; ++i)
@@ -73,6 +74,7 @@ public class Settings : MonoBehaviour
     
     public void TogglePostProcessing(bool isOn)
     {
+        SoundPlayer.Play("ui_select");
         usePostProcessing = isOn;
 
         if (Camera.main.GetComponent<UnityEngine.Rendering.Volume>() != null)
@@ -83,8 +85,7 @@ public class Settings : MonoBehaviour
 
     public void AdjustMusicVolume(float newVolume)
     {
-        MusicPlayer.SetVolume(0, newVolume);
-        MusicPlayer.SetVolume(1, newVolume * 0.6f);
+        GameController.musicScalar = newVolume * 2f;
     }
 
     public void AdjustSFXVolume(float newVolume)

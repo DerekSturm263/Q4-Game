@@ -19,6 +19,7 @@ public class Results : MonoBehaviour
 
     public void ToCredits()
     {
+        SoundPlayer.Play("ui_select");
         fadeOut.SetTrigger("Exit");
     }
 }

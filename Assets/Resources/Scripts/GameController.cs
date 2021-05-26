@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
 
     public static GameObject savingIndicator;
 
+    public static float musicScalar;
+
     public static float musicVolume;
     public static float musicVolume2;
 
@@ -48,6 +50,7 @@ public class GameController : MonoBehaviour
         {
             if (newGame)
             {
+                UIController.numFood = 0;
                 UIController.numDays = 1;
                 UIController.timePassedSinceGameBegun = 0f;
                 CollectBerries.berriesCollectedNum = 0;
@@ -67,8 +70,8 @@ public class GameController : MonoBehaviour
     {
         if (UIController.timeTitle == "night")
         {
-            musicVolume = 0f;
-            musicVolume2 = 0f;
+            musicVolume = 0f * musicScalar;
+            musicVolume2 = 0f * musicScalar;
 
             timeSinceLastAmbientNoise += Time.deltaTime;
 
@@ -82,8 +85,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            musicVolume = 0.5f;
-            musicVolume2 = 0.3f;
+            musicVolume = 0.5f * musicScalar;
+            musicVolume2 = 0.3f * musicScalar;
         }
     }
 
@@ -200,6 +203,7 @@ public class GameController : MonoBehaviour
         UIController.timeTitle = uiData.timeTitle;
         UIController.numFood = uiData.berryCount;
         UIController.numDays = uiData.daysPassed;
+        uiCont.timeDisplay.transform.Rotate(new Vector3(0f, 0f, uiData.sunRotation));
         UIController.timePassedSinceGameBegun = uiData.timePassed;
 
         Settings.useFullscreen = uiData.useFullscreen;

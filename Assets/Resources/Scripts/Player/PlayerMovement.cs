@@ -270,8 +270,8 @@ public class PlayerMovement : MonoBehaviour
         float breath = (abilities & longerUnderwater) == 0 ? maxUnderwaterBreath : newMaxUnderwaterBreath;
         if (moveState == MoveState.Water)
         {
-            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], 0f, Time.deltaTime * 2f));
-            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], GameController.musicVolume2, Time.deltaTime * 2f));
+            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], 0f, Time.deltaTime * 2f) * GameController.musicScalar);
+            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], GameController.musicVolume2, Time.deltaTime * 2f) * GameController.musicScalar);
 
             if (Settings.useParticles)
                 underwaterParticles.rateOverTime = 7.5f;
@@ -292,8 +292,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], GameController.musicVolume, Time.deltaTime * 2f));
-            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f));
+            MusicPlayer.SetVolume(0, Mathf.Lerp(MusicPlayer.volume[0], GameController.musicVolume, Time.deltaTime * 2f) * GameController.musicScalar);
+            MusicPlayer.SetVolume(1, Mathf.Lerp(MusicPlayer.volume[1], 0f, Time.deltaTime * 2f) * GameController.musicScalar);
 
             if (Settings.useParticles)
                 breathingParticles.rateOverTime = 100f;
@@ -502,7 +502,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump(bool isJumping)
     {
         // Doesn't allow the player to jump underwater.
-        if (moveState == MoveState.Water || lockMovement || playerIsCrouching || LoadTutorial.IsActive())
+        if (moveState == MoveState.Water || lockMovement || playerIsCrouching || LoadTutorial.IsActive() || UIController.IsActive())
             return;
 
         // Jump button is held.
@@ -615,7 +615,7 @@ public class PlayerMovement : MonoBehaviour
     private void LookUp(bool isLookingUp, bool isGrounded)
     {
         // Only allows player to look up while standing still and grounded.
-        if (moveState != MoveState.Ground || !isGrounded || Mathf.Abs(moveVel.x) > 0.1f || lockMovement)
+        if (moveState != MoveState.Ground || !isGrounded || Mathf.Abs(moveVel.x) > 0.1f || lockMovement || UIController.isPaused)
             return;
 
         anim.SetBool("Is Looking Up", isLookingUp);
@@ -665,6 +665,7 @@ public class PlayerMovement : MonoBehaviour
         pounceVel = Vector2.Scale(new Vector2(sprtRndr.flipX ? -1f : 1f, 1f), pounceForce);
         isPouncing = true;
 
+        anim.SetBool("Is Pouncing", true);
         anim.SetTrigger("Pounce");
 
         if (useDebugs)
@@ -680,6 +681,7 @@ public class PlayerMovement : MonoBehaviour
         {
             pounceVel = Vector2.zero;
             isPouncing = false;
+            anim.SetBool("Is Pouncing", false);
 
             return;
         }

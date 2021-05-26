@@ -20,11 +20,12 @@ public class UIController : MonoBehaviour
 
     public static bool isPaused = false;
     public GameObject pauseMenu;
+    public static GameObject pauseMenuStatic;
 
     public static float numFood;
     public static float timePassedSinceGameBegun = 0f;
 
-    public float takeAwayBerries; //How many berries are taken away each dusk
+    public int takeAwayBerries; //How many berries are taken away each dusk
 
     public static bool sendDuskMessage = true;
     public static bool sendNightMessage = true;
@@ -36,6 +37,8 @@ public class UIController : MonoBehaviour
     {
         events = EventSystem.current;
         ui = this;
+
+        pauseMenuStatic = pauseMenu;
 
         cycleSeconds = cycleLength * 60;
         foodNumDisplay.text = "" + numFood;
@@ -62,7 +65,7 @@ public class UIController : MonoBehaviour
         if ((int)rotCalc == -180 && timeTitle != "night")
         {
             timeTitle = "night";
-            TakeFood((int)takeAwayBerries); // Food is taken away every day at night
+            TakeFood(takeAwayBerries); // Food is taken away every day at night
             SoundPlayer.Play("food_time");
 
             if (sendNightMessage && numDays == 1)
@@ -156,28 +159,33 @@ public class UIController : MonoBehaviour
     public void ToCredits()
     {
         Time.timeScale = 1f;
+        SoundPlayer.Play("ui_select");
         UnityEngine.SceneManagement.SceneManager.LoadScene("Credits");
     }
 
     public void ToTitle()
     {
         Time.timeScale = 1f;
+        SoundPlayer.Play("ui_select");
         UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
 
     public void Save()
     {
+        SoundPlayer.Play("ui_select");
         GameController.TrySaveGame();
         Resume();
     }
 
     public void LoadScene()
     {
+        SoundPlayer.Play("ui_select");
         GameController.TryLoadGame();
     }
 
     public void OpenSettings()
     {
+        SoundPlayer.Play("ui_select");
         settings.SetActive(true);
         Time.timeScale = 1f;
 
@@ -186,19 +194,24 @@ public class UIController : MonoBehaviour
 
     public void Back()
     {
+        SoundPlayer.Play("ui_select");
         settings.GetComponent<Animator>().SetTrigger("Exit");
 
-        events.SetSelectedGameObject(settings.GetComponentsInChildren<UnityEngine.UI.Button>()[1].gameObject);
+        events.SetSelectedGameObject(settings.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
 
     public void Resume()
     {
+        SoundPlayer.Play("ui_select");
         pauseMenu.GetComponent<Animator>().SetTrigger("Exit");
+        settings.SetActive(false);
+
         isPaused = false;
     }
 
     void Pause()
     {
+        SoundPlayer.Play("ui_select");
         pauseMenu.SetActive(true);
         isPaused = true;
 
@@ -208,5 +221,10 @@ public class UIController : MonoBehaviour
     public void GameOver()
     {
         GameOverImage.SetActive(true);
+    }
+
+    public static bool IsActive()
+    {
+        return pauseMenuStatic.activeSelf;
     }
 }
