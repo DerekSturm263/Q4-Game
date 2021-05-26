@@ -34,6 +34,8 @@ public class UIController : MonoBehaviour
     public GameObject GameOverImage;
     public GameObject settings;
 
+    public bool useCheats;
+
     private void Awake()
     {
         events = EventSystem.current;
@@ -109,6 +111,11 @@ public class UIController : MonoBehaviour
         //Debug.Log(timeDisplayRoation.eulerAngles);
 
         //Pause Menu
+
+        if (useCheats && Input.GetKeyDown(KeyCode.P))
+        {
+            time += (cycleSeconds * 0.05f);
+        }
     }
 
     public void GiveFood(int numFoodToGive)
