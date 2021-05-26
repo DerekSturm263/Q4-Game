@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour
         {
             time = 0;
             numDays++;
+
             GameController.TryAutoSaveGame();
         }
         Vector3 rotationVector = new Vector3(0, 0, rotCalc);
@@ -67,7 +68,6 @@ public class UIController : MonoBehaviour
         {
             timeTitle = "night";
             GameController.SpawnEnemies();
-            SoundPlayer.Play("food_time");
             TakeFood(takeAwayBerries); // Food is taken away every day at night
 
             if (sendNightMessage && numDays == 1)
@@ -79,6 +79,7 @@ public class UIController : MonoBehaviour
             }
         } else if ((int)rotCalc == -150 && timeTitle != "dusk")
         {
+            SoundPlayer.Play("food_time");
             timeTitle = "dusk";
             if (sendDuskMessage && numDays == 1)
             {
