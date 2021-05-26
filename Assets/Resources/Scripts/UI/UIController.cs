@@ -101,11 +101,11 @@ public class UIController : MonoBehaviour
             }
         } else if ((int)rotCalc == -30 && timeTitle != "day")
         {
-            GameController.DespawnEnemies();
             timeTitle = "day";
             //GiveFood(5); //Simulating the player finding food
         } else if ((int)rotCalc == 0 && timeTitle != "dawn")
         {
+            GameController.DespawnEnemies();
             timeTitle = "dawn";
         }
 

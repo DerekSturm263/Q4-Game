@@ -61,6 +61,7 @@ public class GameController : MonoBehaviour
                 UIController.numFood = 0;
                 UIController.numDays = 1;
                 UIController.time = 0f;
+                UIController.startSunLate = true;
                 UIController.timePassedSinceGameBegun = 0f;
                 uiCont.timeDisplay.transform.Rotate(new Vector3(0f, 0f, 0f));
                 CollectBerries.berriesCollectedNum = 0;
