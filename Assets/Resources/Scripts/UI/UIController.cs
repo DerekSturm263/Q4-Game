@@ -198,7 +198,7 @@ public class UIController : MonoBehaviour
     {
         Time.timeScale = 1f;
         SoundPlayer.Play("ui_select");
-        GameController.TryLoadGame();
+        GameController.TryLoadAutoSaveGame();
     }
 
     public void OpenSettings()
