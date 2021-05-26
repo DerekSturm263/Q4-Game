@@ -18,18 +18,15 @@ public class Settings : MonoBehaviour
     private ParticleSystem[] particles;
     private System.Collections.Generic.List<float> particleEmissionRates = new System.Collections.Generic.List<float>();
 
-    private void Awake()
+    private void Start()
     {
         particles = FindObjectsOfType<ParticleSystem>();
-        
+
         for (int i = 0; i < particles.Length; ++i)
         {
             particleEmissionRates.Add(particles[i].emission.rateOverTime.constant);
         }
-    }
 
-    private void Start()
-    {
         Screen.fullScreen = useFullscreen;
 
         for (int i = 0; i < particles.Length; ++i)
@@ -91,7 +88,7 @@ public class Settings : MonoBehaviour
 
     public void AdjustMusicVolume(float newVolume)
     {
-        GameController.musicScalar = newVolume;
+        GameController.musicScalar = Mathf.Lerp(0.5f, 1f, newVolume);
     }
 
     public void AdjustSFXVolume(float newVolume)

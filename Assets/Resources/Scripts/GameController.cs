@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     public static GameObject savingIndicator;
 
-    public static float musicScalar = 0.5f;
+    public static float musicScalar = 1f;
 
     public static float musicVolume = 1f;
     public static float musicVolume2 = 0.6f;
