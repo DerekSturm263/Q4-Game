@@ -918,6 +918,7 @@ public class PlayerMovement : MonoBehaviour
 
         targetExposure = nightVisionExposure;
         targetColAdj = nightVisionColorAdj;
+        cam.GetComponent<UnityEngine.Rendering.Universal.FilmGrain>().intensity.value = 0f;
     }
 
     private void DeactivateNightVision()
@@ -928,6 +929,7 @@ public class PlayerMovement : MonoBehaviour
 
         targetExposure = 0f;
         targetColAdj = moveState == MoveState.Water ? underwaterColorAdj : defaultColAdj;
+        cam.GetComponent<UnityEngine.Rendering.Universal.FilmGrain>().intensity.value = 0.5f;
     }
 
     public static void UnlockAbility(byte ability)
