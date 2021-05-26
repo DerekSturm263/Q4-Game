@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     public static float musicScalar = 1f;
 
     public static float musicVolume = 1f;
-    public static float musicVolume2 = 0.6f;
+    public static float musicVolume2 = 0.5f;
 
     private float timeBetweenAmbientNoises = 2f;
     private float timeSinceLastAmbientNoise = 0f;
@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour
             {
                 UIController.numFood = 0;
                 UIController.numDays = 1;
+                UIController.time = 0f;
                 UIController.timePassedSinceGameBegun = 0f;
                 uiCont.timeDisplay.transform.Rotate(new Vector3(0f, 0f, 0f));
                 CollectBerries.berriesCollectedNum = 0;
@@ -92,7 +93,7 @@ public class GameController : MonoBehaviour
         else
         {
             musicVolume = 1f;
-            musicVolume2 = 0.6f;
+            musicVolume2 = 0.5f;
         }
     }
 
@@ -216,7 +217,7 @@ public class GameController : MonoBehaviour
         Settings.useParticles = uiData.useParticles;
         Settings.usePostProcessing = uiData.usePostProcessing;
         MusicPlayer.SetVolume(0, uiData.musicVolume);
-        MusicPlayer.SetVolume(1, uiData.musicVolume * 0.6f);
+        MusicPlayer.SetVolume(1, uiData.musicVolume * 0.5f);
         SoundPlayer.SetVolume(uiData.sfxVolume);
 
         uiCont.foodNumDisplay.text = UIController.numFood.ToString();

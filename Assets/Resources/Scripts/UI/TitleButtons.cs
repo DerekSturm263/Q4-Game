@@ -22,16 +22,17 @@ public class TitleButtons : MonoBehaviour
             MusicPlayer.Initialize();
             SoundPlayer.Initialize();
 
-            MusicPlayer.Play(0, "Lost in the Woods (Main Theme)");
-            MusicPlayer.Play(1, "Lost in the Ocean (Underwater Theme)");
             MusicPlayer.SetVolume(0, 1f);
             MusicPlayer.SetVolume(1, 0f);
 
             SoundPlayer.SetVolume(0.5f);
 
             GameController.musicVolume = MusicPlayer.volume[0];
-            GameController.musicVolume2 = MusicPlayer.volume[0] * 0.6f;
+            GameController.musicVolume2 = MusicPlayer.volume[0] * 0.5f;
         }
+        
+        MusicPlayer.Play(0, "Lost in the Woods (Main Theme)");
+        MusicPlayer.Play(1, "Lost in the Ocean (Underwater Theme)");
 
         loadGameButton.SetActive(SaveDataController.HasSave());
     }

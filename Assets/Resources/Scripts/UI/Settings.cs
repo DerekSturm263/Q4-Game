@@ -89,6 +89,11 @@ public class Settings : MonoBehaviour
     public void AdjustMusicVolume(float newVolume)
     {
         GameController.musicScalar = Mathf.Lerp(0.5f, 1f, newVolume);
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Title")
+        {
+            MusicPlayer.SetVolume(0, newVolume);
+        }
     }
 
     public void AdjustSFXVolume(float newVolume)

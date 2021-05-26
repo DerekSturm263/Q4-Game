@@ -15,6 +15,8 @@ public class Results : MonoBehaviour
         daysPassed.text = System.Convert.ToString(UIController.numDays);
         berriesCollected.text = CollectBerries.berriesCollectedNum + "/60";
         deathCount.text = System.Convert.ToString(PlayerMovement.deathCount);
+
+        MusicPlayer.Play(0, "Perseverance (End Theme)");
     }
 
     public void ToCredits()
