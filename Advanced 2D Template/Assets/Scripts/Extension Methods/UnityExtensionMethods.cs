@@ -30,6 +30,22 @@ namespace Extensions
             return dir.normalized;
         }
 
+        public static Vector2 SnapTo4Slices(this Vector2 vector2)
+        {
+            Vector2 dir = Vector2.zero;
+
+            if (Vector2.Dot(vector2.normalized, Vector2.up) > 0.5f)
+                dir = Vector2.up;
+            else if (Vector2.Dot(vector2.normalized, Vector2.down) > 0.5f)
+                dir = Vector2.down;
+            else if (Vector2.Dot(vector2.normalized, Vector2.left) > 0.5f)
+                dir = Vector2.left;
+            else if (Vector2.Dot(vector2.normalized, Vector2.right) > 0.5f)
+                dir = Vector2.right;
+
+            return dir;
+        }
+
         public static bool Intersects(this BoundsInt lhs, BoundsInt rhs)
         {
             Bounds lhsNoInt = new(lhs.position, lhs.size);

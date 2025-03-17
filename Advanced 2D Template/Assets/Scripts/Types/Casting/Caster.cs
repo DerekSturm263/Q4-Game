@@ -13,9 +13,9 @@ namespace Types.Casting
 
         [SerializeField] private Miscellaneous.Variant<BoxCastSettings, SphereCastSettings, CapsuleCastSettings, RaycastSettings> _settings;
 
-        public readonly RaycastHit? GetHitInfo(Transform transform)
+        public readonly RaycastHit? GetHitInfo(Transform transform, Vector3 offset = default)
         {
-            return _settings.Get<Interfaces.ICastable>().GetHitInfo(transform.position, _direction, _maxDistance, _layerMask, _triggerInteraction);
+            return _settings.Get<Interfaces.ICastable>().GetHitInfo(transform.position + offset, _direction, _maxDistance, _layerMask, _triggerInteraction);
         }
 
         public readonly bool TryGetHitInfo(Transform transform, out RaycastHit hit)
@@ -33,9 +33,9 @@ namespace Types.Casting
             return _settings.Get<Interfaces.ICastable>().GetHitInfoNonAlloc(transform.position, _direction, _maxDistance, _layerMask, _triggerInteraction, results);
         }
 
-        public readonly void Draw(Transform transform)
+        public readonly void Draw(Transform transform, Vector3 offset = default)
         {
-            _settings.Get<Interfaces.ICastable>().Draw(transform.position);
+            _settings.Get<Interfaces.ICastable>().Draw(transform.position + offset);
         }
     }
 }

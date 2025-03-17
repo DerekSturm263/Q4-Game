@@ -15,6 +15,16 @@ namespace SingletonBehaviours
         private GameObject _transitionCanvas;
         private GameObject _transitionInstance;
 
+        private Types.Collections.Dictionary<string, Types.Miscellaneous.Any> _sceneParameters = new();
+        public void SetSceneParameter<T>(string key, T value)
+        {
+            if (_sceneParameters.ContainsKey(key))
+                _sceneParameters[key] = Types.Miscellaneous.Any.FromValue(value);
+            else
+                _sceneParameters.TryAdd(key, Types.Miscellaneous.Any.FromValue(value));
+        }
+        public T GetSceneParameter<T>(string key) => (T)(object)_sceneParameters[key];
+
         public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Load(settings.Value);
 
         public void Load(Types.Scene.SceneLoadSettings settings)
@@ -60,6 +70,9 @@ namespace SingletonBehaviours
             operation.allowSceneActivation = false;
 
             yield return new WaitUntil(() => operation.progress >= 0.9f);
+
+            if (settings.SceneParameters.HasValue)
+                _sceneParameters = settings.SceneParameters.Value;
 
             operation.allowSceneActivation = true;
 

@@ -17,7 +17,7 @@ namespace Types.Scene
         [SerializeField] private LoadSceneParameters _loadParameters;
         public readonly LoadSceneParameters LoadParameters => _loadParameters;
 
-        [SerializeField] private Collections.Dictionary<string, Types.Miscellaneous.Any> _sceneParameters;
-        public readonly T GetSceneParameter<T>(string key) => (T)(object)_sceneParameters[key];
+        [SerializeField] private Wrappers.Nullable<Collections.Dictionary<string, Types.Miscellaneous.Any>> _sceneParameters;
+        public readonly Wrappers.Nullable<Collections.Dictionary<string, Types.Miscellaneous.Any>> SceneParameters => _sceneParameters;
     }
 }
