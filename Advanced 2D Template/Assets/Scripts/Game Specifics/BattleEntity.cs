@@ -1,9 +1,10 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
-public abstract class BattleEntity : MonoBehaviour, IBattleEntity
+public abstract class BattleEntity : Selectable, IBattleEntity
 {
     [SerializeField] private IBattleEntity.Type _type;
 
@@ -12,9 +13,10 @@ public abstract class BattleEntity : MonoBehaviour, IBattleEntity
     [SerializeField] private EntityStats _stats;
 
     private Stats _currentStats;
-    public Stats CurrentStats => _currentStats;
+    public virtual ref Stats GetStats() => ref _currentStats;
+    public void SetStats(Stats stats) => _currentStats = stats;
 
-    private void Awake()
+    protected override void Awake()
     {
         _anim = GetComponent<Animator>();
 
@@ -26,16 +28,25 @@ public abstract class BattleEntity : MonoBehaviour, IBattleEntity
     public IBattleEntity.Type GetEntityType() => _type;
     public List<Card> GetCards() => _currentStats.Cards;
 
-    public abstract IEnumerator ChooseAttack(IEnumerable<Card> options);
-    public abstract IEnumerator ChooseTarget(IEnumerable<IBattleEntity> options);
+    public abstract void InitAttack(IEnumerable<Card> options);
+    public abstract (CustomYieldInstruction, Func<Card>) ChooseAttack(IEnumerable<Card> options);
 
-    public virtual void Attack(AttackResults attack, IBattleEntity target)
+    public abstract void InitTarget(IEnumerable<IBattleEntity> options);
+    public abstract (CustomYieldInstruction, Func<IBattleEntity>) ChooseTarget(IEnumerable<IBattleEntity> options);
+
+    public virtual AttackInfo Attack(Card attack, IBattleEntity target)
     {
-        attack.damage /= _currentStats.Defense;
-        attack.result = _currentStats.ModifyHealth(attack.damage);
+        return new AttackInfo()
+        {
+            attacker = this,
+            defender = target,
+            card = attack
+        };
+    }
 
-        if (attack.result == AttackResults.HealthChangeResult.Dead)
-            attack.defender.Die();
+    public virtual void ReceiveAttack(AttackInfo info)
+    {
+        info.card.Effect.Invoke(info);
     }
 
     public void Die()

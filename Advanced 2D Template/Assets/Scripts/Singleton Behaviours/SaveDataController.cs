@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 
 namespace SingletonBehaviours
@@ -17,6 +19,18 @@ namespace SingletonBehaviours
         public override void Shutdown()
         {
             Helpers.SerializationHelper.Save(_currentData, $"{Application.persistentDataPath}/SaveData", $"{_default.name}.json");
+        }
+
+        [ContextMenu("Open Directory")]
+        public void OpenDirectory()
+        {
+            Process.Start("explorer.exe", $"{Application.persistentDataPath}/SaveData");
+        }
+
+        [ContextMenu("Delete Data")]
+        public void DeleteData()
+        {
+            Helpers.SerializationHelper.Delete($"{_default.name}.json", $"{Application.persistentDataPath}/SaveData");
         }
     }
 }

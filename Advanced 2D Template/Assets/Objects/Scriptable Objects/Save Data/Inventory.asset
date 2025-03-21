@@ -13,22 +13,11 @@ MonoBehaviour:
   m_Name: Inventory
   m_EditorClassIdentifier: 
   _value:
-    _data:
-      _kvps:
-      - _item1: LastPos
-        _item2:
-          _type: 0
-          _typeName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
-          _cSharpObjValue:
-            rid: 8593071076119151455
-          _unityObjValue: {fileID: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: 8593071076119151455
-      type: {class: Vector3, ns: UnityEngine, asm: UnityEngine.CoreModule}
-      data:
-        x: -4
-        y: 50
-        z: 72
+    _cards:
+    - {fileID: 11400000, guid: 319350d8f705298408a5cfe32879e95b, type: 2}
+    - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}
+    - {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}
+    - {fileID: 11400000, guid: 319350d8f705298408a5cfe32879e95b, type: 2}
+    - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}
+    - {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}
+    _masks: []

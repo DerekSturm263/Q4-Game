@@ -1,4 +1,8 @@
-public struct AttackResults
+using System;
+using System.Collections.Generic;
+using UnityEngine.Events;
+
+public struct AttackInfo
 {
     public enum HealthChangeResult
     {
@@ -10,7 +14,6 @@ public struct AttackResults
     public IBattleEntity defender;
 
     public Card card;
-    public float damage;
 
     public HealthChangeResult result;
 }

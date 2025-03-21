@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Types.Miscellaneous
@@ -6,7 +7,10 @@ namespace Types.Miscellaneous
     [Serializable]
     public struct SaveData
     {
-        [SerializeField] private Collections.Dictionary<string, Any> _data;
-        public readonly T GetData<T>(string key) => (T)(object)_data[key];
+        [SerializeField] private List<Card> _cards;
+        public readonly List<Card> Cards => _cards;
+
+        [SerializeField] private List<Mask> _masks;
+        public readonly List<Mask> Masks => _masks;
     }
 }

@@ -1,25 +1,46 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerBattleEntity : BattleEntity
+public class PlayerBattleEntity : BattleEntity, ISubmitHandler
 {
-    private Card _currentCard;
-    private IBattleEntity _battleEntity;
+    private static Card _currentCard;
+    private static IBattleEntity _currentTarget;
 
-    public override IEnumerator ChooseAttack(IEnumerable<Card> options)
+    public override void InitAttack(IEnumerable<Card> options)
     {
-        yield return new WaitUntil(() => _currentCard != null);
-        yield return _currentCard.Invoke();
-
         _currentCard = null;
     }
 
-    public override IEnumerator ChooseTarget(IEnumerable<IBattleEntity> options)
+    public override (CustomYieldInstruction, Func<Card>) ChooseAttack(IEnumerable<Card> options)
     {
-        yield return new WaitUntil(() => _battleEntity != null);
-        yield return _battleEntity;
+        return (new WaitUntil(() => _currentCard != null), () => _currentCard);
+    }
 
-        _battleEntity = null;
+    public override void InitTarget(IEnumerable<IBattleEntity> options)
+    {
+        _currentTarget = null;
+        EventSystem.current.SetSelectedGameObject(BattleController.Instance.EnemySpots[0].gameObject);
+    }
+
+    public override (CustomYieldInstruction, Func<IBattleEntity>) ChooseTarget(IEnumerable<IBattleEntity> options)
+    {
+        return (new WaitUntil(() => _currentTarget != null), () => _currentTarget);
+    }
+
+    public static void SelectCard(Card card)
+    {
+        _currentCard = card;
+    }
+
+    public static void SelectTarget(IBattleEntity target)
+    {
+        _currentTarget = target;
+    }
+
+    public void OnSubmit(BaseEventData eventData)
+    {
+        SelectTarget(this);
     }
 }

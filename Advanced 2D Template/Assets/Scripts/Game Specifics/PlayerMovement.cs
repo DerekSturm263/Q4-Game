@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
-public class Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private Animator _anim;
 
-    [SerializeField] private Caster _interactCast;
+    [SerializeField] private Caster2D _interactCast;
     [SerializeField] private float _castOffset;
 
     [SerializeField] private Range<float> _movementSpeed;

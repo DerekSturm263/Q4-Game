@@ -1,3 +1,5 @@
+using Types.Collections;
+using Types.Miscellaneous;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,11 +7,21 @@ using UnityEngine.Events;
 public class Card : ScriptableObject
 {
     [TextArea][SerializeField] private string _description;
-    [SerializeField] private UnityEvent _effect;
     [SerializeField] private Sprite _texture;
 
-    public AttackResults Invoke()
+    [SerializeField] private UnityEvent<AttackInfo> _effect;
+    public UnityEvent<AttackInfo> Effect => _effect;
+
+    [SerializeField] private Dictionary<string, Any> _data;
+
+    public void Invoke(AttackInfo info)
     {
-        return new();
+
+    }
+
+    public void DealDamage(AttackInfo info)
+    {
+        if (_data.TryGetValue("Damage", out Any value))
+            info.defender.GetStats().ModifyHealth(value.Get<float>());
     }
 }

@@ -12,3 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d635a9f6d434c4da74279988f035fa, type: 3}
   m_Name: Heavy Damage
   m_EditorClassIdentifier: 
+  _description: 
+  _texture: {fileID: 0}
+  _effect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000}
+        m_TargetAssemblyTypeName: Card, Runtime
+        m_MethodName: DealDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _data:
+    _kvps:
+    - _item1: Damage
+      _item2:
+        _type: 0
+        _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        _cSharpObjValue:
+          rid: 8657840875568628253
+        _unityObjValue: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8657840875568628253
+      type: {class: Single, ns: System, asm: mscorlib}
+      data: 

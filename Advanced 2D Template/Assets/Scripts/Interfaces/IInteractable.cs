@@ -2,5 +2,5 @@ public interface IInteractable
 {
     public string GetInteractType();
 
-    public void Interact(Movement player);
+    public void Interact(PlayerMovement player);
 }

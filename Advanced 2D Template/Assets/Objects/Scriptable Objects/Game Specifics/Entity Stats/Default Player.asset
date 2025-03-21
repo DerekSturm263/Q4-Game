@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _description: 
   _stats:
-    _health: 0
-    _attack: 0
-    _defense: 0
+    _name: Player
+    _health: 10
+    _attack: 3
+    _defense: 2
+    _cards:
+    - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}
+    - {fileID: 11400000, guid: 319350d8f705298408a5cfe32879e95b, type: 2}
+    - {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}

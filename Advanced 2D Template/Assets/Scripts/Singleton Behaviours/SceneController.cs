@@ -23,7 +23,7 @@ namespace SingletonBehaviours
             else
                 _sceneParameters.TryAdd(key, Types.Miscellaneous.Any.FromValue(value));
         }
-        public T GetSceneParameter<T>(string key) => (T)(object)_sceneParameters[key];
+        public T GetSceneParameter<T>(string key) => _sceneParameters[key].Get<T>();
 
         public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Load(settings.Value);
 

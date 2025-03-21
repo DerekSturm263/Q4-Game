@@ -22,8 +22,8 @@ namespace Helpers
 
             CreateDirectory(directory);
 
-            FileMode writeMode = File.Exists(directory + fileName) ? FileMode.Truncate : FileMode.Create;
-            using FileStream stream = new(directory + fileName, writeMode);
+            FileMode writeMode = File.Exists(directory + "/" + fileName) ? FileMode.Truncate : FileMode.Create;
+            using FileStream stream = new(directory + "/" + fileName, writeMode);
 
             using Aes aes = Aes.Create();
             aes.Key = Key;
@@ -45,9 +45,9 @@ namespace Helpers
         {
             CreateDirectory(directory);
 
-            if (File.Exists(directory + fileName))
+            if (File.Exists(directory + "/" + fileName))
             {
-                using FileStream stream = new(directory + fileName, FileMode.Open);
+                using FileStream stream = new(directory + "/" + fileName, FileMode.Open);
 
                 using Aes aes = Aes.Create();
 
@@ -81,13 +81,13 @@ namespace Helpers
             }
         }
 
-        public static void Delete(string filePath, string directory)
+        public static void Delete(string fileName, string directory)
         {
             CreateDirectory(directory);
 
-            if (File.Exists(filePath))
+            if (File.Exists(directory + "/" + fileName))
             {
-                File.Delete(filePath);
+                File.Delete(directory + "/" + fileName);
                 Debug.Log("Item was successfully deleted");
             }
             else
