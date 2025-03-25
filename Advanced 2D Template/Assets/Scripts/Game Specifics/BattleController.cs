@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleController : Types.SingletonBehaviour<BattleController>
 {
@@ -29,7 +30,7 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
     private void Start()
     {
-        BattleSetup setup = new(new List<Stats>() { new() }, SingletonBehaviours.SceneController.Instance.GetSceneParameter<List<EntityStats>>("Stats"));
+        BattleSetup setup = new(new List<Stats>() { new() }, SceneController.Instance.GetSceneParameter<List<EntityStats>>("Stats"));
 
         PopulateCards();
         PopulateMasks();
@@ -40,6 +41,19 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     public void StartBattle(BattleSetup setup) => StartCoroutine(Battle(setup));
 
     IEnumerator Battle(BattleSetup setup)
+    {
+        PopulateEntities(setup);
+
+        while (GetNumberAlive(IBattleEntity.Type.Human) > 0 || GetNumberAlive(IBattleEntity.Type.AI) > 0)
+        {
+            foreach (var entity in _entities)
+            {
+                yield return DoTurn(entity);
+            }
+        }
+    }
+
+    public void PopulateEntities(BattleSetup setup)
     {
         _entities.Clear();
 
@@ -58,51 +72,44 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
             var enemy = Instantiate(_enemyTemplate, _enemySpots[enemyIndex++]);
             enemy.SetStats(item);
 
-            enemy.name = $"{ item.Name} {(char)('A' + enemyIndex - 1)}";
+            enemy.name = $"{item.Name} {(char)('A' + enemyIndex - 1)}";
 
             return enemy;
         }));
+    }
 
-        while (GetNumberAlive(IBattleEntity.Type.Human) > 0 || GetNumberAlive(IBattleEntity.Type.AI) > 0)
-        {
-            foreach (var entity in _entities)
-            {
-                entity.InitAttack(entity.GetCards());
+    public IEnumerator DoTurn(IBattleEntity entity)
+    {
+        entity.InitAttack(entity.GetCards());
 
-                var attack = entity.ChooseAttack(entity.GetCards());
-                yield return attack.Item1;
-                var attackAsCard = attack.Item2.Invoke();
+        var attack = entity.ChooseAttack(entity.GetCards());
+        yield return attack.Item1;
+        var attackAsCard = attack.Item2.Invoke();
 
-                Debug.Log(attackAsCard.name);
+        entity.InitTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
 
-                entity.InitTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
+        var target = entity.ChooseTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
+        yield return target.Item1;
+        var targetAsEntity = target.Item2.Invoke();
 
-                var target = entity.ChooseTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
-                yield return target.Item1;
-                var targetAsEntity = target.Item2.Invoke();
-
-                Debug.Log(targetAsEntity.GetName());
-
-                targetAsEntity.ReceiveAttack(entity.Attack(attackAsCard, targetAsEntity));
-            }
-        }
+        targetAsEntity.ReceiveAttack(entity.Attack(attackAsCard, targetAsEntity));
     }
 
     public void PopulateCards()
     {
-        foreach (var card in SaveDataController.Instance.CurrentData.Cards)
+        foreach (var card in SaveDataController.Instance.CurrentData.Items.Where(item => item is Card))
         {
             var cardGO = Instantiate(_cardTemplate, _cards.transform);
-            cardGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card));
+            cardGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card as Card));
         }
     }
 
     public void PopulateMasks()
     {
-        foreach (var mask in SaveDataController.Instance.CurrentData.Masks)
+        foreach (var mask in SaveDataController.Instance.CurrentData.Items.Where(item => item is Mask))
         {
             var maskGO = Instantiate(_maskTemplate, _masks.transform);
-            //maskGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card));
+            //maskGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card as Mask));
         }
     }
 }

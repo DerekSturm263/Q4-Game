@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Mask", menuName = "Game/Mask")]
-public class Mask : ScriptableObject
+public class Mask : Item
 {
-    [TextArea][SerializeField] private string _description;
+
 }

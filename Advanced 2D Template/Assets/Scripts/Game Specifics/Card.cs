@@ -4,11 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Game/Card")]
-public class Card : ScriptableObject
+public class Card : Item
 {
-    [TextArea][SerializeField] private string _description;
-    [SerializeField] private Sprite _texture;
-
     [SerializeField] private UnityEvent<AttackInfo> _effect;
     public UnityEvent<AttackInfo> Effect => _effect;
 

@@ -9,7 +9,7 @@ namespace SingletonBehaviours
         [SerializeField] private Types.Miscellaneous.SaveDataAsset _default;
 
         private Types.Miscellaneous.SaveData _currentData;
-        public Types.Miscellaneous.SaveData CurrentData => _currentData;
+        public ref Types.Miscellaneous.SaveData CurrentData => ref _currentData;
 
         public override void Initialize()
         {
