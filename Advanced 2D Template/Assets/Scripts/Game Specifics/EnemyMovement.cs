@@ -15,6 +15,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private Range<float> _speed;
     [SerializeField] private Caster2D _playerCast;
 
+    private Transform _aggroedObject;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -25,9 +27,13 @@ public class EnemyMovement : MonoBehaviour
     {
         var hit = _playerCast.GetHitInfo(transform);
 
-        if (hit.HasValue)
+
+        var cast = Physics2D.Linecast(transform.position,  _aggroedObject.transform.position);
+
+        if ((_aggroedObject && cast.transform == _aggroedObject) || hit.HasValue)
         {
             _rb.linearVelocity = (hit.Value.transform.position - transform.position).normalized * _speed.Max;
+            _aggroedObject = hit.Value.transform;
         }
         else
         {

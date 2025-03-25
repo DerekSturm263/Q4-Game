@@ -80,13 +80,13 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.018540047}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.07415984}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.074159496}
 --- !u!114 &-5688598607118314915
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -358,10 +358,10 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 0.75
   intensity:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 2
   scatter:
     m_OverrideState: 1
     m_Value: 0.7
@@ -430,7 +430,7 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -0.1
   contrast:
     m_OverrideState: 1
     m_Value: 0
@@ -557,7 +557,7 @@ MonoBehaviour:
   master:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 2
+      <length>k__BackingField: 4
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -569,6 +569,24 @@ MonoBehaviour:
           value: 0
           inSlope: 1
           outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.25179386
+          value: 0.34965032
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.7188519
+          value: 0.66573423
+          inSlope: 1.3132563
+          outSlope: 1.3132563
           tangentMode: 0
           weightedMode: 0
           inWeight: 0

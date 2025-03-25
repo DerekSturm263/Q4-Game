@@ -36,7 +36,7 @@ namespace Types.Casting
 
         public readonly void Draw(Vector2 position)
         {
-            Gizmos.DrawCube(position + _offset, _size);
+            Gizmos.DrawWireCube(position + _offset, _size);
         }
     }
 }
