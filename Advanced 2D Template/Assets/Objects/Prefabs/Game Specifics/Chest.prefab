@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3182896439540564490}
   - component: {fileID: 6513193001064546881}
   - component: {fileID: 6701457985523576496}
+  - component: {fileID: 7587797722603447019}
   m_Layer: 3
   m_Name: Chest
   m_TagString: Untagged
@@ -118,13 +119,13 @@ MonoBehaviour:
           m_StringArgument: Open
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -1590661406983834100, guid: 7d98c245e8fadcd4abb91ff8333cafb7, type: 3}
-        m_TargetAssemblyTypeName: InventoryController, Runtime
-        m_MethodName: AddItem
-        m_Mode: 2
+      - m_Target: {fileID: 7587797722603447019}
+        m_TargetAssemblyTypeName: ObjectSpawner, Runtime
+        m_MethodName: Spawn
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}
-          m_ObjectArgumentAssemblyTypeName: Item, Runtime
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -198,3 +199,122 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7587797722603447019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8419635764383419860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae14ce83820d0347b990864de688623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _items: []
+  _width:
+    _min: 1
+    _max: 2
+  _height:
+    _min: 1
+    _max: 3
+  _rotation:
+    _min: {x: 0, y: 0, z: -20}
+    _max: {x: 0, y: 0, z: 20}
+  _velocity:
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0020739587
+      value: -0.0036690491
+      inSlope: 3.6474652
+      outSlope: 3.6474652
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.06713741
+    - serializedVersion: 3
+      time: 0.99276406
+      value: 0.7240601
+      inSlope: -1.3129544
+      outSlope: -1.3129544
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0043810345
+      value: -0.008434009
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0021623
+      value: -1.0028206
+      inSlope: -2.6977477
+      outSlope: -2.6977477
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04537087
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0020739587
+      value: -0.0036690491
+      inSlope: 3.8299837
+      outSlope: 3.8299837
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.031772938
+    - serializedVersion: 3
+      time: 0.98943764
+      value: 0.006774962
+      inSlope: -4.147491
+      outSlope: -4.147491
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.028418068
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _iOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 3.0160208
+      outSlope: 3.0160208
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.065
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _translationResolution: 20
+  _translationSpeed: 1
+  _itemPrefab: {fileID: -5735196399641343153, guid: 6f1faa961e95ef747b36883d7465f097, type: 3}

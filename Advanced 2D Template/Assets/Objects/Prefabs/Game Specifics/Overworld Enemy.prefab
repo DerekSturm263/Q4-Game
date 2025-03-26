@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 6384848715284341646}
   - component: {fileID: 9021320334873697835}
   - component: {fileID: 4993013129341643246}
-  m_Layer: 0
-  m_Name: Enemy
+  m_Layer: 7
+  m_Name: Overworld Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,17 +176,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.36248422}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 2.0408163, y: 2.0408163}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.6153579}
   m_EdgeRadius: 0
 --- !u!114 &9021320334873697835
 MonoBehaviour:
@@ -224,6 +224,10 @@ MonoBehaviour:
         _capsuleDirection: 0
         _rotation: 0
       _index: 1
+  _aggroLayer:
+    serializedVersion: 2
+    m_Bits: 123
+  _behaviors: []
 --- !u!114 &4993013129341643246
 MonoBehaviour:
   m_ObjectHideFlags: 0

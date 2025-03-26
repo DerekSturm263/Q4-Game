@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8818488504083084003}
   - component: {fileID: 6697577874271579137}
   m_Layer: 0
-  m_Name: Player Battle Entity
+  m_Name: Battle Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

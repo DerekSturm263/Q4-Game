@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] private Range<float> _speed;
     [SerializeField] private Caster2D _playerCast;
+    [SerializeField] private LayerMask _aggroLayer;
+
+    [SerializeField] private List<MovementBehavior> _behaviors;
 
     private Transform _aggroedObject;
 
@@ -25,19 +28,41 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        var hit = _playerCast.GetHitInfo(transform);
-
-
-        var cast = Physics2D.Linecast(transform.position,  _aggroedObject.transform.position);
-
-        if ((_aggroedObject && cast.transform == _aggroedObject) || hit.HasValue)
+        if (_aggroedObject)
         {
-            _rb.linearVelocity = (hit.Value.transform.position - transform.position).normalized * _speed.Max;
-            _aggroedObject = hit.Value.transform;
+            var cast = Physics2D.Linecast(transform.position,  _aggroedObject.transform.position, _aggroLayer);
+
+            if (cast.transform == _aggroedObject)
+            {
+                _rb.linearVelocity = (_aggroedObject.position - transform.position).normalized * _speed.Max;
+            }
+            else
+            {
+                _aggroedObject = null;
+            }
         }
         else
         {
-            _rb.linearVelocity = Vector2.zero;
+            var hit = _playerCast.GetHitInfo(transform);
+
+            if (hit.HasValue)
+            {
+                var cast = Physics2D.Linecast(transform.position, hit.Value.point, _aggroLayer);
+
+                if (cast.transform == hit.Value.transform)
+                {
+                    _rb.linearVelocity = (hit.Value.transform.position - transform.position).normalized * _speed.Max;
+                    _aggroedObject = hit.Value.transform;
+                }
+                else
+                {
+                    _rb.linearVelocity = Vector2.zero;
+                }
+            }
+            else
+            {
+                _rb.linearVelocity = Vector2.zero;
+            }
         }
 
         _anim.SetFloat("XVelocity", _rb.linearVelocityX);
@@ -47,6 +72,9 @@ public class EnemyMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         _playerCast.Draw(transform);
+
+        if (_aggroedObject)
+            Gizmos.DrawLine(transform.position, _aggroedObject.transform.position);
     }
 
     public void LoadSceneParameters()

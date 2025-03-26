@@ -6,6 +6,11 @@ namespace Helpers
     {
         public static T Lerp<T>(T a, T b, float t) where T : Interfaces.ILerpable<T> => a.Lerp(b, t);
 
+        public static T RandomChoice<T>(T a, T b)
+        {
+            return Random.Range(0f, 1f) < 0.5f ? a : b;
+        }
+
         public static float Sign(float f)
         {
             if (f != 0)
