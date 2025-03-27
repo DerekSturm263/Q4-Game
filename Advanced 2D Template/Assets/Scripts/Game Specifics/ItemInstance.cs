@@ -6,7 +6,9 @@ public class ItemInstance : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        InventoryController.Instance.AddItem(_item);
+        if (InventoryController.Instance)
+            InventoryController.Instance.AddItem(_item);
+    
         Destroy(gameObject);
     }
 

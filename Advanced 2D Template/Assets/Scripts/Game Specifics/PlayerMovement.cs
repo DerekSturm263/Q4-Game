@@ -16,8 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Range<float> _movementSpeed;
 
     private Vector2 _direction;
-    public Vector2 LookDirection => _direction.SnapTo4Slices();
+    private Vector2 _lookDirection;
 
+    private bool _isMoving;
     private bool _isRunning;
     public float MovementSpeed => (_isRunning ? _movementSpeed.Max : _movementSpeed.Min);
 
@@ -31,13 +32,20 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb.linearVelocity = _direction * MovementSpeed;
 
-        _anim.SetFloat("XVelocity", _rb.linearVelocityX);
-        _anim.SetFloat("YVelocity", _rb.linearVelocityY);
+        _anim.SetFloat("XVelocity", _lookDirection.x * (_isMoving ? 1 : 0.1f));
+        _anim.SetFloat("YVelocity", _lookDirection.y * (_isMoving ? 1 : 0.1f));
+        _anim.SetFloat("Speed", _isRunning ? 2 : 1);
     }
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        _direction = ctx.ReadValue<Vector2>();
+        Vector2 value = ctx.ReadValue<Vector2>();
+
+        _isMoving = value != Vector2.zero;
+        _direction = value;
+
+        if (value != Vector2.zero)
+            _lookDirection = value;
     }
 
     public void Interact(InputAction.CallbackContext ctx)
@@ -45,9 +53,9 @@ public class PlayerMovement : MonoBehaviour
         if (ctx.ReadValue<float>() == 0)
             return;
 
-        var hit = _interactCast.GetHitInfo(transform, LookDirection * _castOffset);
+        var hit = _interactCast.GetHitInfo(transform, _lookDirection * _castOffset);
 
-        if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable onInteract))
+        if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable<PlayerMovement> onInteract))
         {
             onInteract.Interact(this);
            _anim.SetTrigger(onInteract.GetInteractType());

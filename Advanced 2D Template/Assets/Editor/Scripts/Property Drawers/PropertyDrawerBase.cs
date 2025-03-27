@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Types.Miscellaneous
 {
-    internal abstract class PropertyDrawerBase : PropertyDrawer
+    public abstract class PropertyDrawerBase : PropertyDrawer
     {
         private PropertyDrawSettings? _properties = null;
         private bool _isFoldedOut;
