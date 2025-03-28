@@ -7,8 +7,11 @@ namespace Types.Miscellaneous
     {
         public override string[][] GetPropertyNames() => new string[][]
         {
-            new string[] { "_cards" },
-            new string[] { "_masks" }
+            new string[] { "_items" },
+            new string[] { "_currentHealth" },
+            new string[] { "_maxHealth" },
+            new string[] { "_attack" },
+            new string[] { "_defense" }
         };
     }
 }

@@ -97,7 +97,7 @@ SortingGroup:
   m_GameObject: {fileID: 5041749801878971661}
   m_Enabled: 1
   m_SortingLayerID: 983637209
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 1
 --- !u!1 &8419635764383419860
@@ -421,7 +421,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _translationResolution: 20
+  _translationResolution: 60
   _translationSpeed: 0.8
   _itemPrefab: {fileID: -5735196399641343153, guid: 6f1faa961e95ef747b36883d7465f097, type: 3}
 --- !u!210 &6128614005245273226
@@ -433,6 +433,6 @@ SortingGroup:
   m_GameObject: {fileID: 8419635764383419860}
   m_Enabled: 1
   m_SortingLayerID: 983637209
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 1
   m_SortAtRoot: 1

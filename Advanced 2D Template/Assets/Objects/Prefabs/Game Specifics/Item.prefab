@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _item: {fileID: 0}
+  _collectEffect: {fileID: -1546100432380344094, guid: 80d3c95192987754dba072d9d7359652, type: 3}
 --- !u!212 &-1963728826623023276
 SpriteRenderer:
   m_ObjectHideFlags: 0

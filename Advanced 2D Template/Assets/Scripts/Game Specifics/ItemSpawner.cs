@@ -43,6 +43,8 @@ public class ItemSpawner : MonoBehaviour
 
     private IEnumerator Translate(Vector3 originalPosition, Transform trans, float direction, float width, float height, AnimationCurve curve)
     {
+        trans.GetComponent<Collider2D>().enabled = false;
+
         for (int i = 0; i < _translationResolution; ++i)
         {
             float j = _iOverTime.Evaluate(i / (float)_translationResolution);
@@ -54,5 +56,7 @@ public class ItemSpawner : MonoBehaviour
 
             yield return new WaitForSeconds((1 / (float)_translationResolution) * _translationSpeed);
         }
+
+        trans.GetComponent<Collider2D>().enabled = true;
     }
 }

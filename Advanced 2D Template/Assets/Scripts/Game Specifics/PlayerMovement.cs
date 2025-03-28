@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
         _anim.SetFloat("XVelocity", _lookDirection.x * (_isMoving ? 1 : 0.1f));
         _anim.SetFloat("YVelocity", _lookDirection.y * (_isMoving ? 1 : 0.1f));
-        _anim.SetFloat("Speed", _isRunning ? 2 : 1);
+        _anim.SetFloat("Speed", _isRunning && _isMoving ? 2 : 1);
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -69,6 +69,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        _interactCast.Draw(transform, _direction * _castOffset);
+        _interactCast.Draw(transform, _lookDirection * _castOffset);
     }
 }
