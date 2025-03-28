@@ -21,5 +21,8 @@ namespace Types.Miscellaneous
         
         [SerializeField] private float _defense;
         public readonly float Defense => _defense;
+
+        [SerializeField] private Mask _mask;
+        public readonly Mask Mask => _mask;
     }
 }

@@ -2,18 +2,12 @@ using SingletonBehaviours;
 using System.Collections.Generic;
 using Types.Casting;
 using Types.Miscellaneous;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : EntityMovement
 {
-    private Rigidbody2D _rb;
-    private Animator _anim;
-
     [SerializeField] private List<EntityStats> _stats;
 
-    [SerializeField] private Range<float> _speed;
     [SerializeField] private Caster2D _playerCast;
     [SerializeField] private LayerMask _aggroLayer;
 
@@ -29,19 +23,15 @@ public class EnemyMovement : MonoBehaviour
 
     private float _timeRemaining;
 
-    private bool _isMoving;
-    private Vector2 _lookDirection;
-
-    private void Awake()
+    protected override void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
+        base.Awake();
 
         _originalPos = transform.position;
         SetNextPos();
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (_aggroedObject)
         {
@@ -83,9 +73,7 @@ public class EnemyMovement : MonoBehaviour
         if (_rb.linearVelocity != Vector2.zero)
             _lookDirection = _rb.linearVelocity.normalized;
 
-        _anim.SetFloat("XVelocity", _lookDirection.x * (_isMoving ? 1 : 0.1f));
-        _anim.SetFloat("YVelocity", _lookDirection.y * (_isMoving ? 1 : 0.1f));
-        _anim.SetFloat("Speed", 1);
+        base.Update();
     }
 
     private void Chase()

@@ -8,8 +8,8 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleController : Types.SingletonBehaviour<BattleController>
 {
-    [SerializeField] private PlayerBattleEntity _playerTemplate;
-    [SerializeField] private EnemyBattleEntity _enemyTemplate;
+    [SerializeField] private BattlePlayer _playerTemplate;
+    [SerializeField] private BattleEnemy _enemyTemplate;
 
     [SerializeField] private List<Transform> _playerSpots;
     public List<Transform> PlayerSpots => _playerSpots;
@@ -100,7 +100,7 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         foreach (var card in SaveDataController.Instance.CurrentData.Items.Where(item => item is Card))
         {
             var cardGO = Instantiate(_cardTemplate, _cards.transform);
-            cardGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card as Card));
+            cardGO.onClick.AddListener(() => BattlePlayer.SelectCard(card as Card));
         }
     }
 

@@ -1,40 +1,27 @@
-using Extensions;
+using SingletonBehaviours;
 using Types.Casting;
-using Types.Miscellaneous;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : EntityMovement
 {
-    private Rigidbody2D _rb;
-    private Animator _anim;
-
     [SerializeField] private Caster2D _interactCast;
     [SerializeField] private float _castOffset;
 
-    [SerializeField] private Range<float> _movementSpeed;
-
     private Vector2 _direction;
-    private Vector2 _lookDirection;
 
-    private bool _isMoving;
-    private bool _isRunning;
-    public float MovementSpeed => (_isRunning ? _movementSpeed.Max : _movementSpeed.Min);
+    public Vector3 InteractOffset => _lookDirection * _castOffset;
 
-    private void Awake()
+    protected override void Update()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
-    }
+        _rb.linearVelocity = _direction * Speed;
 
-    private void Update()
-    {
-        _rb.linearVelocity = _direction * MovementSpeed;
+        base.Update();
 
-        _anim.SetFloat("XVelocity", _lookDirection.x * (_isMoving ? 1 : 0.1f));
-        _anim.SetFloat("YVelocity", _lookDirection.y * (_isMoving ? 1 : 0.1f));
-        _anim.SetFloat("Speed", _isRunning && _isMoving ? 2 : 1);
+        if (SaveDataController.Instance && SaveDataController.Instance.CurrentData.Mask.Input.WasPerformedThisFrame())
+        {
+            SaveDataController.Instance.CurrentData.Mask.InvokeAction(this);
+        }
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -53,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         if (ctx.ReadValue<float>() == 0)
             return;
 
-        var hit = _interactCast.GetHitInfo(transform, _lookDirection * _castOffset);
+        var hit = _interactCast.GetHitInfo(transform, InteractOffset);
 
         if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable<PlayerMovement> onInteract))
         {
@@ -69,6 +56,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        _interactCast.Draw(transform, _lookDirection * _castOffset);
+        _interactCast.Draw(transform, InteractOffset);
     }
 }

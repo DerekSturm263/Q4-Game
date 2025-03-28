@@ -342,6 +342,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15338ea1f514c454e94b4bd56dcbafd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed:
+    _min: 5
+    _max: 8
   _interactCast:
     _direction: {x: 0, y: 0}
     _maxDistance: Infinity
@@ -363,9 +366,6 @@ MonoBehaviour:
         _rotation: 0
       _index: 0
   _castOffset: 0.5
-  _movementSpeed:
-    _min: 5
-    _max: 10
 --- !u!50 &7041931841578558842
 Rigidbody2D:
   serializedVersion: 5
