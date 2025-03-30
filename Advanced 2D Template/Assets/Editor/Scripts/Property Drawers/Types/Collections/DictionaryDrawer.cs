@@ -14,7 +14,7 @@ namespace Types.Collections
             SerializedProperty kvpsProperty = property.FindPropertyRelative("_kvps");
             ReorderableList list = new(property.serializedObject, kvpsProperty, true, true, true, true)
             {
-                drawHeaderCallback = (Rect rect) => DrawHeader(rect, property.displayName),
+                drawHeaderCallback = (Rect rect) => DrawHeader(rect, property),
                 drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => DrawElement(rect, kvpsProperty.GetArrayElementAtIndex(index)),
                 elementHeightCallback = (int index) => ElementHeight(kvpsProperty.GetArrayElementAtIndex(index)),
                 onAddCallback = (ReorderableList list) => OnAdd(kvpsProperty)
@@ -25,24 +25,24 @@ namespace Types.Collections
             EditorGUI.EndProperty();
         }
 
-        private void DrawHeader(Rect rect, string label)
+        private void DrawHeader(Rect rect, SerializedProperty kvps)
         {
-            GUI.Label(rect, label);
+            GUI.Label(rect, kvps.displayName);
         }
 
-        private void DrawElement(Rect rect, SerializedProperty kvpsProperty)
+        private void DrawElement(Rect rect, SerializedProperty kvp)
         {
-            EditorGUI.PropertyField(new Rect(rect.position, new Vector2(rect.width, EditorGUIUtility.singleLineHeight)), kvpsProperty);
+            EditorGUI.PropertyField(new Rect(rect.position, new Vector2(rect.width, EditorGUIUtility.singleLineHeight)), kvp);
         }
 
-        private float ElementHeight(SerializedProperty kvpsProperty)
+        private float ElementHeight(SerializedProperty kvp)
         {
-            return EditorGUI.GetPropertyHeight(kvpsProperty) + 2;
+            return EditorGUI.GetPropertyHeight(kvp) + 2;
         }
 
-        private void OnAdd(SerializedProperty kvpsProperty)
+        private void OnAdd(SerializedProperty kvps)
         {
-            kvpsProperty.InsertArrayElementAtIndex(kvpsProperty.arraySize);
+            kvps.InsertArrayElementAtIndex(kvps.arraySize);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

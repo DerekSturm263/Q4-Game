@@ -1,4 +1,5 @@
 using System;
+using Types.Miscellaneous;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,7 +18,7 @@ namespace Types.Scene
         [SerializeField] private LoadSceneParameters _loadParameters;
         public readonly LoadSceneParameters LoadParameters => _loadParameters;
 
-        [SerializeField] private Wrappers.Nullable<Collections.Dictionary<string, Types.Miscellaneous.Any>> _sceneParameters;
-        public readonly Wrappers.Nullable<Collections.Dictionary<string, Types.Miscellaneous.Any>> SceneParameters => _sceneParameters;
+        [SerializeField] private Wrappers.Nullable<AnyGroup> _sceneParameters;
+        public readonly Wrappers.Nullable<AnyGroup> SceneParameters => _sceneParameters;
     }
 }

@@ -18,8 +18,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}
     - {fileID: 11400000, guid: 319350d8f705298408a5cfe32879e95b, type: 2}
     - {fileID: 11400000, guid: 430ff678643c1b74f992912b9000fada, type: 2}
+    _mask: {fileID: 11400000, guid: 430ff678643c1b74f992912b9000fada, type: 2}
     _currentHealth: 20
     _maxHealth: 20
     _attack: 5
     _defense: 3
-    _mask: {fileID: 0}

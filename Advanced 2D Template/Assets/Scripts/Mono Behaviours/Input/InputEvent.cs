@@ -105,7 +105,7 @@ namespace MonoBehaviours.Input
 
         public static bool IsInputting()
         {
-            bool isUsingKeyboard = SingletonBehaviours.InputMapController.Instance.CurrentDevice.displayName.Equals("Keyboard");
+            bool isUsingKeyboard = SingletonBehaviours.InputMapController.Instance.CurrentDevice is null || SingletonBehaviours.InputMapController.Instance.CurrentDevice.displayName.Equals("Keyboard");
             if (!isUsingKeyboard)
                 return false;
 

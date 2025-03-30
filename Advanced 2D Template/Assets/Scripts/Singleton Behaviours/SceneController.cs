@@ -1,4 +1,5 @@
 using System.Collections;
+using Types.Miscellaneous;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -15,15 +16,20 @@ namespace SingletonBehaviours
         private GameObject _transitionCanvas;
         private GameObject _transitionInstance;
 
-        private Types.Collections.Dictionary<string, Types.Miscellaneous.Any> _sceneParameters = new();
+        private AnyGroup _sceneParameters;
+
         public void SetSceneParameter<T>(string key, T value)
         {
-            if (_sceneParameters.ContainsKey(key))
-                _sceneParameters[key] = Types.Miscellaneous.Any.FromValue(value);
-            else
-                _sceneParameters.TryAdd(key, Types.Miscellaneous.Any.FromValue(value));
+            _sceneParameters.Set(key, value);
         }
-        public T GetSceneParameter<T>(string key) => _sceneParameters[key].Get<T>();
+
+        public T GetSceneParameter<T>(string key)
+        {
+            if (_sceneParameters.TryGet<T>(key, out T value))
+                return value;
+
+            return default;
+        }
 
         public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Load(settings.Value);
 

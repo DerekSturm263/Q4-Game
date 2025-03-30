@@ -8,6 +8,9 @@ public class DisplayHealth : MonoBehaviour
 
     private void Awake()
     {
-        _fill.fillAmount = SaveDataController.Instance.CurrentData.CurrentHealth / SaveDataController.Instance.CurrentData.MaxHealth;
+        if (SaveDataController.Instance)
+        {
+            _fill.fillAmount = SaveDataController.Instance.CurrentData.CurrentHealth / SaveDataController.Instance.CurrentData.MaxHealth;
+        }
     }
 }

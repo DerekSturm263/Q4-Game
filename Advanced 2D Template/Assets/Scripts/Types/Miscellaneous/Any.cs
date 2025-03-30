@@ -92,17 +92,6 @@ namespace Types.Miscellaneous
         private void SetObjValue<T>(T value) => _cSharpObjValue = value;
         private void SetUnityObjValue(UnityEngine.Object value) => _unityObjValue = value;
 
-        public readonly bool IsNull
-        {
-            get
-            {
-                if (_type == PropertyType.UnityObject)
-                    return _unityObjValue == null;
-                else
-                    return _cSharpObjValue == null;
-            }
-        }
-
         public static object GetDefault(Type type)
         {
             Type thisType = typeof(Any);

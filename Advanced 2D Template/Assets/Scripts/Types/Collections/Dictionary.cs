@@ -42,20 +42,12 @@ namespace Types.Collections
                 if (typeof(TKey) == typeof(string))
                     return (TKey)("" as object);
                 else
-                    return (TKey)System.Activator.CreateInstance(typeof(TKey));
+                    return (TKey)Activator.CreateInstance(typeof(TKey));
             }
             else
             {
                 return default;
             }
         }
-
-        public int IndexOf(TKey key)
-        {
-            Miscellaneous.Tuple<TKey, TValue> list = _kvps.Find(item => item.Item1.Equals(key));
-            return _kvps.IndexOf(list);
-        }
-
-        public Miscellaneous.Tuple<TKey, TValue> GetFromOrderIndex(int index) => _kvps[index];
     }
 }

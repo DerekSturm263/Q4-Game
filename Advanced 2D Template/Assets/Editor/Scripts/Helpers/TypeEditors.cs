@@ -22,8 +22,8 @@ namespace Helpers
             [typeof(Vector3)] = (Rect rect, SerializedProperty prop) => EditorGUI.Vector3Field(rect, " ", (Vector3)prop.boxedValue),
             [typeof(Vector3Int)] = (Rect rect, SerializedProperty prop) => EditorGUI.Vector3IntField(rect, " ", (Vector3Int)prop.boxedValue),
             [typeof(Vector4)] = (Rect rect, SerializedProperty prop) => EditorGUI.Vector4Field(rect, " ", (Vector4)prop.boxedValue),
-            [typeof(GameObject)] = (Rect rect, SerializedProperty prop) => EditorGUI.ObjectField(rect, " ", (GameObject)prop.boxedValue, typeof(GameObject), false),
-            [typeof(ScriptableObject)] = (Rect rect, SerializedProperty prop) => EditorGUI.ObjectField(rect, " ", (ScriptableObject)prop.boxedValue, typeof(ScriptableObject), false)
+            [typeof(GameObject)] = (Rect rect, SerializedProperty prop) => { EditorGUI.ObjectField(rect, prop, typeof(GameObject), new GUIContent(" ")); return null; },
+            [typeof(ScriptableObject)] = (Rect rect, SerializedProperty prop) => { EditorGUI.ObjectField(rect, prop, typeof(ScriptableObject), new GUIContent(" ")); return null; }
         };
 
         public static Dictionary<System.Type, System.Func<Rect, SerializedProperty, object>> TypeDictionary => _typeDictionary;

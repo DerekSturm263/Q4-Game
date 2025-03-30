@@ -70,7 +70,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7126885090402468156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b5c8180578b8cf43acf51b6a736dc2a, type: 3}
+  m_Script: {fileID: 11500000, guid: c1ddfd1d413f86d4688fd1e033b2fe16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -101,9 +101,9 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 6697577874271579137}
-  _type: 1
-  _stats: {fileID: 11400000, guid: 348821e4b8c683d46978d4bc88a0e43e, type: 2}
+  m_TargetGraphic: {fileID: 0}
+  _type: 0
+  _stats: {fileID: 0}
 --- !u!222 &8818488504083084003
 CanvasRenderer:
   m_ObjectHideFlags: 0

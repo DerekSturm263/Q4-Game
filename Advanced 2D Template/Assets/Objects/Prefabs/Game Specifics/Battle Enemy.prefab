@@ -222,7 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8057956920247108897}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33da96bd71796bc4880635b61f317913, type: 3}
+  m_Script: {fileID: 11500000, guid: e77d2b6ea4593414294c7f174dcfa29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -253,9 +253,9 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 6717036959503066092}
-  _type: -1
-  _stats: {fileID: 11400000, guid: 7fbcb17bcbe8f6c439cb7000e3ccf511, type: 2}
+  m_TargetGraphic: {fileID: 0}
+  _type: 0
+  _stats: {fileID: 0}
 --- !u!222 &7092798221475573247
 CanvasRenderer:
   m_ObjectHideFlags: 0

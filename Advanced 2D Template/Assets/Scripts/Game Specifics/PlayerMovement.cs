@@ -17,11 +17,6 @@ public class PlayerMovement : EntityMovement
         _rb.linearVelocity = _direction * Speed;
 
         base.Update();
-
-        if (SaveDataController.Instance && SaveDataController.Instance.CurrentData.Mask.Input.WasPerformedThisFrame())
-        {
-            SaveDataController.Instance.CurrentData.Mask.InvokeAction(this);
-        }
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -52,6 +47,18 @@ public class PlayerMovement : EntityMovement
     public void Run(InputAction.CallbackContext ctx)
     {
         _isRunning = ctx.ReadValue<float>() == 1;
+    }
+
+    public void UseAbility(InputAction.CallbackContext ctx)
+    {
+        if (ctx.ReadValue<float>() == 0)
+            return;
+
+
+        if (SaveDataController.Instance && SaveDataController.Instance.CurrentData.Mask)
+        {
+            SaveDataController.Instance.CurrentData.Mask.InvokeAction(this);
+        }
     }
 
     private void OnDrawGizmos()

@@ -10,6 +10,9 @@ namespace Types.Miscellaneous
         [SerializeField] private List<Item> _items;
         public readonly List<Item> Items => _items;
 
+        [SerializeField] private Mask _mask;
+        public readonly Mask Mask => _mask;
+
         [SerializeField] private float _currentHealth;
         public readonly float CurrentHealth => _currentHealth;
 
@@ -21,8 +24,5 @@ namespace Types.Miscellaneous
         
         [SerializeField] private float _defense;
         public readonly float Defense => _defense;
-
-        [SerializeField] private Mask _mask;
-        public readonly Mask Mask => _mask;
     }
 }

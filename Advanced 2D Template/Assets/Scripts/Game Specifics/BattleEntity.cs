@@ -20,7 +20,8 @@ public abstract class BattleEntity : Selectable, IBattleEntity
     {
         _anim = GetComponent<Animator>();
 
-        _currentStats = _stats.Stats;
+        if (_stats)
+            _currentStats = _stats.Stats;
     }
 
     public string GetName() => name;

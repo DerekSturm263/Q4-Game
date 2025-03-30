@@ -14,23 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _description: 
   _texture: {fileID: 21300000, guid: 666c6f49553085d42b8bbe7a4cb67371, type: 3}
-  _input:
-    m_Name: Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 85222de0-4854-4a59-bd9e-776f7b7d89f2
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 4da4c4a2-8962-48c5-81db-a45975d9fdc7
-      m_Path: <Keyboard>/e
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Input
-      m_Flags: 0
-    m_Flags: 0
   _inputAction:
     m_PersistentCalls:
       m_Calls:
@@ -46,39 +29,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  test1:
-    _type: 0
-    _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    _cSharpObjValue:
-      rid: 8657841084617720063
-    _unityObjValue: {fileID: 0}
-  test2:
-    _type: 0
-    _typeName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    _cSharpObjValue:
-      rid: 8657841084617720065
-    _unityObjValue: {fileID: 0}
-  test3:
-    _type: 0
-    _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    _cSharpObjValue:
-      rid: -2
-    _unityObjValue: {fileID: 0}
-  test4:
-    _kvps:
-    - _item1: thghfg
-      _item2: {fileID: 7463802510909887666, guid: 27aa57f390cd7374fa684d89e4325350, type: 3}
-    - _item1: 
-      _item2: {fileID: 0}
+  _data:
+    _values:
+      _kvps:
+      - _item1: Prefab
+        _item2:
+          _type: 1
+          _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          _cSharpObjValue:
+            rid: -2
+          _unityObjValue: {fileID: 640252394121238035, guid: 94d85d1f41f6bc843bc01ce6af611382, type: 3}
+      - _item1: Speed
+        _item2:
+          _type: 0
+          _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          _cSharpObjValue:
+            rid: 5333656818637341280
+          _unityObjValue: {fileID: 0}
+      - _item1: Offset
+        _item2:
+          _type: 0
+          _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          _cSharpObjValue:
+            rid: 5333656818637341281
+          _unityObjValue: {fileID: 0}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8657841084617720063
+    - rid: 5333656818637341280
       type: {class: Single, ns: System, asm: mscorlib}
       data: 
-    - rid: 8657841084617720065
-      type: {class: Boolean, ns: System, asm: mscorlib}
+    - rid: 5333656818637341281
+      type: {class: Single, ns: System, asm: mscorlib}
       data: 
