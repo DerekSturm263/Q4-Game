@@ -1,11 +1,12 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Types.Miscellaneous
 {
     [Serializable]
-    public struct Any
+    public struct Any : ISerializationCallbackReceiver
     {
         public enum PropertyType
         {
@@ -19,6 +20,8 @@ namespace Types.Miscellaneous
         public readonly Type Type => Type.GetType(_typeName);
 
         [SerializeReference] private object _cSharpObjValue;
+        [SerializeField] private string _cSharpStringValue;
+
         [SerializeField] private UnityEngine.Object _unityObjValue;
 
         private Any(Type type, object value)
@@ -33,12 +36,16 @@ namespace Types.Miscellaneous
             if (_type == PropertyType.UnityObject)
             {
                 _unityObjValue = (UnityEngine.Object)value;
+
                 _cSharpObjValue = null;
+                _cSharpStringValue = "";
             }
             else
             {
-                _cSharpObjValue = value;
                 _unityObjValue = null;
+                
+                _cSharpObjValue = value;
+                _cSharpStringValue = JsonConvert.SerializeObject(value);
             }
         }
 
@@ -124,11 +131,18 @@ namespace Types.Miscellaneous
             }
         }
 
-        public readonly override int GetHashCode() => System.HashCode.Combine(_type, _typeName, _cSharpObjValue, _unityObjValue);
+        public readonly override int GetHashCode() => HashCode.Combine(_type, _typeName, _cSharpObjValue, _unityObjValue);
 
-        public static Any FromValue<T>(T value)
+        public static Any FromValue<T>(T value) => new(typeof(T), value);
+
+        public void OnBeforeSerialize()
         {
-            return new Any(typeof(T), value);
+            _cSharpStringValue = JsonConvert.SerializeObject(_cSharpObjValue);
+        }
+
+        public void OnAfterDeserialize()
+        {
+            _cSharpObjValue = JsonConvert.DeserializeObject(_cSharpStringValue);
         }
     }
 }

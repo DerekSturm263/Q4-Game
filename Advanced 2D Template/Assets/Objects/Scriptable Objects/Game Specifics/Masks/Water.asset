@@ -39,29 +39,32 @@ MonoBehaviour:
             Culture=neutral, PublicKeyToken=null
           _cSharpObjValue:
             rid: -2
+          _cSharpStringValue: null
           _unityObjValue: {fileID: 640252394121238035, guid: 94d85d1f41f6bc843bc01ce6af611382, type: 3}
       - _item1: Speed
         _item2:
           _type: 0
           _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           _cSharpObjValue:
-            rid: 5333656818637341280
+            rid: 5333656849872585049
+          _cSharpStringValue: 0.0
           _unityObjValue: {fileID: 0}
       - _item1: Offset
         _item2:
           _type: 0
           _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           _cSharpObjValue:
-            rid: 5333656818637341281
+            rid: 5333656849872585050
+          _cSharpStringValue: 0.0
           _unityObjValue: {fileID: 0}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5333656818637341280
+    - rid: 5333656849872585049
       type: {class: Single, ns: System, asm: mscorlib}
       data: 
-    - rid: 5333656818637341281
+    - rid: 5333656849872585050
       type: {class: Single, ns: System, asm: mscorlib}
       data: 

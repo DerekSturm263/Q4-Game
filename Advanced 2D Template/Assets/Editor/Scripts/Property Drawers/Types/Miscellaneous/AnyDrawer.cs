@@ -54,11 +54,6 @@ namespace Types.Miscellaneous
                     try { action(valuePosition, value); }
                     catch { value.objectReferenceValue = Any.GetDefault(type) as Object; }
                 }
-
-                /*if ()
-                {
-                    propertyType.enumValueIndex = 
-                }*/
             }
 
             EditorGUI.EndProperty();

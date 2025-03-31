@@ -22,7 +22,8 @@ MonoBehaviour:
       m_LocalPhysicsMode: 0
     _sceneParameters:
       _nonNullValue:
-        _kvps: []
+        _values:
+          _kvps: []
       _hasValue: 1
   references:
     version: 2
