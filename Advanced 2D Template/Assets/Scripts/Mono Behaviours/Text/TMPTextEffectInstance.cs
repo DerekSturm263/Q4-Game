@@ -8,7 +8,7 @@ namespace MonoBehaviours.Text
     [RequireComponent(typeof(TMPro.TMP_Text), typeof(RectTransform))]
     public class TMPTextEffectInstance : UIBehaviour
     {
-        [SerializeField] private ScriptableObjects.Text.TMPTextEffect _textEffect;
+        [SerializeField] private List<ScriptableObjects.Text.TMPTextEffect> _textEffects;
 
         [SerializeField] private bool _resetOnTextChange;
         [SerializeField] private bool _useScaledTime = false;
@@ -17,7 +17,10 @@ namespace MonoBehaviours.Text
         protected TMPro.TMP_Text Text => _text = _text ? _text : GetComponent<TMPro.TMP_Text>();
 
         private float _time;
-        private List<Vector3> _allVertices = new();
+        private readonly List<Vector3> _allVertices = new();
+
+        private bool _isFinished;
+        public bool IsFinished => _isFinished;
 
         protected override void Awake()
         {
@@ -30,7 +33,7 @@ namespace MonoBehaviours.Text
         {
             base.OnEnable();
 
-            _time = 0;
+            ResetTime();
 
             _text.ForceMeshUpdate();
             TMPro.TMPro_EventManager.TEXT_CHANGED_EVENT.Add(TEXT_CHANGED);
@@ -45,7 +48,7 @@ namespace MonoBehaviours.Text
             TMPro.TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(TEXT_CHANGED);
             _text.ForceMeshUpdate();
 
-            _time = 0;
+            ResetTime();
         }
 
         private void TEXT_CHANGED(object obj)
@@ -56,7 +59,7 @@ namespace MonoBehaviours.Text
                 SaveAllVertices((obj as TMPro.TMP_Text).textInfo);
 
                 if (_resetOnTextChange)
-                    _time = 0;
+                    ResetTime();
             }
 #pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast
         }
@@ -77,12 +80,13 @@ namespace MonoBehaviours.Text
 
         public void ModifyTMP(TMPro.TMP_TextInfo textInfo, float deltaTime)
         {
-            if (!_textEffect)
-                return;
-
             textInfo.textComponent.ClearMesh();
 
-            _textEffect.ModifyTextMesh(textInfo, _allVertices, deltaTime, _time);
+            foreach (var effect in _textEffects)
+            {
+                if (effect.ModifyTextMesh(textInfo, _allVertices, deltaTime, _time))
+                    _isFinished = true;
+            }
 
             textInfo.textComponent.UpdateVertexData(TMPro.TMP_VertexDataUpdateFlags.Vertices | TMPro.TMP_VertexDataUpdateFlags.Colors32);
 
@@ -97,6 +101,18 @@ namespace MonoBehaviours.Text
         {
             if (Text)
                 _text.ForceMeshUpdate();
+        }
+
+        public void FinishTime()
+        {
+            _time = 1000000;
+            _isFinished = true;
+        }
+
+        public void ResetTime()
+        {
+            _time = 0;
+            _isFinished = false;
         }
     }
 }
