@@ -5,7 +5,6 @@ using Extensions;
 
 namespace MonoBehaviours
 {
-    [RequireComponent(typeof(Camera))]
     public class ManualCameraController : Types.SingletonBehaviour<ManualCameraController>
     {
         [SerializeField] private Types.Camera.CameraSettingsAsset _settings;

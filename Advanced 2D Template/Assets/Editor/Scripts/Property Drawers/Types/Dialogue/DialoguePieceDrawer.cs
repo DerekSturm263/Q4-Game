@@ -9,8 +9,6 @@ namespace Types.Dialogue
         {
             new string[] { "_speaker" },
             new string[] { "_text" },
-            new string[] { "_speed" },
-            new string[] { "_textEffect" },
             new string[] { "_onDialogue" },
             new string[] { "_responses" }
         };

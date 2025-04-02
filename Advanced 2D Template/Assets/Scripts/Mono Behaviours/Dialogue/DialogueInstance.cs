@@ -75,13 +75,8 @@ namespace MonoBehaviours.Dialogue
 
         private void EndDialogue()
         {
-            Destroy(gameObject);
-            Invoke(nameof(InvokeDialogueEvents), _dialogue.EventDelay);
-        }
-
-        private void InvokeDialogueEvents()
-        {
             _dialogue.InvokeOnDialogueEnd();
+            Destroy(gameObject);
         }
 
         public void FinishDialogue()

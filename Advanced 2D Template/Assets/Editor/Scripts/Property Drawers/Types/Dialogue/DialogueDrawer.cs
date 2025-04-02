@@ -8,7 +8,6 @@ namespace Types.Dialogue
         public override string[][] GetPropertyNames() => new string[][]
         {
             new string[] { "_dialogues" },
-            new string[] { "_eventDelay" },
             new string[] { "_onDialogueEnd" }
         };
     }

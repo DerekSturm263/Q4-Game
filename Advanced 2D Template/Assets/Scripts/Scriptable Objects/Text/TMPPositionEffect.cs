@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ScriptableObjects.Text
 {
-    [CreateAssetMenu(fileName = "New Wave Text Effect", menuName = "TextMeshPro/Text Effects/Wave Text Effect")]
+    [CreateAssetMenu(fileName = "New Position Text Effect", menuName = "TextMeshPro/Text Effects/Position Text Effect")]
     public class TMPPositionEffect : TMPTextEffect
     {
         [SerializeField] private AnimationCurve _curve;

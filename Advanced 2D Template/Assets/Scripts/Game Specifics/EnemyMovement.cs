@@ -1,13 +1,9 @@
-using SingletonBehaviours;
-using System.Collections.Generic;
 using Types.Casting;
 using Types.Miscellaneous;
 using UnityEngine;
 
 public class EnemyMovement : EntityMovement
 {
-    [SerializeField] private List<EntityStats> _stats;
-
     [SerializeField] private Caster2D _playerCast;
     [SerializeField] private LayerMask _aggroLayer;
 
@@ -116,10 +112,5 @@ public class EnemyMovement : EntityMovement
 
         if (_aggroedObject)
             Gizmos.DrawLine(transform.position, _aggroedObject.transform.position);
-    }
-
-    public void LoadSceneParameters()
-    {
-        SceneController.Instance.SetSceneParameter("Stats", _stats);
     }
 }

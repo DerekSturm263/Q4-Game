@@ -18,9 +18,11 @@ namespace SingletonBehaviours
 
         private AnyGroup _sceneParameters;
 
-        public void SetSceneParameter<T>(string key, T value)
+        public void SetSceneParameters(AnyGroupAsset any) => SetSceneParameters(any.Value);
+
+        public void SetSceneParameters(AnyGroup any)
         {
-            _sceneParameters.Set(key, value);
+            _sceneParameters = any;
         }
 
         public T GetSceneParameter<T>(string key)
@@ -76,9 +78,6 @@ namespace SingletonBehaviours
             operation.allowSceneActivation = false;
 
             yield return new WaitUntil(() => operation.progress >= 0.9f);
-
-            if (settings.SceneParameters.HasValue)
-                _sceneParameters = settings.SceneParameters.Value;
 
             operation.allowSceneActivation = true;
 

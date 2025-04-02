@@ -13,12 +13,6 @@ namespace Types.Dialogue
         [SerializeField][TextArea] private string _text;
         public readonly string Text => _text;
 
-        [SerializeField] private float _speed;
-        public readonly float Speed => _speed;
-
-        [SerializeField] private ScriptableObjects.Text.TMPTextEffect _textEffect;
-        public readonly ScriptableObjects.Text.TMPTextEffect TextEffect => _textEffect;
-
         [SerializeField] private UnityEvent _onDialogue;
         public readonly void InvokeOnDialogue() => _onDialogue?.Invoke();
 

@@ -5,7 +5,6 @@ using UnityEngine.Rendering;
 
 namespace SingletonBehaviours
 {
-    [RequireComponent(typeof(Camera))]
     public class AutomaticCameraController : Types.SingletonBehaviour<AutomaticCameraController>
     {
         [SerializeField] private List<Types.Miscellaneous.Tuple<float, Transform>> _targets;
@@ -124,17 +123,17 @@ namespace SingletonBehaviours
 
         private void CalculateShake()
         {
-            if (_shakeTime > 0)
-            {
-                float x = (_shakeSettings.EvaluateRelativeHorizontal((_shakeSettings.Length - _shakeTime) * _shakeSettings.Frequency) * _shakeSettings.Strength);
-                float y = (_shakeSettings.EvaluateRelativeVertical((_shakeSettings.Length - _shakeTime) * _shakeSettings.Frequency) * _shakeSettings.Strength);
+            //if (_shakeTime > 0)
+            //{
+            //    float x = (_shakeSettings.EvaluateRelativeHorizontal((_shakeSettings.Length - _shakeTime) * _shakeSettings.Frequency) * _shakeSettings.Strength);
+            //    float y = (_shakeSettings.EvaluateRelativeVertical((_shakeSettings.Length - _shakeTime) * _shakeSettings.Frequency) * _shakeSettings.Strength);
 
-                _shakeAmount = (_shakeDirection * y) + (new Vector2(_shakeDirection.y, -_shakeDirection.x) * x);
-            }
-            else
-            {
-                _shakeAmount = default;
-            }
+            //    _shakeAmount = (_shakeDirection * y) + (new Vector2(_shakeDirection.y, -_shakeDirection.x) * x);
+            //}
+            //else
+            //{
+            //    _shakeAmount = default;
+            //}
         }
 
         private void ApplyPosition(float dt)
@@ -226,18 +225,18 @@ namespace SingletonBehaviours
 
         public void Shake(Types.Camera.ShakeSettings settings, Vector2 direction, bool doHaptics)
         {
-            _shakeSettings = settings;
+            //_shakeSettings = settings;
 
-            _shakeTime = _shakeSettings.Length;
-            _shakeDirection = direction;
+            //_shakeTime = _shakeSettings.Length;
+            //_shakeDirection = direction;
 
-            if (doHaptics)
-            {
-                foreach (var player in PlayerJoinController.Instance.GetAllLocalPlayers(true))
-                {
-                    HapticsController.Instance.Rumble(player, _shakeSettings.Strength * 0.1f, 0.3f);
-                }
-            }
+            //if (doHaptics)
+            //{
+            //    foreach (var player in PlayerJoinController.Instance.GetAllLocalPlayers(true))
+            //    {
+            //        HapticsController.Instance.Rumble(player, _shakeSettings.Strength * 0.1f, 0.3f);
+            //    }
+            //}
         }
     }
 }
