@@ -13,5 +13,8 @@ namespace Types.Dialogue
 
         [SerializeField] private UnityEvent _onDialogueEnd;
         public readonly void InvokeOnDialogueEnd() => _onDialogueEnd?.Invoke();
+
+        [SerializeField] private bool _ignoreEffects;
+        public readonly bool IgnoreEffects => _ignoreEffects;
     }
 }

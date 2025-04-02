@@ -23,5 +23,10 @@ namespace StateMachineBehaviours
         {
             _onStateExit?.Invoke(animator, stateInfo, layerIndex);
         }
+
+        public void DestroySelf(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        {
+            Destroy(animator.gameObject);
+        }
     }
 }

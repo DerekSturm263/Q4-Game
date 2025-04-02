@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7ad8bfeeb2ed349a31947078a736da, type: 3}
+  m_Name: Rachel 1
+  m_EditorClassIdentifier: 
+  _value:
+    _dialogues:
+    - _speaker: Rachel
+      _text: Yeah people are missing, so what? I actually like the peace and quiet.
+      _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _responses:
+        _kvps: []
+    - _speaker: Rachel
+      _text: Wait, my favorite item shop is closed? MAKE THESE PEOPLE PAY FOR WHAT
+        THEY'VE DONE.
+      _onDialogue:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: -2089158279064914108, guid: ae825e522fe1a2a4cb806d62e7d585e3, type: 3}
+            m_TargetAssemblyTypeName: CameraShakeController, GameSpecific
+            m_MethodName: Shake
+            m_Mode: 2
+            m_Arguments:
+              m_ObjectArgument: {fileID: 11400000, guid: 1783aed3eba00c04cbebe6a985d67215, type: 2}
+              m_ObjectArgumentAssemblyTypeName: Types.Camera.ShakeSettingsAsset,
+                Runtime
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      _responses:
+        _kvps: []
+    _onDialogueEnd:
+      m_PersistentCalls:
+        m_Calls: []

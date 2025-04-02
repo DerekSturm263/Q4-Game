@@ -203,7 +203,6 @@ MonoBehaviour:
   _speed:
     _min: 2
     _max: 6.5
-  _stats: []
   _playerCast:
     _direction: {x: 0, y: 0}
     _maxDistance: Infinity
@@ -308,8 +307,8 @@ Transform:
   m_GameObject: {fileID: 5803261658826467912}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 1.25, y: 0.39999998, z: 1}
+  m_LocalPosition: {x: 0, y: -0.75, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6782853562752129720}
@@ -358,8 +357,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: 382b888c3e184b049a46f78e8fa269e4, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Sprite: {fileID: 4093480436322176185, guid: 013087249bc0a6b468e5be7f57e0f4eb, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

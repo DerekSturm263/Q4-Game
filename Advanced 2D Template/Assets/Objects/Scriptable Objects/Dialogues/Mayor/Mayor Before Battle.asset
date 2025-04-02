@@ -16,7 +16,6 @@ MonoBehaviour:
     _dialogues:
     - _speaker: ???
       _text: ...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
@@ -24,23 +23,13 @@ MonoBehaviour:
         _kvps: []
     - _speaker: ???
       _text: ...cannot...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
       _responses:
         _kvps: []
     - _speaker: ???
-      _text: ...let...
-      _speed: 0
-      _onDialogue:
-        m_PersistentCalls:
-          m_Calls: []
-      _responses:
-        _kvps: []
-    - _speaker: ???
-      _text: ...you...
-      _speed: 0
+      _text: ...let you...
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
@@ -48,7 +37,6 @@ MonoBehaviour:
         _kvps: []
     - _speaker: ???
       _text: ...leave...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
@@ -56,15 +44,6 @@ MonoBehaviour:
         _kvps: []
     - _speaker: ???
       _text: ...
-      _speed: 0
-      _onDialogue:
-        m_PersistentCalls:
-          m_Calls: []
-      _responses:
-        _kvps: []
-    - _speaker: ???
-      _text: ...you...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
@@ -72,7 +51,6 @@ MonoBehaviour:
         _kvps: []
     - _speaker: ???
       _text: ...must...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
@@ -80,13 +58,11 @@ MonoBehaviour:
         _kvps: []
     - _speaker: ???
       _text: ...PERISH...
-      _speed: 0
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
       _responses:
         _kvps: []
-    _eventDelay: 0
     _onDialogueEnd:
       m_PersistentCalls:
         m_Calls:
@@ -116,3 +92,4 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    _ignoreEffects: 0

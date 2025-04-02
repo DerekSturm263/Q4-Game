@@ -10,6 +10,8 @@ namespace MonoBehaviours.Dialogue
 {
     public class DialogueInstance : MonoBehaviour
     {
+        [SerializeField] private GameObject _speakerBox;
+
         [SerializeField] private UnityEvent<string> _onSpeaker;
         [SerializeField] private UnityEvent<string> _onDialogue;
 
@@ -29,6 +31,9 @@ namespace MonoBehaviours.Dialogue
             
             _onSpeaker.Invoke(CurrentDialoguePiece.Speaker);
             _onDialogue.Invoke(CurrentDialoguePiece.Text);
+
+            _speakerBox.SetActive(!string.IsNullOrEmpty(CurrentDialoguePiece.Speaker));
+            GetComponentInChildren<TMPTextEffectInstance>().enabled = !dialogue.IgnoreEffects;
 
             CurrentDialoguePiece.InvokeOnDialogue();
         }
@@ -55,6 +60,7 @@ namespace MonoBehaviours.Dialogue
             }
 
             ++_dialogueIndex;
+            _speakerBox.SetActive(!string.IsNullOrEmpty(CurrentDialoguePiece.Speaker));
 
             _onSpeaker.Invoke(CurrentDialoguePiece.Speaker);
             _onDialogue.Invoke(CurrentDialoguePiece.Text);
