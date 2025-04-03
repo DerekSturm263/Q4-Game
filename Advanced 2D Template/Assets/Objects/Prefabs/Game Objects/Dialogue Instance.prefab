@@ -91,7 +91,7 @@ Animator:
   m_GameObject: {fileID: 976297683254407655}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 89cbfa60ff2775345b46d72e86a27f9b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 2
   m_ApplyRootMotion: 0
@@ -574,6 +574,7 @@ GameObject:
   - component: {fileID: 5930212154835864738}
   - component: {fileID: 5395574144377518339}
   - component: {fileID: 6100553538961794397}
+  - component: {fileID: 1579513434725380387}
   m_Layer: 5
   m_Name: Continue Prompt
   m_TagString: Untagged
@@ -695,6 +696,47 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1579513434725380387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5761274840592472558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9476402f3fd5b774aaba364c911f59c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 11400000, guid: cd2f64c8c3d70f344abb776ad9b249fb, type: 2}
+  _readContinuous: 0
+  _processWhenEmpty: 1
+  _parent: {fileID: 0}
+  _requiresFocus: 0
+  _onAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1198567368548284667}
+        m_TargetAssemblyTypeName: MonoBehaviours.Dialogue.DialogueInstance, Runtime
+        m_MethodName: FinishOrNextDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onAxisAction:
+    m_PersistentCalls:
+      m_Calls: []
+  _onVector2Action:
+    m_PersistentCalls:
+      m_Calls: []
+  _onCtxAction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5804633478164317488
 GameObject:
   m_ObjectHideFlags: 0

@@ -84,7 +84,8 @@ namespace MonoBehaviours.Dialogue
         private void EndDialogue()
         {
             _dialogue.InvokeOnDialogueEnd();
-            Destroy(gameObject);
+
+            GetComponent<Animator>().SetTrigger("Exit");
         }
 
         public void FinishDialogue()

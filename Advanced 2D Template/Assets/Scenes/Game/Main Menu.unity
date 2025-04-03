@@ -425,7 +425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffect: {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &881307491
@@ -1014,7 +1015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffect: {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &1908867234
@@ -1435,7 +1437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffect: {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1660057539 &9223372036854775807

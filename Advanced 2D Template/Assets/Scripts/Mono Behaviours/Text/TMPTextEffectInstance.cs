@@ -89,7 +89,7 @@ namespace MonoBehaviours.Text
                 if (effect.ModifyTextMesh(textInfo, _allVertices, deltaTime, _time))
                 {
                     if (!_isFinished)
-                        onFinished.Invoke();
+                        onFinished?.Invoke();
 
                     _isFinished = true;
                 }
@@ -114,6 +114,8 @@ namespace MonoBehaviours.Text
         {
             _time = 1000000;
             _isFinished = true;
+
+            onFinished.Invoke();
         }
 
         public void ResetTime()
