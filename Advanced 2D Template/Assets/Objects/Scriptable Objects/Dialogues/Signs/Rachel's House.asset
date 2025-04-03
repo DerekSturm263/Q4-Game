@@ -15,8 +15,11 @@ MonoBehaviour:
   _value:
     _dialogues:
     - _speaker: 
-      _text: Oogie's House. Don't enter unless you're Oogie!!!
+      _text: <align="center">Rachel's House. Get out.</align>
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:

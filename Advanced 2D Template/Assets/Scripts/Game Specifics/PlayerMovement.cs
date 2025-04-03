@@ -8,6 +8,8 @@ public class PlayerMovement : EntityMovement
     [SerializeField] private Caster2D _interactCast;
     [SerializeField] private float _castOffset;
 
+    [SerializeField] private Transform _playerVisual;
+
     private Follow _flyFollow;
     private bool _isLeading;
 
@@ -17,6 +19,11 @@ public class PlayerMovement : EntityMovement
 
     private bool _canInteract;
     public bool SetCanInteract(bool canInteract) => _canInteract = canInteract;
+
+    [SerializeField] private AnimationCurve _jumpCurve;
+    [SerializeField] private float _jumpLength;
+    [SerializeField] private float _jumpMultiplier;
+    private float _jumpTime;
 
     protected override void Awake()
     {
@@ -29,6 +36,22 @@ public class PlayerMovement : EntityMovement
     protected override void Update()
     {
         _rb.linearVelocity = _direction * CurrentSpeed;
+
+        if (_jumpTime > 0)
+        {
+            float height = _jumpCurve.Evaluate(_jumpTime) * _jumpMultiplier;
+
+            _playerVisual.localPosition = new(0, height);
+
+            _jumpTime += Time.deltaTime;
+
+            if (_jumpTime > _jumpLength)
+                EndJump();
+        }
+        else
+        {
+            _playerVisual.localPosition = Vector3.zero;
+        }
 
         var hit = _interactCast.GetHitInfo(transform, InteractOffset);
 
@@ -71,6 +94,26 @@ public class PlayerMovement : EntityMovement
             _lookDirection = value;
     }
 
+    public void Run(InputAction.CallbackContext ctx)
+    {
+        _isRunning = ctx.ReadValue<float>() == 1;
+    }
+
+    public void Jump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.ReadValue<float>() == 0)
+            return;
+
+        _jumpTime = 0.01f;
+        _rndr.sortingOrder = 3;
+    }
+
+    public void EndJump()
+    {
+        _jumpTime = 0;
+        _rndr.sortingOrder = 2;
+    }
+
     public void Interact(InputAction.CallbackContext ctx)
     {
         if (ctx.ReadValue<float>() == 0)
@@ -81,13 +124,8 @@ public class PlayerMovement : EntityMovement
         if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable<PlayerMovement> onInteract))
         {
             onInteract.Interact(this);
-           _anim.SetTrigger(onInteract.GetInteractType());
+            _anim.SetTrigger(onInteract.GetInteractType());
         }
-    }
-
-    public void Run(InputAction.CallbackContext ctx)
-    {
-        _isRunning = ctx.ReadValue<float>() == 1;
     }
 
     public void UseAbility(InputAction.CallbackContext ctx)

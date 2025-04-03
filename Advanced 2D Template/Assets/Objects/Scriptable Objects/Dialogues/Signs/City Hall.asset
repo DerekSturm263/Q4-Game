@@ -15,8 +15,11 @@ MonoBehaviour:
   _value:
     _dialogues:
     - _speaker: 
-      _text: <align="center">City Hall</align>
+      _text: <align="center">City Hall. Mayor's office inside</align>
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:

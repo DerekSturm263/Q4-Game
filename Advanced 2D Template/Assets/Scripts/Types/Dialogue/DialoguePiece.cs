@@ -16,6 +16,9 @@ namespace Types.Dialogue
         [SerializeField] private UnityEvent _onDialogue;
         public readonly void InvokeOnDialogue() => _onDialogue?.Invoke();
 
+        [SerializeField] private UnityEvent _onDialogueFinish;
+        public readonly void InvokeOnDialogueFinish() => _onDialogueFinish?.Invoke();
+
         [SerializeField] private Collections.Dictionary<string, UnityEvent> _responses;
         public readonly Collections.Dictionary<string, UnityEvent> Responses => _responses;
     }

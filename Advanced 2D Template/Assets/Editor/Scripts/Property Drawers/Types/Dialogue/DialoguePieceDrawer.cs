@@ -10,6 +10,7 @@ namespace Types.Dialogue
             new string[] { "_speaker" },
             new string[] { "_text" },
             new string[] { "_onDialogue" },
+            new string[] { "_onDialogueFinish" },
             new string[] { "_responses" }
         };
     }

@@ -33,17 +33,18 @@ namespace MonoBehaviours.Dialogue
             _onDialogue.Invoke(CurrentDialoguePiece.Text);
 
             _speakerBox.SetActive(!string.IsNullOrEmpty(CurrentDialoguePiece.Speaker));
-            GetComponentInChildren<TMPTextEffectInstance>().enabled = !dialogue.IgnoreEffects;
+            _textEffect.enabled = !dialogue.IgnoreEffects;
 
             CurrentDialoguePiece.InvokeOnDialogue();
+            _textEffect.onFinished = CurrentDialoguePiece.InvokeOnDialogueFinish;
         }
 
         public void FinishOrNextDialogue()
         {
-            if (!_textEffect.IsFinished)
-                FinishDialogue();
-            else
+            if (!_textEffect.enabled || _textEffect.IsFinished)
                 NextDialogue();
+            else
+                FinishDialogue();
         }
 
         public void NextDialogue()
@@ -66,6 +67,7 @@ namespace MonoBehaviours.Dialogue
             _onDialogue.Invoke(CurrentDialoguePiece.Text);
 
             CurrentDialoguePiece.InvokeOnDialogue();
+            _textEffect.onFinished = CurrentDialoguePiece.InvokeOnDialogueFinish;
         }
 
         public void SetDialogueIndex(int index)

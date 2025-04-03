@@ -19,17 +19,20 @@ MonoBehaviour:
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
     - _speaker: Rachel
       _text: Wait, my favorite item shop is closed? MAKE THESE PEOPLE PAY FOR WHAT
-        THEY'VE DONE.
+        THEY'VE DONE!!!
       _onDialogue:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: -2089158279064914108, guid: ae825e522fe1a2a4cb806d62e7d585e3, type: 3}
             m_TargetAssemblyTypeName: CameraShakeController, GameSpecific
-            m_MethodName: Shake
+            m_MethodName: StartShake
             m_Mode: 2
             m_Arguments:
               m_ObjectArgument: {fileID: 11400000, guid: 1783aed3eba00c04cbebe6a985d67215, type: 2}
@@ -40,8 +43,24 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: -2089158279064914108, guid: ae825e522fe1a2a4cb806d62e7d585e3, type: 3}
+            m_TargetAssemblyTypeName: CameraShakeController, GameSpecific
+            m_MethodName: EndShake
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       _responses:
         _kvps: []
     _onDialogueEnd:
       m_PersistentCalls:
         m_Calls: []
+    _ignoreEffects: 0

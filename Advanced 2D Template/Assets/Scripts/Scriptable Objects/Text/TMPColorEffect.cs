@@ -14,6 +14,7 @@ namespace ScriptableObjects.Text
         [SerializeField] private bool _ignoreR = true;
         [SerializeField] private bool _ignoreG = true;
         [SerializeField] private bool _ignoreB = true;
+        [SerializeField] private bool _ignoreA = false;
 
         public override bool ModifyTextMesh(TMPro.TMP_TextInfo textInfo, List<Vector3> allVertices, float deltaTime, float time)
         {
@@ -42,15 +43,20 @@ namespace ScriptableObjects.Text
                     color.g = meshInfo.colors32[bottomLeft].g;
                 if (_ignoreB)
                     color.b = meshInfo.colors32[bottomLeft].b;
+                if (_ignoreA)
+                    color.a = meshInfo.colors32[bottomLeft].a;
 
                 meshInfo.colors32[bottomLeft] = color;
                 meshInfo.colors32[topLeft] = color;
 
                 meshInfo.colors32[topRight] = color;
                 meshInfo.colors32[bottomRight] = color;
+
+                if (i == textInfo.characterCount - 1 && meshInfo.colors32[bottomRight] == _gradient.Evaluate(1))
+                    return true;
             }
 
-            return meshInfo.colors32[^5] == _gradient.Evaluate(1);
+            return false;
         }
     }
 }

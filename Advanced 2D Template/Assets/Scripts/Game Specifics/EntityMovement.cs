@@ -1,7 +1,7 @@
 using Types.Miscellaneous;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class EntityMovement : MonoBehaviour
 {
     protected Rigidbody2D _rb;
@@ -9,6 +9,9 @@ public abstract class EntityMovement : MonoBehaviour
 
     protected Animator _anim;
     public Animator Animator => _anim;
+
+    protected SpriteRenderer _rndr;
+    public SpriteRenderer Renderer => _rndr;
 
     protected Mood _mood;
     public Mood Mood => _mood;
@@ -28,7 +31,8 @@ public abstract class EntityMovement : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
+        _rndr = GetComponentInChildren<SpriteRenderer>();
         _mood = GetComponent<Mood>();
     }
 

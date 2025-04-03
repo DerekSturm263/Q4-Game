@@ -22,6 +22,8 @@ namespace MonoBehaviours.Text
         private bool _isFinished;
         public bool IsFinished => _isFinished;
 
+        public System.Action onFinished;
+
         protected override void Awake()
         {
             base.Awake();
@@ -85,7 +87,12 @@ namespace MonoBehaviours.Text
             foreach (var effect in _textEffects)
             {
                 if (effect.ModifyTextMesh(textInfo, _allVertices, deltaTime, _time))
+                {
+                    if (!_isFinished)
+                        onFinished.Invoke();
+
                     _isFinished = true;
+                }
             }
 
             textInfo.textComponent.UpdateVertexData(TMPro.TMP_VertexDataUpdateFlags.Vertices | TMPro.TMP_VertexDataUpdateFlags.Colors32);

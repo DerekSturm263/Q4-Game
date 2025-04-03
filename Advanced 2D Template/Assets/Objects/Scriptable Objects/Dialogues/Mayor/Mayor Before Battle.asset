@@ -19,11 +19,17 @@ MonoBehaviour:
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
     - _speaker: ???
       _text: ...cannot...
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:
@@ -33,11 +39,17 @@ MonoBehaviour:
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
     - _speaker: ???
       _text: ...leave...
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:
@@ -47,6 +59,9 @@ MonoBehaviour:
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
     - _speaker: ???
@@ -54,11 +69,17 @@ MonoBehaviour:
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
     - _speaker: ???
-      _text: ...PERISH...
+      _text: PERISH!!!
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:

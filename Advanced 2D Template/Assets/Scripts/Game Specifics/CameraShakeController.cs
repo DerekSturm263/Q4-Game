@@ -1,24 +1,17 @@
 using System.Threading.Tasks;
 using Types.Camera;
 using Unity.Cinemachine;
-using UnityEngine;
 
 public class CameraShakeController : Types.SingletonBehaviour<CameraShakeController>
 {
-    private float _frequency;
-    private float _amplitude;
-
     public async void Shake(ShakeSettingsAsset settings)
     {
-        _frequency = settings.Value.Frequency;
-        _amplitude = settings.Value.Amplitude;
-
         var noise = FindFirstObjectByType<CinemachineBasicMultiChannelPerlin>();
 
         if (noise)
         {
-            noise.FrequencyGain = _frequency;
-            noise.AmplitudeGain = _amplitude;
+            noise.FrequencyGain = settings.Value.Frequency;
+            noise.AmplitudeGain = settings.Value.Amplitude;
 
             await Task.Run(async () =>
             {
@@ -28,5 +21,21 @@ public class CameraShakeController : Types.SingletonBehaviour<CameraShakeControl
                 noise.AmplitudeGain = 0;
             });
         }
+    }
+
+    public void StartShake(ShakeSettingsAsset settings)
+    {
+        var noise = FindFirstObjectByType<CinemachineBasicMultiChannelPerlin>();
+
+        noise.FrequencyGain = settings.Value.Frequency;
+        noise.AmplitudeGain = settings.Value.Amplitude;
+    }
+
+    public void EndShake()
+    {
+        var noise = FindFirstObjectByType<CinemachineBasicMultiChannelPerlin>();
+
+        noise.FrequencyGain = 0;
+        noise.AmplitudeGain = 0;
     }
 }
