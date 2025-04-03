@@ -18,4 +18,16 @@ public class LightFlicker : MonoBehaviour
     {
         _light.intensity = _curve.Evaluate(Mathf.Repeat(Time.time * _frequency, 1)) * _amplitude;
     }
+
+    public void SetExcited()
+    {
+        _frequency = 4;
+        _amplitude = 2;
+    }
+
+    public void SetDefault()
+    {
+        _frequency = 1;
+        _amplitude = 1;
+    }
 }

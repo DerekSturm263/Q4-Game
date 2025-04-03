@@ -209,7 +209,7 @@ MonoBehaviour:
     _maxDistance: Infinity
     _layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 64
     _settings:
       _value1:
         _offset: {x: 0, y: 0}
@@ -217,7 +217,7 @@ MonoBehaviour:
         _rotation: 0
       _value2:
         _offset: {x: 0, y: 0}
-        _radius: 5
+        _radius: 2.5
       _value3:
         _offset: {x: 0, y: 0}
         _size: {x: 0, y: 0}
@@ -226,7 +226,7 @@ MonoBehaviour:
       _index: 1
   _aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _patrolDistance:
     _min: {x: -3, y: -3}
     _max: {x: 3, y: 3}
@@ -234,6 +234,7 @@ MonoBehaviour:
   _waitTime:
     _min: 0
     _max: 4
+  _type: 1
 --- !u!114 &9133676787647913967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,14 +281,16 @@ MonoBehaviour:
   _type: 0
   _sprites:
     _kvps:
-    - _item1: 1
-      _item2: {fileID: 21300000, guid: 6e5044cd6f41e1a44b3b7b8e75cf1aeb, type: 3}
     - _item1: 2
-      _item2: {fileID: 21300000, guid: 0d0bb657d6667f6438132e22b4932097, type: 3}
+      _item2: {fileID: 21300000, guid: 6e5044cd6f41e1a44b3b7b8e75cf1aeb, type: 3}
     - _item1: 3
+      _item2: {fileID: 21300000, guid: 0d0bb657d6667f6438132e22b4932097, type: 3}
+    - _item1: 4
       _item2: {fileID: 21300000, guid: 6050feed2863777479524085df910f76, type: 3}
-    - _item1: 0
+    - _item1: 1
       _item2: {fileID: 21300000, guid: 0bec997334f2b3446b6ee1da14f32f9f, type: 3}
+    - _item1: 0
+      _item2: {fileID: 0}
   _offset: {x: 0, y: 1.25}
 --- !u!1 &9014121861819729040
 GameObject:

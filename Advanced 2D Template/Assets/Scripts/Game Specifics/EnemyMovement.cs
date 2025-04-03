@@ -1,27 +1,64 @@
+using System.Collections;
 using Types.Casting;
 using Types.Miscellaneous;
 using UnityEngine;
 
 public class EnemyMovement : EntityMovement
 {
+    public enum NPCType
+    {
+        Enemy, Ally
+    }
+
     [SerializeField] private Caster2D _playerCast;
+    public Caster2D PlayerCast => _playerCast;
+
     [SerializeField] private LayerMask _aggroLayer;
+    public LayerMask AggroLayer => _aggroLayer;
 
     private Transform _aggroedObject;
+    public Transform AggroedObject => _aggroedObject;
+    public void SetAggroedObject(Transform aggroedObject) => _aggroedObject = aggroedObject;
 
     [SerializeField] private Range<Vector2> _patrolDistance;
+
     [SerializeField] private float _distanceToNextSpot;
+    public float DistanceToNextSpot => _distanceToNextSpot;
 
     private Vector2 _originalPos;
+
     private Vector2 _nextPos;
+    public Vector2 NextPos => _nextPos;
 
     [SerializeField] private Range<float> _waitTime;
 
     private float _timeRemaining;
+    public float TimeRemaining => _timeRemaining;
+    public void DecreaseTimeRemaining() => _timeRemaining -= Time.deltaTime;
+    public void ResetTimeRemaining() => _timeRemaining = Random.Range(_waitTime.Min, _waitTime.Max);
+
+    private StateMachine<EnemyMovement> _stateMachine;
+
+    [SerializeField] private NPCType _type;
 
     protected override void Awake()
     {
         base.Awake();
+
+        System.Collections.Generic.LinkedList<State<EnemyMovement>> states = new();
+        states.AddLast(State<EnemyMovement>.Patrol);
+        
+        if (_type == NPCType.Enemy)
+        {
+            states.AddLast(State<EnemyMovement>.Chase);
+            states.AddLast(State<EnemyMovement>.Confused);
+        }
+        else
+        {
+            states.AddLast(State<EnemyMovement>.Look);
+        }
+
+        _stateMachine = new(states);
 
         _originalPos = transform.position;
         SetNextPos();
@@ -29,78 +66,14 @@ public class EnemyMovement : EntityMovement
 
     protected override void Update()
     {
-        if (_aggroedObject)
-        {
-            var cast = Physics2D.Linecast(transform.position,  _aggroedObject.transform.position, _aggroLayer);
+        _stateMachine.Resolve(this, Time.deltaTime);
 
-            if (cast.transform == _aggroedObject)
-            {
-                Chase();
-            }
-            else
-            {
-                _aggroedObject = null;
-            }
-        }
-        else
-        {
-            var hit = _playerCast.GetHitInfo(transform);
-
-            if (hit.HasValue)
-            {
-                var cast = Physics2D.Linecast(transform.position, hit.Value.point, _aggroLayer);
-
-                if (cast.transform == hit.Value.transform)
-                {
-                    _aggroedObject = hit.Value.transform;
-                    Chase();
-                }
-                else
-                {
-                    Patrol();
-                }
-            }
-            else
-            {
-                Patrol();
-            }
-        }
-
-        if (_rb.linearVelocity != Vector2.zero)
-            _lookDirection = _rb.linearVelocity.normalized;
+        _isMoving = _rb.linearVelocity != Vector2.zero;
 
         base.Update();
     }
 
-    private void Chase()
-    {
-        _rb.linearVelocity = (_aggroedObject.position - transform.position).normalized * _speed.Max;
-        _isMoving = true;
-    }
-
-    private void Patrol()
-    {
-        if (Vector2.Distance(transform.position, _nextPos) <= _distanceToNextSpot)
-        {
-            _timeRemaining -= Time.deltaTime;
-            _rb.linearVelocity = Vector2.zero;
-            _isMoving = false;
-
-            if (_timeRemaining <= 0)
-            {
-                SetNextPos();
-            }
-        }
-        else
-        {
-            _rb.linearVelocity = (_nextPos - (Vector2)transform.position).normalized * _speed.Min;
-            _timeRemaining = Random.Range(_waitTime.Min, _waitTime.Max);
-
-            _isMoving = true;
-        }
-    }
-
-    private void SetNextPos()
+    public void SetNextPos()
     {
         Vector2 offset = new(Random.Range(_patrolDistance.Min.x, _patrolDistance.Max.x), Random.Range(_patrolDistance.Min.y, _patrolDistance.Max.y));
         _nextPos = _originalPos + offset;

@@ -8,6 +8,7 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
 
     [SerializeField] private Types.Wrappers.Nullable<int> _interactCount;
     private int _interactsLeft;
+    public bool CanInteract => !_interactCount.HasValue || _interactsLeft > 0;
 
     public string GetInteractType() => _interactType;
 

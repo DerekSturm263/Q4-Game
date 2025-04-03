@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 360288722535300257}
   - component: {fileID: 1114076345859143432}
   - component: {fileID: 1198567368548284667}
+  - component: {fileID: 7925728062095748411}
   m_Layer: 5
   m_Name: Dialogue Instance
   m_TagString: Untagged
@@ -160,6 +161,63 @@ MonoBehaviour:
   _buttonParent: {fileID: 8697856171410500908}
   _buttonPrefab: {fileID: 0}
   _textEffect: {fileID: 8450232629768478382}
+--- !u!114 &7925728062095748411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976297683254407655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1828ac118e4935d4894a4f568028a93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onAwake:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 63215255014947316, guid: cd81a27c0bf24f84a83fb659f3eaf97b, type: 3}
+        m_TargetAssemblyTypeName: PlayerMovement, GameSpecific
+        m_MethodName: SetInteractionEnabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onFixedUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDestroy:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 63215255014947316, guid: cd81a27c0bf24f84a83fb659f3eaf97b, type: 3}
+        m_TargetAssemblyTypeName: PlayerMovement, GameSpecific
+        m_MethodName: SetInteractionEnabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &2294970642482737373
 GameObject:
   m_ObjectHideFlags: 0

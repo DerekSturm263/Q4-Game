@@ -6,6 +6,7 @@ public class Mood : MonoBehaviour
 {
     public enum Type
     {
+        None,
         Question,
         Exclamation,
         Interact,
@@ -35,15 +36,25 @@ public class Mood : MonoBehaviour
         _rndr.sprite = _sprites[_type];
     }
 
+    public void SetType(Type type)
+    {
+        _type = type;
+
+        _rndr.sprite = _sprites[_type];
+    }
+
+    [ContextMenu("None Mood")]
+    public void SetTypeNone() => SetType(Type.None);
+
     [ContextMenu("Question Mood")]
-    public void SetTypeQuestion() => SetType("Question");
+    public void SetTypeQuestion() => SetType(Type.Question);
 
     [ContextMenu("Exclamation Mood")]
-    public void SetTypeExclamation() => SetType("Exclamation");
+    public void SetTypeExclamation() => SetType(Type.Exclamation);
 
     [ContextMenu("Interact Mood")]
-    public void SetTypeInteract() => SetType("Interact");
+    public void SetTypeInteract() => SetType(Type.Interact);
 
     [ContextMenu("Ellipsis Mood")]
-    public void SetTypeEllipsis() => SetType("Ellipsis");
+    public void SetTypeEllipsis() => SetType(Type.Ellipsis);
 }

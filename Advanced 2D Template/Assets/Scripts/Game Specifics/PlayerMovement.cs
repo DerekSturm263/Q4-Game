@@ -8,13 +8,54 @@ public class PlayerMovement : EntityMovement
     [SerializeField] private Caster2D _interactCast;
     [SerializeField] private float _castOffset;
 
+    private Follow _flyFollow;
+    private bool _isLeading;
+
     private Vector2 _direction;
 
     public Vector3 InteractOffset => _lookDirection * _castOffset;
 
+    private bool _canInteract;
+    public bool SetCanInteract(bool canInteract) => _canInteract = canInteract;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _flyFollow = FindFirstObjectByType<Follow>();
+        _canInteract = true;
+    }
+
     protected override void Update()
     {
-        _rb.linearVelocity = _direction * Speed;
+        _rb.linearVelocity = _direction * CurrentSpeed;
+
+        var hit = _interactCast.GetHitInfo(transform, InteractOffset);
+
+        if (_canInteract && hit.HasValue && hit.Value.transform.TryGetComponent(out Interactable interactable) && interactable.CanInteract)
+        {
+            _mood.SetType(Mood.Type.Interact);
+
+            if (!_flyFollow.IsLeading)
+            {
+                _flyFollow.SetLeadDistance(0.5f);
+                _flyFollow.Lead(hit.Value.transform);
+
+                _isLeading = true;
+            }
+        }
+        else
+        {
+            _mood.SetType(Mood.Type.None);
+
+            if (_isLeading)
+            {
+                _flyFollow.EndLead();
+                _flyFollow.SetLeadDistance(4);
+
+                _isLeading = false;
+            }
+        }
 
         base.Update();
     }
@@ -54,11 +95,18 @@ public class PlayerMovement : EntityMovement
         if (ctx.ReadValue<float>() == 0)
             return;
 
-
         if (SaveDataController.Instance && SaveDataController.Instance.CurrentData.Mask)
         {
             SaveDataController.Instance.CurrentData.Mask.InvokeAction(this);
         }
+    }
+
+    public void SetInteractionEnabled(bool isEnabled)
+    {
+        var player = FindFirstObjectByType<PlayerMovement>();
+        
+        player._canInteract = isEnabled;
+        player.GetComponent<PlayerInput>().enabled = isEnabled;
     }
 
     private void OnDrawGizmos()

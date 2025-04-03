@@ -10,19 +10,26 @@ public abstract class EntityMovement : MonoBehaviour
     protected Animator _anim;
     public Animator Animator => _anim;
 
+    protected Mood _mood;
+    public Mood Mood => _mood;
+
     [SerializeField] protected Range<float> _speed;
-    public float Speed => (_isRunning ? _speed.Max : _speed.Min);
+    public float WalkSpeed => _speed.Min;
+    public float RunSpeed => _speed.Max;
+    public float CurrentSpeed => (_isRunning ? _speed.Max : _speed.Min);
 
     protected bool _isMoving;
     protected bool _isRunning;
 
     protected Vector2 _lookDirection;
     public Vector2 LookDirection => _lookDirection;
+    public void SetLookDirection(Vector2 lookDirection) => _lookDirection = lookDirection;
 
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
+        _mood = GetComponent<Mood>();
     }
 
     protected virtual void Update()
