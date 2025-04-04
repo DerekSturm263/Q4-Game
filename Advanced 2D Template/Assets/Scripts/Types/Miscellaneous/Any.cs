@@ -142,7 +142,7 @@ namespace Types.Miscellaneous
 
         public void OnAfterDeserialize()
         {
-            _cSharpObjValue = JsonConvert.DeserializeObject(_cSharpStringValue);
+            _cSharpObjValue = JsonConvert.DeserializeObject(_cSharpStringValue ?? string.Empty);
         }
     }
 }

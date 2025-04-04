@@ -337,6 +337,12 @@ MonoBehaviour:
       _index: 0
   _castOffset: 0.75
   _playerVisual: {fileID: 6851854084714320101}
+  _ignoreGrounded:
+    serializedVersion: 2
+    m_Bits: 0
+  _ignoreJump:
+    serializedVersion: 2
+    m_Bits: 256
   _jumpCurve:
     serializedVersion: 2
     m_Curve:

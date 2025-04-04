@@ -10,6 +10,9 @@ public class PlayerMovement : EntityMovement
 
     [SerializeField] private Transform _playerVisual;
 
+    [SerializeField] private LayerMask _ignoreGrounded;
+    [SerializeField] private LayerMask _ignoreJump;
+
     private Follow _flyFollow;
     private bool _isLeading;
 
@@ -55,7 +58,7 @@ public class PlayerMovement : EntityMovement
 
         var hit = _interactCast.GetHitInfo(transform, InteractOffset);
 
-        if (_canInteract && hit.HasValue && hit.Value.transform.TryGetComponent(out Interactable interactable) && interactable.CanInteract)
+        if (_canInteract && hit.HasValue && hit.Value.transform.TryGetComponent(out Interactable interactable) && interactable.CanInteract(transform))
         {
             _mood.SetType(Mood.Type.Interact);
 
@@ -101,17 +104,19 @@ public class PlayerMovement : EntityMovement
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-        if (ctx.ReadValue<float>() == 0)
+        if (ctx.ReadValue<float>() == 0 || _jumpTime > 0)
             return;
 
         _jumpTime = 0.01f;
         _rndr.sortingOrder = 3;
+        _col.excludeLayers = _ignoreJump;
     }
 
     public void EndJump()
     {
         _jumpTime = 0;
         _rndr.sortingOrder = 2;
+        _col.excludeLayers = _ignoreGrounded;
     }
 
     public void Interact(InputAction.CallbackContext ctx)
@@ -123,7 +128,7 @@ public class PlayerMovement : EntityMovement
 
         if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable<PlayerMovement> onInteract))
         {
-            onInteract.Interact(this);
+            onInteract.Interact(transform, this);
             _anim.SetTrigger(onInteract.GetInteractType());
         }
     }

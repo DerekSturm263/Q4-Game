@@ -32,11 +32,7 @@ namespace Extensions
                 collection.ElementAt(0),
                 collection.ElementAt(1),
                 collection.ElementAt(2),
-                collection.ElementAt(3),
-                collection.ElementAt(4),
-                collection.ElementAt(5),
-                collection.ElementAt(6),
-                collection.ElementAt(7)
+                collection.ElementAt(3)
             );
         }
 

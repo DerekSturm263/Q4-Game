@@ -46,6 +46,22 @@ namespace Extensions
             return dir;
         }
 
+        public static T MapTo4Slices<T>(this Vector2 vector2, T north, T east, T south, T west)
+        {
+            T ret = default;
+
+            if (Vector2.Dot(vector2.normalized, Vector2.up) > 0.5f)
+                ret = north;
+            else if (Vector2.Dot(vector2.normalized, Vector2.down) > 0.5f)
+                ret = south;
+            else if (Vector2.Dot(vector2.normalized, Vector2.left) > 0.5f)
+                ret = east;
+            else if (Vector2.Dot(vector2.normalized, Vector2.right) > 0.5f)
+                ret = west;
+
+            return ret;
+        }
+
         public static bool Intersects(this BoundsInt lhs, BoundsInt rhs)
         {
             Bounds lhsNoInt = new(lhs.position, lhs.size);

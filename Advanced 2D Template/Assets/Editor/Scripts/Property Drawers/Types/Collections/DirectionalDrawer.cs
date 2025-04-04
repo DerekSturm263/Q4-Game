@@ -13,7 +13,7 @@ namespace Types.Collections
             EditorGUI.BeginProperty(position, label, property);
 
             Rect toolbarRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            string[] toolbarTabs = new string[] { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+            string[] toolbarTabs = new string[] { "N", "E", "S", "W" };
             _toolbarIndex = GUI.Toolbar(toolbarRect, _toolbarIndex, toolbarTabs);
 
             string propertyName = GetPropertyFromToolbar();
@@ -37,13 +37,9 @@ namespace Types.Collections
 
         private string GetPropertyFromToolbar() => _toolbarIndex switch
         {
-            1 => "_northEast",
-            2 => "_east",
-            3 => "_southEast",
-            4 => "_south",
-            5 => "_southWest",
-            6 => "_west",
-            7 => "_northWest",
+            1 => "_east",
+            2 => "_south",
+            3 => "_west",
             _ => "_north"
         };
     }

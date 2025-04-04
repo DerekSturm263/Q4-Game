@@ -13,6 +13,9 @@ public abstract class EntityMovement : MonoBehaviour
     protected SpriteRenderer _rndr;
     public SpriteRenderer Renderer => _rndr;
 
+    protected BoxCollider2D _col;
+    public BoxCollider2D Collider => _col;
+
     protected Mood _mood;
     public Mood Mood => _mood;
 
@@ -33,6 +36,7 @@ public abstract class EntityMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponentInChildren<Animator>();
         _rndr = GetComponentInChildren<SpriteRenderer>();
+        _col = GetComponentInChildren<BoxCollider2D>();
         _mood = GetComponent<Mood>();
     }
 
