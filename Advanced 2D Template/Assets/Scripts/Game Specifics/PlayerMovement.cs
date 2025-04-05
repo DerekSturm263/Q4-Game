@@ -13,6 +13,8 @@ public class PlayerMovement : EntityMovement
     [SerializeField] private LayerMask _ignoreGrounded;
     [SerializeField] private LayerMask _ignoreJump;
 
+    [SerializeField] private SpriteRenderer _shadowRndr;
+
     private Follow _flyFollow;
     private bool _isLeading;
 
@@ -109,6 +111,7 @@ public class PlayerMovement : EntityMovement
 
         _jumpTime = 0.01f;
         _rndr.sortingOrder = 3;
+        _shadowRndr.sortingOrder = 2;
         _col.excludeLayers = _ignoreJump;
     }
 
@@ -116,6 +119,7 @@ public class PlayerMovement : EntityMovement
     {
         _jumpTime = 0;
         _rndr.sortingOrder = 2;
+        _shadowRndr.sortingOrder = 1;
         _col.excludeLayers = _ignoreGrounded;
     }
 
