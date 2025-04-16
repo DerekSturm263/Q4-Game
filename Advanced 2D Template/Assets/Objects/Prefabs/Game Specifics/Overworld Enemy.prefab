@@ -226,7 +226,7 @@ MonoBehaviour:
       _index: 1
   _aggroLayer:
     serializedVersion: 2
-    m_Bits: 123
+    m_Bits: 891
   _patrolDistance:
     _min: {x: -5, y: -5}
     _max: {x: 5, y: 5}
@@ -234,6 +234,7 @@ MonoBehaviour:
   _waitTime:
     _min: 0
     _max: 2
+  _type: 0
 --- !u!114 &4993013129341643246
 MonoBehaviour:
   m_ObjectHideFlags: 0

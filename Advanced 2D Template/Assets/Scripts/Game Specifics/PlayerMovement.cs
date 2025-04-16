@@ -36,6 +36,8 @@ public class PlayerMovement : EntityMovement
 
         _flyFollow = FindFirstObjectByType<Follow>();
         _canInteract = true;
+
+        transform.position = SaveDataController.Instance.CurrentData.Position;
     }
 
     protected override void Update()
@@ -154,6 +156,11 @@ public class PlayerMovement : EntityMovement
         
         player._canInteract = isEnabled;
         player.GetComponent<PlayerInput>().enabled = isEnabled;
+    }
+
+    private void OnDisable()
+    {
+        SaveDataController.Instance.CurrentData.SetPosition(transform.position);
     }
 
     private void OnDrawGizmos()

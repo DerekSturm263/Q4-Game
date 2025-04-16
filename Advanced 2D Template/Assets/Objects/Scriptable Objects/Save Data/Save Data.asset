@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36337ab203dd3ef4e91962056db42478, type: 3}
+  m_Name: Save Data
+  m_EditorClassIdentifier: 
+  _value:
+    _items:
+    - {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}
+    - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}
+    - {fileID: 11400000, guid: 319350d8f705298408a5cfe32879e95b, type: 2}
+    - {fileID: 11400000, guid: 430ff678643c1b74f992912b9000fada, type: 2}
+    _mask: {fileID: 11400000, guid: 430ff678643c1b74f992912b9000fada, type: 2}
+    _currentHealth: 20
+    _maxHealth: 20
+    _attack: 5
+    _defense: 3
+    _storyData: []
+    _playerAbilities: 0
+    _position: {x: 0, y: -25}
