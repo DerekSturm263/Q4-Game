@@ -15,7 +15,7 @@ namespace SingletonBehaviours
 
         public override void Initialize()
         {
-            _currentDevice ??= InputSystem.devices.First(item => _settings.Value.HasControlScheme(item.displayName));
+            _currentDevice ??= InputSystem.devices.FirstOrDefault(item => _settings.Value.HasControlScheme(item.displayName));
             InputSystem.onAnyButtonPress.Call(SetAllInputDevices);
         }
 

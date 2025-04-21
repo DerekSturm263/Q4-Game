@@ -25,8 +25,8 @@ MonoBehaviour:
       _responses:
         _kvps: []
     - _speaker: Rachel
-      _text: Wait, my favorite item shop is closed? MAKE THESE PEOPLE PAY FOR WHAT
-        THEY'VE DONE!!!
+      _text: Wait, the item shop is closed? MAKE THESE PEOPLE PAY FOR WHAT THEY'VE
+        DONE!!!
       _onDialogue:
         m_PersistentCalls:
           m_Calls:

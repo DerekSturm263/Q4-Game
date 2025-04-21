@@ -7,15 +7,21 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] private List<Types.SingletonBehaviourBase> _controllers;
     private List<Types.SingletonBehaviourBase> _controllerInstances;
 
+    private static bool _isActive;
+
     private void Awake()
     {
-        _controllerInstances = _controllers.Select(item => Instantiate(item)).ToList();
-
-        foreach (Types.SingletonBehaviourBase controllerInstance in _controllerInstances)
+        if (!_isActive)
         {
-            DontDestroyOnLoad(controllerInstance);
+            _isActive = true;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
         }
 
+        _controllerInstances = _controllers.Select(item => Instantiate(item, transform)).ToList();
         DontDestroyOnLoad(gameObject);
     }
 }
