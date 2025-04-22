@@ -13,6 +13,8 @@ namespace SingletonBehaviours
                 Destroy(_currentToast);
 
             _currentToast = Instantiate(_toastPrefab, FindFirstObjectByType<Canvas>().transform);
+
+            _currentToast.transform.SetAsFirstSibling();
             _currentToast.GetComponentInChildren<TMPro.TMP_Text>().SetText(text);
         }
     }

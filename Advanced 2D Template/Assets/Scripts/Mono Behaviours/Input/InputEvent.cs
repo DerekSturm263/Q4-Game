@@ -42,10 +42,8 @@ namespace MonoBehaviours.Input
 
             _action.performed += Type switch
             {
-                "Axis" => ctx => { if (HasFocus() && !IsInputting()) Invoke(ctx.ReadValue<float>()); }
-                ,
-                "Vector2" => ctx => { if (HasFocus() && !IsInputting()) Invoke(ctx.ReadValue<Vector2>()); }
-                ,
+                "Axis" => ctx => { if (HasFocus() && !IsInputting()) Invoke(ctx.ReadValue<float>()); },
+                "Vector2" => ctx => { if (HasFocus() && !IsInputting()) Invoke(ctx.ReadValue<Vector2>()); },
                 _ => ctx => { if (HasFocus() && !IsInputting()) Invoke(); }
             };
 

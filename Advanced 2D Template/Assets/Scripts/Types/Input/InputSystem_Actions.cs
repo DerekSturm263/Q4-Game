@@ -395,7 +395,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8cbb2f4b-a784-49cc-8d5e-c010b8c7f4e6"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -635,6 +635,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""3c654ead-5c79-4859-a2fd-b516c4885604"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stats"",
+                    ""type"": ""Button"",
+                    ""id"": ""7ee55918-fded-4b9a-b5fb-1ff756e5a553"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Minimap"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f487a15-7d1e-40ba-b8e8-dc38dbc46f72"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1081,6 +1099,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7f17462-af95-47e7-9091-870d86a6f540"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Stats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7db0ed2e-eecf-4614-9134-bd5e21e673c2"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Minimap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1174,6 +1214,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
+        m_UI_Stats = m_UI.FindAction("Stats", throwIfNotFound: true);
+        m_UI_Minimap = m_UI.FindAction("Minimap", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1378,6 +1420,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_Pause;
+    private readonly InputAction m_UI_Stats;
+    private readonly InputAction m_UI_Minimap;
     public struct UIActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1393,6 +1437,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
+        public InputAction @Stats => m_Wrapper.m_UI_Stats;
+        public InputAction @Minimap => m_Wrapper.m_UI_Minimap;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1435,6 +1481,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Stats.started += instance.OnStats;
+            @Stats.performed += instance.OnStats;
+            @Stats.canceled += instance.OnStats;
+            @Minimap.started += instance.OnMinimap;
+            @Minimap.performed += instance.OnMinimap;
+            @Minimap.canceled += instance.OnMinimap;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1472,6 +1524,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Stats.started -= instance.OnStats;
+            @Stats.performed -= instance.OnStats;
+            @Stats.canceled -= instance.OnStats;
+            @Minimap.started -= instance.OnMinimap;
+            @Minimap.performed -= instance.OnMinimap;
+            @Minimap.canceled -= instance.OnMinimap;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1561,5 +1619,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnStats(InputAction.CallbackContext context);
+        void OnMinimap(InputAction.CallbackContext context);
     }
 }

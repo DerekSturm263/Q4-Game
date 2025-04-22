@@ -373,7 +373,7 @@
                 {
                     "name": "",
                     "id": "8cbb2f4b-a784-49cc-8d5e-c010b8c7f4e6",
-                    "path": "<Gamepad>/leftStickPress",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -613,6 +613,24 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "3c654ead-5c79-4859-a2fd-b516c4885604",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Stats",
+                    "type": "Button",
+                    "id": "7ee55918-fded-4b9a-b5fb-1ff756e5a553",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Minimap",
+                    "type": "Button",
+                    "id": "5f487a15-7d1e-40ba-b8e8-dc38dbc46f72",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1057,6 +1075,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7f17462-af95-47e7-9091-870d86a6f540",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Stats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7db0ed2e-eecf-4614-9134-bd5e21e673c2",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Minimap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

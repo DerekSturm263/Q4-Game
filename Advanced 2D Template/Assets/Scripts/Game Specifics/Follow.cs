@@ -23,6 +23,8 @@ public class Follow : MonoBehaviour
     private void Awake()
     {
         _rndr = GetComponent<SpriteRenderer>();
+
+        transform.SetParent(null);
     }
 
     private void Update()
