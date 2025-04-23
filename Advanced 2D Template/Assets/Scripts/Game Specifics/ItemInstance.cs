@@ -20,7 +20,7 @@ public class ItemInstance : MonoBehaviour
         var instance = Instantiate(prefab);
 
         instance._item = item;
-        instance.GetComponent<SpriteRenderer>().sprite = item.Texture;
+        instance.GetComponent<SpriteRenderer>().sprite = item.Icon;
 
         return instance;
     }

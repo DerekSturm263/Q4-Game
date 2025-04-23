@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Label
+  - Offset
+  - Background
+  - Top
+  - Color
+  - Icon
+  - Description
   layers:
   - Default
   - TransparentFX

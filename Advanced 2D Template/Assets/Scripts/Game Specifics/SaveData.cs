@@ -49,5 +49,8 @@ namespace Types.Miscellaneous
         [SerializeField] private Vector2 _position;
         public readonly Vector2 Position => _position;
         public void SetPosition(Vector2 position) => _position = position;
+
+        [SerializeField] private Types.Collections.Dictionary<Quest, bool> _questsCompleted;
+        public readonly Types.Collections.Dictionary<Quest, bool> QuestsCompleted => _questsCompleted;
     }
 }

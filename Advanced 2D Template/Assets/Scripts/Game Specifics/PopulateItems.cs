@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PopulateItems : MonoBehaviours.UI.Populate<Item>
@@ -8,56 +9,47 @@ public class PopulateItems : MonoBehaviours.UI.Populate<Item>
 
     protected override Dictionary<string, Predicate<Item>> GetAllFilterModes()
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            ["All"] = (value) => true
+        };
     }
 
     protected override Dictionary<string, Func<Item, (string, object)>> GetAllGroupModes()
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            ["All"] = (value) => ("All", 0)
+        };
     }
 
     protected override Dictionary<string, Comparison<Item>> GetAllSortModes()
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            ["Name"] = (lhs, rhs) => lhs.name.CompareTo(rhs.name)
+        };
     }
 
-    protected override Sprite Icon(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    protected override Sprite Icon(Item item) => item.Icon;
 
-    protected override bool IsEquipped(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    protected override bool IsEquipped(Item item) => false;
 
-    protected override bool IsNone(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    protected override bool IsNone(Item item) => false;
 
-    protected override bool IsRandom(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    protected override bool IsRandom(Item item) => false;
 
-    protected override IEnumerable<Item> LoadAll()
-    {
-        throw new NotImplementedException();
-    }
+    protected override IEnumerable<Item> LoadAll() => SingletonBehaviours.SaveDataController.Instance.CurrentData.Items;
 
-    protected override string Name(Item item)
-    {
-        throw new NotImplementedException();
-    }
+    protected override string Name(Item item) => item.name;
 
     protected override Item Random(IEnumerable<Item> items)
     {
-        throw new NotImplementedException();
+        return items.ElementAt(UnityEngine.Random.Range(0, items.Count()));
     }
 
     protected override void ReassignRandom(ref Item random, IEnumerable<Item> items)
     {
-        throw new NotImplementedException();
+        random = Random(items);
     }
 }

@@ -26,3 +26,5 @@ MonoBehaviour:
     _storyData: []
     _playerAbilities: 0
     _position: {x: 0, y: -25}
+    _questsCompleted:
+      _kvps: []
