@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6082478292286179298}
   - component: {fileID: 9065504349553735573}
   - component: {fileID: 6805463754785767425}
+  - component: {fileID: 4512091040718595387}
   m_Layer: 0
   m_Name: Fountain
   m_TagString: Untagged
@@ -157,3 +158,80 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4.719685, y: 2.4214842}
   m_EdgeRadius: 0
+--- !u!114 &4512091040718595387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4572549356778892854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb0b0a96d3c6cb40a1cd5366d76f420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactType: Dialogue
+  _onInteract:
+    _north:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -4844624837009626023, guid: d1fcf65c47c202e48b7e414d1ef9a87f, type: 3}
+          m_TargetAssemblyTypeName: SingletonBehaviours.DialogueController, Runtime
+          m_MethodName: StartDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: f42595dd223beb049965ff6fb7b74730, type: 2}
+            m_ObjectArgumentAssemblyTypeName: Types.Dialogue.DialogueAsset, Runtime
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _east:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -4844624837009626023, guid: d1fcf65c47c202e48b7e414d1ef9a87f, type: 3}
+          m_TargetAssemblyTypeName: SingletonBehaviours.DialogueController, Runtime
+          m_MethodName: StartDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: f42595dd223beb049965ff6fb7b74730, type: 2}
+            m_ObjectArgumentAssemblyTypeName: Types.Dialogue.DialogueAsset, Runtime
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _south:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -4844624837009626023, guid: d1fcf65c47c202e48b7e414d1ef9a87f, type: 3}
+          m_TargetAssemblyTypeName: SingletonBehaviours.DialogueController, Runtime
+          m_MethodName: StartDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: f42595dd223beb049965ff6fb7b74730, type: 2}
+            m_ObjectArgumentAssemblyTypeName: Types.Dialogue.DialogueAsset, Runtime
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _west:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -4844624837009626023, guid: d1fcf65c47c202e48b7e414d1ef9a87f, type: 3}
+          m_TargetAssemblyTypeName: SingletonBehaviours.DialogueController, Runtime
+          m_MethodName: StartDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: f42595dd223beb049965ff6fb7b74730, type: 2}
+            m_ObjectArgumentAssemblyTypeName: Types.Dialogue.DialogueAsset, Runtime
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _interactCount:
+    _nonNullValue: 0
+    _hasValue: 0

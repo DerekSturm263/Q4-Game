@@ -47,7 +47,8 @@ namespace SingletonBehaviours
                     inputEvent.enabled = false;
                 }
 
-                EventSystem.current.enabled = false;
+                if (EventSystem.current)
+                    EventSystem.current.enabled = false;
 
                 Instance.StartCoroutine(LoadWithTransition(settings));
             }

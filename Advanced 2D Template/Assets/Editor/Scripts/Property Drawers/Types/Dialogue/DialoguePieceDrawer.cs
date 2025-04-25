@@ -8,6 +8,7 @@ namespace Types.Dialogue
         public override string[][] GetPropertyNames() => new string[][]
         {
             new string[] { "_speaker" },
+            new string[] { "_side" },
             new string[] { "_text" },
             new string[] { "_onDialogue" },
             new string[] { "_onDialogueFinish" },

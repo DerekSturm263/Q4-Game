@@ -15,7 +15,10 @@ namespace Types.Miscellaneous
             new string[] { "_defense" },
             new string[] { "_storyData" },
             new string[] { "_playerAbilities" },
-            new string[] { "_position" }
+            new string[] { "_position" },
+            new string[] { "_questsCompleted" },
+            new string[] { "_time" },
+            new string[] { "_interactStates" }
         };
     }
 }

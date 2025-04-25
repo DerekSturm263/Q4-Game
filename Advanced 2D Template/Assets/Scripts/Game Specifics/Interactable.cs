@@ -1,8 +1,11 @@
+using SingletonBehaviours;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
 {
+    private Animator _anim;
+
     [SerializeField] private string _interactType;
     [SerializeField] private Types.Collections.Directional<UnityEvent<PlayerMovement>> _onInteract;
 
@@ -13,7 +16,27 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
 
     private void Awake()
     {
-        _interactsLeft = _interactCount.Value;
+        _anim = GetComponent<Animator>();
+
+        if (SaveDataController.Instance.CurrentData.InteractStates.TryGetValue(name, out var interactCount))
+        {
+            _interactsLeft = interactCount.Item2;
+            
+            if (_anim)
+                _anim.Play(interactCount.Item1, 0);
+        }
+        else
+        {
+            _interactsLeft = _interactCount.Value;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (!SaveDataController.Instance.CurrentData.InteractStates.ContainsKey(name))
+            SaveDataController.Instance.CurrentData.InteractStates.Add(name, default);
+
+        SaveDataController.Instance.CurrentData.InteractStates[name] = new(_anim ? _anim.GetCurrentAnimatorStateInfo(0).fullPathHash : 0, _interactsLeft);
     }
 
     public void Interact(Transform user, PlayerMovement player)

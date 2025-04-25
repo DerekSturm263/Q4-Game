@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _value:
     _dialogues:
-    - _speaker: Oogie
+    - _speaker: Fly
+      _side: 0
       _text: Test
       _onDialogue:
         m_PersistentCalls:
@@ -24,7 +25,8 @@ MonoBehaviour:
           m_Calls: []
       _responses:
         _kvps: []
-    - _speaker: Fly
+    - _speaker: Oogie
+      _side: 1
       _text: Test
       _onDialogue:
         m_PersistentCalls:

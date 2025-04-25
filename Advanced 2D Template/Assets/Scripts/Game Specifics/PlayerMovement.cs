@@ -28,6 +28,7 @@ public class PlayerMovement : EntityMovement
     public bool SetCanInteract(bool canInteract) => _canInteract = canInteract;
 
     [SerializeField] private AnimationCurve _jumpCurve;
+    [SerializeField] private AnimationCurve _shadowCurve;
     [SerializeField] private float _jumpLength;
     [SerializeField] private float _jumpMultiplier;
     private float _jumpTime;
@@ -52,7 +53,7 @@ public class PlayerMovement : EntityMovement
             float height = _jumpCurve.Evaluate(_jumpTime) * _jumpMultiplier;
 
             _playerVisual.localPosition = new(0, height);
-            _shadowVisual.localScale =  Vector2.one * (5 * _jumpCurve.Evaluate(_jumpTime));
+            _shadowVisual.localScale = Vector2.one * _shadowCurve.Evaluate(_jumpTime);
 
             _jumpTime += Time.deltaTime;
 

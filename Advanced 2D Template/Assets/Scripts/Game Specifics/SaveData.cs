@@ -50,7 +50,14 @@ namespace Types.Miscellaneous
         public readonly Vector2 Position => _position;
         public void SetPosition(Vector2 position) => _position = position;
 
-        [SerializeField] private Types.Collections.Dictionary<Quest, bool> _questsCompleted;
-        public readonly Types.Collections.Dictionary<Quest, bool> QuestsCompleted => _questsCompleted;
+        [SerializeField] private Collections.Dictionary<Quest, bool> _questsCompleted;
+        public readonly Collections.Dictionary<Quest, bool> QuestsCompleted => _questsCompleted;
+
+        [SerializeField] private float _time;
+        public readonly float Time => _time;
+        public void SetTime(float time) => _time = time;
+
+        [SerializeField] private Collections.Dictionary<string, Tuple<int, int>> _interactStates;
+        public readonly Collections.Dictionary<string, Tuple<int, int>> InteractStates => _interactStates;
     }
 }
