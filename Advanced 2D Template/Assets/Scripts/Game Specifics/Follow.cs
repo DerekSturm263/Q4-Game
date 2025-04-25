@@ -33,13 +33,13 @@ public class Follow : MonoBehaviour
         float y = Mathf.PerlinNoise1D(Time.time * _frequency.y) * _amplitude.y;
 
         Vector3 targetPos;
-        if (_target == _player)
+        if (Vector2.Distance(_player.transform.position, _target.transform.position) > _leadDistance)
         {
-            targetPos = _target.transform.position + new Vector3(x, y) + _offset;
+            targetPos = _player.transform.position + ((_target.transform.position - _player.transform.position).normalized * _leadDistance) + new Vector3(x, y) + _offset;
         }
         else
         {
-            targetPos = _player.transform.position + ((_target.transform.position - _player.transform.position).normalized * _leadDistance) + new Vector3(x, y) + _offset;
+            targetPos = _target.transform.position + new Vector3(x, y) + _offset;
         }
 
         transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * _lerpSpeed);

@@ -11,6 +11,8 @@ TagManager:
   - Color
   - Icon
   - Description
+  - Transition Canvas
+  - Main Canvas
   layers:
   - Default
   - TransparentFX

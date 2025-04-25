@@ -618,6 +618,7 @@ MonoBehaviour:
       _index: 0
   _castOffset: 0.75
   _playerVisual: {fileID: 6851854084714320101}
+  _shadowVisual: {fileID: 1492486792966986552}
   _ignoreGrounded:
     serializedVersion: 2
     m_Bits: 0

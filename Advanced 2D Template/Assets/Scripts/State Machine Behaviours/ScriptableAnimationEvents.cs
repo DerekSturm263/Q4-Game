@@ -28,5 +28,10 @@ namespace StateMachineBehaviours
         {
             Destroy(animator.gameObject);
         }
+
+        public void DisableSelf(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        {
+            animator.gameObject.SetActive(false);
+        }
     }
 }

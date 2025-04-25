@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3ae5fd1f4957f4981199bf6dc81b52, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 666c6f49553085d42b8bbe7a4cb67371, type: 3}
   _description: Call upon the power of water to spit bubbles at your enemies! This
     will also let you walk through water like it wasn't even there!
   _inputAction:

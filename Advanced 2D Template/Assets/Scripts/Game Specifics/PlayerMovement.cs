@@ -1,5 +1,6 @@
 using SingletonBehaviours;
 using Types.Casting;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class PlayerMovement : EntityMovement
     [SerializeField] private float _castOffset;
 
     [SerializeField] private Transform _playerVisual;
+    [SerializeField] private Transform _shadowVisual;
 
     [SerializeField] private LayerMask _ignoreGrounded;
     [SerializeField] private LayerMask _ignoreJump;
@@ -38,6 +40,7 @@ public class PlayerMovement : EntityMovement
         _canInteract = true;
 
         transform.position = SaveDataController.Instance.CurrentData.Position;
+        FindFirstObjectByType<CinemachineCamera>().transform.position = transform.position;
     }
 
     protected override void Update()
@@ -49,6 +52,7 @@ public class PlayerMovement : EntityMovement
             float height = _jumpCurve.Evaluate(_jumpTime) * _jumpMultiplier;
 
             _playerVisual.localPosition = new(0, height);
+            _shadowVisual.localScale =  Vector2.one * (5 * _jumpCurve.Evaluate(_jumpTime));
 
             _jumpTime += Time.deltaTime;
 
@@ -58,6 +62,7 @@ public class PlayerMovement : EntityMovement
         else
         {
             _playerVisual.localPosition = Vector3.zero;
+            _shadowVisual.localScale = Vector2.one * 5;
         }
 
         var hit = _interactCast.GetHitInfo(transform, InteractOffset);

@@ -16,15 +16,7 @@ MonoBehaviour:
     _scene:
       _asset: {fileID: 102900000, guid: 36ab024d97118ac41809715ef154fedb, type: 3}
       _name: Title
-    _transition: {fileID: 0}
+    _transition: {fileID: 22100000, guid: 78be2c695df4a6e40afdc20116642943, type: 2}
     _loadParameters:
       m_LoadSceneMode: 0
       m_LocalPhysicsMode: 0
-    _sceneParameters:
-      _nonNullValue:
-        _values:
-          _kvps: []
-      _hasValue: 1
-  references:
-    version: 2
-    RefIds: []

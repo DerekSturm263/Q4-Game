@@ -11,7 +11,7 @@ namespace SingletonBehaviours
 
         public void StartDialogue(DialogueAsset dialogue)
         {
-            Canvas canvas = FindFirstObjectByType<Canvas>();
+            Canvas canvas = GameObject.FindGameObjectWithTag("Main Canvas").GetComponent<Canvas>();
 
             var instance = Instantiate(_prefab, canvas.transform);
             instance.Setup(dialogue.Value);

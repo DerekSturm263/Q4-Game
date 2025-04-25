@@ -10,21 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4eea020fd47f89a4c9497adb132bb360, type: 3}
-  m_Name: Load Main Menu
+  m_Name: Load Overworld From Title
   m_EditorClassIdentifier: 
   _value:
     _scene:
-      _asset: {fileID: 102900000, guid: 8bde11b2463e32443879c2b584af180b, type: 3}
-      _name: Main Menu
-    _transition: {fileID: 0}
+      _asset: {fileID: 102900000, guid: 9a54982b0709e8e43b77f5ef70aa57c2, type: 3}
+      _name: Overworld
+    _transition: {fileID: 22100000, guid: 78be2c695df4a6e40afdc20116642943, type: 2}
     _loadParameters:
       m_LoadSceneMode: 0
       m_LocalPhysicsMode: 0
-    _sceneParameters:
-      _nonNullValue:
-        _values:
-          _kvps: []
-      _hasValue: 1
-  references:
-    version: 2
-    RefIds: []

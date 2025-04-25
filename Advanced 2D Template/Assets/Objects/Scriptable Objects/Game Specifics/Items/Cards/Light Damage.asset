@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d635a9f6d434c4da74279988f035fa, type: 3}
   m_Name: Light Damage
   m_EditorClassIdentifier: 
+  _icon: {fileID: 21300000, guid: b2d95cc5cb138084dadbfcd0d0bee2f9, type: 3}
   _description: 
-  _texture: {fileID: 21300000, guid: b2d95cc5cb138084dadbfcd0d0bee2f9, type: 3}
   _effect:
     m_PersistentCalls:
       m_Calls:
@@ -37,6 +37,7 @@ MonoBehaviour:
         _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
         _cSharpObjValue:
           rid: 8657840987909390486
+        _cSharpStringValue: 0.0
         _unityObjValue: {fileID: 0}
   references:
     version: 2

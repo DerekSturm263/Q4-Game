@@ -18,7 +18,7 @@ namespace SingletonBehaviours
 
         private AnyGroup _sceneParameters;
 
-        public void SetSceneParameters(AnyGroupAsset any) => SetSceneParameters(any.Value);
+        public void SetSceneParameters(AnyGroupAsset any) => Instance.SetSceneParameters(any.Value);
 
         public void SetSceneParameters(AnyGroup any)
         {
@@ -27,13 +27,13 @@ namespace SingletonBehaviours
 
         public T GetSceneParameter<T>(string key)
         {
-            if (_sceneParameters.TryGet<T>(key, out T value))
+            if (_sceneParameters.TryGet(key, out T value))
                 return value;
 
             return default;
         }
 
-        public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Load(settings.Value);
+        public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Instance.Load(settings.Value);
 
         public void Load(Types.Scene.SceneLoadSettings settings)
         {
@@ -49,7 +49,7 @@ namespace SingletonBehaviours
 
                 EventSystem.current.enabled = false;
 
-                StartCoroutine(LoadWithTransition(settings));
+                Instance.StartCoroutine(LoadWithTransition(settings));
             }
             else
             {

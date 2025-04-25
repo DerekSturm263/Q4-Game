@@ -56,3 +56,4 @@ MonoBehaviour:
   - {fileID: 8510410816549264670, guid: e6023dca72443f84aa8be2d39873fe44, type: 3}
   - {fileID: -4557117304786313034, guid: 098ce658a27b41840a23d6685fa3d8cd, type: 3}
   - {fileID: -2698442599940413519, guid: 821e49a3cb0528546a6dfd1863830b9c, type: 3}
+  _transitionCanvas: {fileID: 8275472181386434739, guid: 28a35582efd2bc34ebabd8870be8928d, type: 3}
