@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4757955927755437588}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1492486792966986552}
   - component: {fileID: 6936858844851826758}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,6 +688,39 @@ MonoBehaviour:
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.13540506
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _shadowCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 5
+      inSlope: -9.559712
+      outSlope: -9.559712
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.09333334
+    - serializedVersion: 3
+      time: 0.375
+      value: 3.5
+      inSlope: 0.0055165095
+      outSlope: 0.0055165095
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.89666665
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.75
+      value: 5
+      inSlope: 10.502226
+      outSlope: 10.502226
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.093333244
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

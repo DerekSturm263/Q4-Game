@@ -31,8 +31,6 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     {
         BattleSetup setup = new(new List<Stats>() { new() }, SceneController.Instance.GetSceneParameter<List<EntityStats>>("Stats"));
 
-        PopulateCards();
-        PopulateMasks();
         StartBattle(setup);
     }
 
@@ -92,23 +90,5 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         var targetAsEntity = target.Item2.Invoke();
 
         targetAsEntity.ReceiveAttack(entity.Attack(attackAsCard, targetAsEntity));
-    }
-
-    public void PopulateCards()
-    {
-        foreach (var card in SaveDataController.Instance.CurrentData.Items.Where(item => item is Card))
-        {
-            var cardGO = Instantiate(_cardTemplate, _cards.transform);
-            cardGO.onClick.AddListener(() => BattlePlayer.SelectCard(card as Card));
-        }
-    }
-
-    public void PopulateMasks()
-    {
-        foreach (var mask in SaveDataController.Instance.CurrentData.Items.Where(item => item is Mask))
-        {
-            var maskGO = Instantiate(_maskTemplate, _masks.transform);
-            //maskGO.onClick.AddListener(() => PlayerBattleEntity.SelectCard(card as Mask));
-        }
     }
 }

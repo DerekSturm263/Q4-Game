@@ -13,7 +13,6 @@ public interface IBattleEntity
     public string GetName();
 
     public Type GetEntityType();
-    public List<Card> GetCards();
 
     public void InitAttack(IEnumerable<Card> options);
     public (CustomYieldInstruction, Func<Card>) ChooseAttack(IEnumerable<Card> options);
@@ -21,7 +20,7 @@ public interface IBattleEntity
     public void InitTarget(IEnumerable<IBattleEntity> options);
     public (CustomYieldInstruction, Func<IBattleEntity>) ChooseTarget(IEnumerable<IBattleEntity> options);
 
-    public AttackInfo Attack(Card attack, IBattleEntity target);
+    public AttackInfo Attack(IBattleEntity target);
     public void ReceiveAttack(AttackInfo results);
 
     public ref Stats GetStats();
