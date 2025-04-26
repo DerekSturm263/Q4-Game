@@ -13,6 +13,7 @@ TagManager:
   - Description
   - Transition Canvas
   - Main Canvas
+  - Popup Canvas
   layers:
   - Default
   - TransparentFX

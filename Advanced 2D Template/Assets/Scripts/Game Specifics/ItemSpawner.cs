@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    [SerializeField] private List<Item> _items;
+    [SerializeField] private List<Asset> _items;
     [SerializeField] private Range<int> _multiplier;
 
     [SerializeField] private Range<float> _width;

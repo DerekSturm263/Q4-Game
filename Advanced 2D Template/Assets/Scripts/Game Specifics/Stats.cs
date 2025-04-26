@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 [Serializable]
 public struct Stats
@@ -8,15 +7,21 @@ public struct Stats
     [SerializeField] private string _name;
     public readonly string Name => _name;
 
-    [SerializeField] private float _health;
-    public readonly float Health => _health;
-    public readonly bool IsAlive => _health > 0;
+    [SerializeField] private float _currentHealth;
+    public readonly float CurrentHealth => _currentHealth;
+    public readonly bool IsAlive => _currentHealth > 0;
 
-    public AttackInfo.HealthChangeResult ModifyHealth(float delta)
+    [SerializeField] private float _maxHealth;
+    public readonly float MaxHealth => _maxHealth;
+
+    public ActionInfo.HealthChangeResult ModifyHealth(float delta)
     {
-        _health += delta;
+        _currentHealth += delta;
 
-        return _health <= 0 ? AttackInfo.HealthChangeResult.Dead : AttackInfo.HealthChangeResult.None;
+        if (_currentHealth > _maxHealth)
+            _currentHealth = _maxHealth;
+
+        return _currentHealth <= 0 ? ActionInfo.HealthChangeResult.Dead : ActionInfo.HealthChangeResult.None;
     }
 
     [SerializeField] private float _attack;
@@ -24,7 +29,4 @@ public struct Stats
 
     [SerializeField] private float _defense;
     public readonly float Defense => _defense;
-
-    [SerializeField] private List<Card> _cards;
-    public readonly List<Card> Cards => _cards;
 }

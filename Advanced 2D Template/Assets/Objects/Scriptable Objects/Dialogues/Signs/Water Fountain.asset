@@ -39,4 +39,4 @@ MonoBehaviour:
     _onDialogueEnd:
       m_PersistentCalls:
         m_Calls: []
-    _ignoreEffects: 1
+    _ignoreEffects: 0

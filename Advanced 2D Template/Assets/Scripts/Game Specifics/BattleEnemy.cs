@@ -1,27 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BattleEnemy : BattleEntity
 {
-    public override void InitAttack(IEnumerable<Card> options)
+    public override void InitAction(BattleController ctx)
     {
 
     }
 
-    public override (CustomYieldInstruction, Func<Card>) ChooseAttack(IEnumerable<Card> options)
+    public override (CustomYieldInstruction, ActionInfo) ChooseAction(BattleController ctx)
     {
-        return (new WaitUntil(() => true), () => options.ElementAt(UnityEngine.Random.Range(0, options.Count())));
+        return (new WaitUntil(() => true), default);
     }
 
-    public override void InitTarget(IEnumerable<IBattleEntity> options)
+    public override void OnSubmit(BaseEventData eventData)
     {
 
-    }
-
-    public override (CustomYieldInstruction, Func<IBattleEntity>) ChooseTarget(IEnumerable<IBattleEntity> options)
-    {
-        return (new WaitUntil(() => true), () => options.ElementAt(UnityEngine.Random.Range(0, options.Count())));
     }
 }

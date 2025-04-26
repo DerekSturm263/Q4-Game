@@ -200,6 +200,7 @@ namespace Extensions
             image.Apply();
 
             RenderTexture.active = currentRT;
+            camera.targetTexture = null;
 
             return image;
         }
@@ -207,6 +208,7 @@ namespace Extensions
         public static void RenderToScreenshot(this Camera camera, string filePath, RenderTexture output, ImageType type, TextureFormat textureFormat, bool linear, bool flipX = false, Shader shader = null, string replacementTag = "")
         {
             Texture2D texture = RenderToTexture2D(camera, output, textureFormat, linear, flipX, shader, replacementTag);
+
             byte[] renderBytes = type switch
             {
                 ImageType.PNG => texture.EncodeToPNG(),

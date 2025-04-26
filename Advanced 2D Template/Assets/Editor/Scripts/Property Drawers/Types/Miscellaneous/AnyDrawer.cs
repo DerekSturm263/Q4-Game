@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,47 +10,35 @@ namespace Types.Miscellaneous
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            EditorGUI.PrefixLabel(position, label, EditorStyles.boldLabel);
-
-            SerializedProperty typeName = property.FindPropertyRelative("_typeName");
-            if (string.IsNullOrEmpty(typeName.stringValue))
-                typeName.stringValue = typeof(int).AssemblyQualifiedName;
-
-            System.Type type = System.Type.GetType(typeName.stringValue);
-
-            List<System.Type> typeList = Helpers.TypeEditors.TypeDictionary.Select(item => item.Key).ToList();
-            int typeIndex = typeList.IndexOf(type);
-
-            Rect typePosition = new(position.x + 200, position.y, position.width - 200, EditorGUIUtility.singleLineHeight);
-            int selectedType = EditorGUI.Popup(typePosition, "", typeIndex, typeList.Select(item => item.Name).ToArray());
-
-            if (selectedType != typeIndex)
-            {
-                typeName.stringValue = typeList[selectedType].AssemblyQualifiedName;
-                type = System.Type.GetType(typeName.stringValue);
-            }
+            SerializedProperty typeProp = property.FindPropertyRelative("_type");
+            EditorGUI.PropertyField(position, typeProp);
 
             Rect valuePosition = new(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.PrefixLabel(valuePosition, new("Value"));
 
+            System.Type type = System.Type.GetType(typeProp.FindPropertyRelative("_typeName").stringValue);
+
             if (Helpers.TypeEditors.TypeDictionary.TryGetValue(type, out System.Func<Rect, SerializedProperty, object> action))
             {
-                SerializedProperty propertyType = property.FindPropertyRelative("_type");
+                SerializedProperty propertyType = property.FindPropertyRelative("_propertyType");
                 SerializedProperty value;
 
-                if ((Any.PropertyType)propertyType.enumValueIndex == Any.PropertyType.CSharpObject)
+                bool isUnityObject = type.IsSubclassOf(typeof(Object));
+                propertyType.enumValueIndex = (int)(isUnityObject ? Any.PropertyType.UnityObject : Any.PropertyType.CSharpObject);
+
+                if (isUnityObject)
+                {
+                    value = property.FindPropertyRelative("_serializableValue").FindPropertyRelative("_item2");
+
+                    try { action(valuePosition, value); }
+                    catch { value.objectReferenceValue = Any.GetDefault(type) as Object; }
+                }
+                else
                 {
                     value = property.FindPropertyRelative("_cSharpObjValue");
 
                     try { value.boxedValue = action(valuePosition, value); }
                     catch { value.boxedValue = Any.GetDefault(type); }
-                }
-                else
-                {
-                    value = property.FindPropertyRelative("_unityObjValue");
-
-                    try { action(valuePosition, value); }
-                    catch { value.objectReferenceValue = Any.GetDefault(type) as Object; }
                 }
             }
 

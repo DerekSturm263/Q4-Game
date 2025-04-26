@@ -9,9 +9,11 @@ namespace Types.Miscellaneous
     {
         [SerializeField] private T1 _item1;
         public readonly T1 Item1 => _item1;
+        public void SetItem1(T1 item) => _item1 = item;
 
         [SerializeField] private T2 _item2;
         public readonly T2 Item2 => _item2;
+        public void SetItem2(T2 item) => _item2 = item;
 
         public Tuple(T1 item1, T2 item2)
         {

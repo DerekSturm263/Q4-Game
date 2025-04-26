@@ -35,37 +35,49 @@ MonoBehaviour:
       _kvps:
       - _item1: Prefab
         _item2:
-          _type: 1
-          _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          _type:
+            _typeName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _isArray: 0
+          _propertyType: 1
+          _serializableValue:
+            _item1: 0
+            _item2: {fileID: 640252394121238035, guid: 94d85d1f41f6bc843bc01ce6af611382, type: 3}
           _cSharpObjValue:
-            rid: -2
-          _cSharpStringValue: null
-          _unityObjValue: {fileID: 640252394121238035, guid: 94d85d1f41f6bc843bc01ce6af611382, type: 3}
+            rid: 4368899053246219247
       - _item1: Speed
         _item2:
-          _type: 0
-          _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          _type:
+            _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+              PublicKeyToken=b77a5c561934e089
+            _isArray: 0
+          _propertyType: 0
+          _serializableValue:
+            _item1: 0.0
+            _item2: {fileID: 0}
           _cSharpObjValue:
-            rid: 5333656849872585049
-          _cSharpStringValue: 0.0
-          _unityObjValue: {fileID: 0}
+            rid: 4368899053842072340
       - _item1: Offset
         _item2:
-          _type: 0
-          _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+          _type:
+            _typeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+              PublicKeyToken=b77a5c561934e089
+            _isArray: 0
+          _propertyType: 0
+          _serializableValue:
+            _item1: 0.0
+            _item2: {fileID: 0}
           _cSharpObjValue:
-            rid: 5333656849872585050
-          _cSharpStringValue: 0.0
-          _unityObjValue: {fileID: 0}
+            rid: 4368899053842072341
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 5333656849872585049
+    - rid: 4368899053246219247
+      type: {class: Int32, ns: System, asm: mscorlib}
+      data: 
+    - rid: 4368899053842072340
       type: {class: Single, ns: System, asm: mscorlib}
       data: 
-    - rid: 5333656849872585050
+    - rid: 4368899053842072341
       type: {class: Single, ns: System, asm: mscorlib}
       data: 

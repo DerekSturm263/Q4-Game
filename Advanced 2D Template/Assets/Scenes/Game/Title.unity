@@ -480,7 +480,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.25098044, g: 0.3759985, b: 0.53333336, a: 0}
+  m_BackGroundColor: {r: 0.25148448, g: 0.32152224, b: 0.5396226, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -842,6 +842,7 @@ GameObject:
   - component: {fileID: 1527672566}
   - component: {fileID: 1527672565}
   - component: {fileID: 1527672569}
+  - component: {fileID: 1527672570}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Main Canvas
@@ -957,6 +958,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1527672570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527672564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1828ac118e4935d4894a4f568028a93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onAwake:
+    m_PersistentCalls:
+      m_Calls: []
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8920474452100919199, guid: 2dcf5f218060e6c4bb0ae70c7fb080a4, type: 3}
+        m_TargetAssemblyTypeName: SingletonBehaviours.SaveDataController, GameSpecific
+        m_MethodName: EnableOnSaveData
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1791952679}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onFixedUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDestroy:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1696864754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,7 +1166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1791952680
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2124,13 +2170,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -4741417194260610726, guid: faaef5956c0f71c4989e1a94f17a4856, type: 3}
-        m_TargetAssemblyTypeName: SingletonBehaviours.SceneController, Runtime
-        m_MethodName: Load
+      - m_Target: {fileID: -8152690908959535827, guid: 1c99928dad86dfc48bed78734c79e110, type: 3}
+        m_TargetAssemblyTypeName: SingletonBehaviours.SpawnableController`1[[Types.Multiplayer.PopupAsset,
+          Runtime
+        m_MethodName: Spawn
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: c55e60fa7b4911a46b900e1d1799d53c, type: 2}
-          m_ObjectArgumentAssemblyTypeName: Types.Scene.SceneLoadSettingsAsset, Runtime
+          m_ObjectArgument: {fileID: 11400000, guid: 30a65acd6b66ef849a1ca2eebb2d6981, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Types.Multiplayer.PopupAsset, Runtime
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

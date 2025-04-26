@@ -1,3 +1,4 @@
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 namespace Types.Miscellaneous
 {
     [Serializable]
-    public struct SaveData
+    public struct SaveData : ISerializable
     {
         [Flags]
         public enum Abilities
@@ -17,28 +18,15 @@ namespace Types.Miscellaneous
             Jump = 1 << 4
         }
 
-        [SerializeField] private List<Item> _items;
-        public readonly List<Item> Items => _items;
+        [SerializeField] private List<Stats> _stats;
+        public readonly List<Stats> Stats => _stats;
+
+        [SerializeField] private List<Asset> _items;
+        public readonly List<Asset> Items => _items;
 
         [SerializeField] private Mask _mask;
         public readonly Mask Mask => _mask;
         public void SetMask(Mask mask) => _mask = mask;
-
-        [SerializeField] private float _currentHealth;
-        public readonly float CurrentHealth => _currentHealth;
-        public void SetCurrentHealth(float currentHealth) => _currentHealth = currentHealth;
-
-        [SerializeField] private float _maxHealth;
-        public readonly float MaxHealth => _maxHealth;
-        public void SetMaxHealth(float maxHealth) => _maxHealth = maxHealth;
-
-        [SerializeField] private float _attack;
-        public readonly float Attack => _attack;
-        public void SetAttack(float attack) => _attack = attack;
-        
-        [SerializeField] private float _defense;
-        public readonly float Defense => _defense;
-        public void SetDefense(float defense) => _defense = defense;
 
         [SerializeField] private List<string> _storyData;
         public readonly List<string> StoryData => _storyData;
@@ -59,5 +47,7 @@ namespace Types.Miscellaneous
 
         [SerializeField] private Collections.Dictionary<string, Tuple<int, int>> _interactStates;
         public readonly Collections.Dictionary<string, Tuple<int, int>> InteractStates => _interactStates;
+
+        public readonly string GetFilePath() => $"{Application.persistentDataPath}/SaveData";
     }
 }

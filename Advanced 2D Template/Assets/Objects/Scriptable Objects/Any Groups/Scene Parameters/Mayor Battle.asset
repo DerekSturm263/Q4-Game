@@ -15,15 +15,18 @@ MonoBehaviour:
   _value:
     _values:
       _kvps:
-      - _item1: 
+      - _item1: Enemy Stats
         _item2:
-          _type: 1
-          _typeName: UnityEngine.ScriptableObject, UnityEngine.CoreModule, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          _type:
+            _typeName: UnityEngine.ScriptableObject, UnityEngine.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _isArray: 1
+          _propertyType: 1
+          _serializableValue:
+            _item1: null
+            _item2: {fileID: 0}
           _cSharpObjValue:
             rid: -2
-          _cSharpStringValue: null
-          _unityObjValue: {fileID: 11400000, guid: 2095de231ce909a418f0794b6f76ad42, type: 2}
   references:
     version: 2
     RefIds:

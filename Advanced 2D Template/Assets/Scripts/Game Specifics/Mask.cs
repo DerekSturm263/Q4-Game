@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Mask", menuName = "Game/Mask")]
-public class Mask : Item
+public class Mask : Asset
 {
     [SerializeField] private UnityEvent<PlayerMovement> _inputAction;
     public void InvokeAction(PlayerMovement action) => _inputAction?.Invoke(action);

@@ -5,6 +5,8 @@ using UnityEngine;
 public class ControllerManager : MonoBehaviour
 {
     [SerializeField] private List<Types.SingletonBehaviourBase> _controllers;
+
+    [SerializeField] private GameObject _popupCanvas;
     [SerializeField] private GameObject _transitionCanvas;
 
     private static bool _isActive;
@@ -22,9 +24,11 @@ public class ControllerManager : MonoBehaviour
         }
 
         _controllers.Select(item => Instantiate(item, transform)).ToList();
+        var popupCanvas = Instantiate(_popupCanvas);
         var transitionCanvas = Instantiate(_transitionCanvas);
 
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(popupCanvas);
         DontDestroyOnLoad(transitionCanvas);
     }
 }

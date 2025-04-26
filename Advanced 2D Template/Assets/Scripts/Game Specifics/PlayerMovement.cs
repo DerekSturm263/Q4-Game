@@ -93,6 +93,8 @@ public class PlayerMovement : EntityMovement
             }
         }
 
+        SaveDataController.Instance.CurrentData.SetPosition(transform.position);
+
         base.Update();
     }
 
@@ -162,11 +164,6 @@ public class PlayerMovement : EntityMovement
         
         player._canInteract = isEnabled;
         player.GetComponent<PlayerInput>().enabled = isEnabled;
-    }
-
-    private void OnDisable()
-    {
-        SaveDataController.Instance.CurrentData.SetPosition(transform.position);
     }
 
     private void OnDrawGizmos()

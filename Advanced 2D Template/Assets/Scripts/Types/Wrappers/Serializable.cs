@@ -14,8 +14,6 @@ namespace Types.Wrappers
         [SerializeField] private T _value;
         public readonly T Value => _value;
 
-        [SerializeField] private string _directory;
-
         [SerializeField] private string _name;
         public readonly string Name => _name;
         public void SetName(string name) => _name = name;
@@ -33,6 +31,7 @@ namespace Types.Wrappers
 
         [SerializeField] private string _id;
         public readonly string ID => _id;
+        public void SetID(Guid id) => _id = id.ToString();
 
         [SerializeField] private bool _madeByPlayer;
         public readonly bool MadeByPlayer => _madeByPlayer;
@@ -49,7 +48,7 @@ namespace Types.Wrappers
                     return _iconOverride;
 
                 if (!_icon)
-                    _icon = Helpers.UnityHelper.SpriteFromScreenshot($"{_directory}/{ID}_ICON.png", IconDimensions.x, IconDimensions.y, TextureFormat.RGBA32, true, null);
+                    _icon = Helpers.UnityHelper.SpriteFromScreenshot($"{default(T).GetFilePath()}/{ID}_ICON.png", IconDimensions.x, IconDimensions.y, TextureFormat.RGBA32, true, null);
                 else
                     Debug.Log("Icon already exists!");
 
@@ -68,7 +67,7 @@ namespace Types.Wrappers
                     return _previewOverride;
 
                 if (!_preview)
-                    _preview = Helpers.UnityHelper.SpriteFromScreenshot($"{_directory}/{ID}_PREVIEW.png", PreviewDimensions.x, PreviewDimensions.y, TextureFormat.RGBA32, true, null);
+                    _preview = Helpers.UnityHelper.SpriteFromScreenshot($"{default(T).GetFilePath()}/{ID}_PREVIEW.png", PreviewDimensions.x, PreviewDimensions.y, TextureFormat.RGBA32, true, null);
                 else
                     Debug.Log("Preview already exists!");
 
@@ -84,10 +83,9 @@ namespace Types.Wrappers
 
         public readonly bool IsValid => _id != string.Empty;
 
-        public Serializable(T value, string directory, string name, string description, string[] filterTags, Miscellaneous.Tuple<string, string>[] groupTags)
+        public Serializable(T value, string name, string description, string[] filterTags, Miscellaneous.Tuple<string, string>[] groupTags)
         {
             _value = value;
-            _directory = directory;
             _name = name;
             _description = description;
             _creationDate = DateTime.Now.Ticks;
@@ -104,28 +102,28 @@ namespace Types.Wrappers
 
         public readonly void CreateIcon(UnityEngine.Camera camera, Shader shader = null, RenderTexture output = null, bool flipX = false)
         {
-            camera.RenderToScreenshot($"{_directory}/{ID}_ICON.png", output ?? Helpers.SerializableWrapperHelper.IconRT, UnityExtensionMethods.ImageType.PNG, TextureFormat.RGBA32, true, flipX, shader);
+            camera.RenderToScreenshot($"{default(T).GetFilePath()}/{ID}_ICON.png", output ?? Helpers.SerializableWrapperHelper.IconRT, UnityExtensionMethods.ImageType.PNG, TextureFormat.RGBA32, true, flipX, shader);
         }
 
         public readonly void CreatePreview(UnityEngine.Camera camera, Shader shader = null, RenderTexture output = null)
         {
-            camera.RenderToScreenshot($"{_directory}/{ID}_PREVIEW.png", output ?? Helpers.SerializableWrapperHelper.PreviewRT, UnityExtensionMethods.ImageType.PNG, TextureFormat.RGBA32, true, false, shader);
+            camera.RenderToScreenshot($"{default(T).GetFilePath()}/{ID}_PREVIEW.png", output ?? Helpers.SerializableWrapperHelper.PreviewRT, UnityExtensionMethods.ImageType.PNG, TextureFormat.RGBA32, true, false, shader);
         }
 
         public readonly void Save()
         {
-            Helpers.SerializationHelper.Save(this, _id.ToString(), _directory);
+            Helpers.SerializationHelper.Save(this, default(T).GetFilePath(), $"{_id}.json");
         }
 
         public readonly void Delete()
         {
-            Helpers.SerializationHelper.Delete($"{_directory}/{_id}.json", _directory);
+            Helpers.SerializationHelper.Delete($"{default(T).GetFilePath()}/{_id}.json", default(T).GetFilePath());
 
-            if (File.Exists($"{_directory}/{_id}_ICON.png"))
-                File.Delete($"{_directory}/{_id}_ICON.png");
+            if (File.Exists($"{default(T).GetFilePath()}/{_id}_ICON.png"))
+                File.Delete($"{default(T).GetFilePath()}/{_id}_ICON.png");
 
-            if (File.Exists($"{_directory}/{_id}_PREVIEW.png"))
-                File.Delete($"{_directory}/{_id}_PREVIEW.png");
+            if (File.Exists($"{default(T).GetFilePath()}/{_id}_PREVIEW.png"))
+                File.Delete($"{default(T).GetFilePath()}/{_id}_PREVIEW.png");
         }
 
         public static implicit operator T(Serializable<T> lhs)
@@ -135,10 +133,10 @@ namespace Types.Wrappers
 
         public override readonly bool Equals(object obj)
         {
-            if (obj is not Serializable<T>)
+            if (obj is null || obj is not Serializable<T>)
                 return false;
 
-            return ((Serializable<T>)obj)._id.Equals(_id);
+            return Equals(((Serializable<T>)obj)._id, _id);
         }
 
         public override readonly int GetHashCode()

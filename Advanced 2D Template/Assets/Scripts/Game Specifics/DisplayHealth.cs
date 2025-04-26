@@ -1,16 +1,12 @@
 using SingletonBehaviours;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
-public class DisplayHealth : MonoBehaviour
+public class DisplayHealth : MonoBehaviours.UI.Display<float, UnityEvent<float>>
 {
-    [SerializeField] private Image _fill;
+    [SerializeField] private int _index;
 
-    private void Awake()
-    {
-        if (SaveDataController.Instance)
-        {
-            _fill.fillAmount = SaveDataController.Instance.CurrentData.CurrentHealth / SaveDataController.Instance.CurrentData.MaxHealth;
-        }
-    }
+    public override void UpdateDisplay(float item) => _component.Invoke(item);
+
+    protected override float GetValue() => SaveDataController.Instance.CurrentData.Stats[_index].CurrentHealth / SaveDataController.Instance.CurrentData.Stats[_index].MaxHealth;
 }

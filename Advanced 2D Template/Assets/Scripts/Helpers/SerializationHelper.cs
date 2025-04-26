@@ -22,8 +22,8 @@ namespace Helpers
 
             CreateDirectory(directory);
 
-            FileMode writeMode = File.Exists(directory + "/" + fileName) ? FileMode.Truncate : FileMode.Create;
-            using FileStream stream = new(directory + "/" + fileName, writeMode);
+            FileMode writeMode = File.Exists(Path.Combine(directory, fileName)) ? FileMode.Truncate : FileMode.Create;
+            using FileStream stream = new(Path.Combine(directory, fileName), writeMode);
 
             using Aes aes = Aes.Create();
             aes.Key = Key;
@@ -45,9 +45,9 @@ namespace Helpers
         {
             CreateDirectory(directory);
 
-            if (File.Exists(directory + "/" + fileName))
+            if (File.Exists(Path.Combine(directory, fileName)))
             {
-                using FileStream stream = new(directory + "/" + fileName, FileMode.Open);
+                using FileStream stream = new(Path.Combine(directory, fileName), FileMode.Open);
 
                 using Aes aes = Aes.Create();
 
@@ -85,9 +85,9 @@ namespace Helpers
         {
             CreateDirectory(directory);
 
-            if (File.Exists(directory + "/" + fileName))
+            if (File.Exists(Path.Combine(directory, fileName)))
             {
-                File.Delete(directory + "/" + fileName);
+                File.Delete(Path.Combine(directory, fileName));
                 Debug.Log("Item was successfully deleted");
             }
             else
@@ -102,11 +102,14 @@ namespace Helpers
         public static IEnumerable<T> LoadAllFromDirectory<T>(string directory) where T : struct
         {
             CreateDirectory(directory);
-            return Directory.EnumerateFiles(directory, "*.json").Select(filePath => Load<T>(default, filePath, directory));
+            return Directory.EnumerateFiles(directory, "*.json").Select(filePath => Load<T>(default, "", filePath));
         }
 
         public static void CreateDirectory(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }

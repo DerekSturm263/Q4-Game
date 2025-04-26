@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemInstance : MonoBehaviour
 {
-    [SerializeField] private Item _item;
+    [SerializeField] private Asset _item;
     [SerializeField] private ParticleSystem _collectEffect;
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -15,7 +15,7 @@ public class ItemInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public static ItemInstance SpawnFromItem(ItemInstance prefab, Item item, Vector3 position, Quaternion rotation)
+    public static ItemInstance SpawnFromItem(ItemInstance prefab, Asset item, Vector3 position, Quaternion rotation)
     {
         var instance = Instantiate(prefab);
 

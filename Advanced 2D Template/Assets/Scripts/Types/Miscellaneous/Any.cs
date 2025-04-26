@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 
 namespace Types.Miscellaneous
 {
+    using TupleType = Tuple<string, UnityEngine.Object>;
+    
     [Serializable]
     public struct Any : ISerializationCallbackReceiver
     {
@@ -14,50 +16,39 @@ namespace Types.Miscellaneous
             UnityObject
         }
 
-        [SerializeField] private PropertyType _type;
+        [SerializeField] private Type _type;
 
-        [SerializeField] private string _typeName;
-        public readonly Type Type => Type.GetType(_typeName);
+        [SerializeField] private PropertyType _propertyType;
+        [SerializeField] private TupleType _serializableValue;
 
         [SerializeReference] private object _cSharpObjValue;
-        [SerializeField] private string _cSharpStringValue;
 
-        [SerializeField] private UnityEngine.Object _unityObjValue;
-
-        private Any(Type type, object value)
+        private Any(System.Type type, object value)
         {
-            _typeName = type.AssemblyQualifiedName;
+            _type = new(type);
 
             if (type.IsSubclassOf(typeof(UnityEngine.Object)))
-                _type = PropertyType.UnityObject;
+                _propertyType = PropertyType.UnityObject;
             else
-                _type = PropertyType.CSharpObject;
+                _propertyType = PropertyType.CSharpObject;
 
-            if (_type == PropertyType.UnityObject)
+            (_serializableValue, _cSharpObjValue) = _propertyType switch
             {
-                _unityObjValue = (UnityEngine.Object)value;
-
-                _cSharpObjValue = null;
-                _cSharpStringValue = "";
-            }
-            else
-            {
-                _unityObjValue = null;
-                
-                _cSharpObjValue = value;
-                _cSharpStringValue = JsonConvert.SerializeObject(value);
-            }
+                PropertyType.UnityObject => (new TupleType("", (UnityEngine.Object)value), null),
+                PropertyType.CSharpObject => (new TupleType(JsonConvert.SerializeObject(value), null), value),
+                _ => default
+            };
         }
 
         public readonly T Get<T>()
         {
-            if (_type == PropertyType.UnityObject)
+            if (_propertyType == PropertyType.UnityObject)
                 return (T)(object)GetUnityObjValue();
             else
-                return GetObjValue<T>();
+                return GetCSharpObjValue<T>();
         }
 
-        private readonly T GetObjValue<T>()
+        private readonly T GetCSharpObjValue<T>()
         {
             try
             {
@@ -73,35 +64,35 @@ namespace Types.Miscellaneous
         }
         private readonly UnityEngine.Object GetUnityObjValue()
         {
-            if (_unityObjValue != null)
-                return _unityObjValue;
+            if (_serializableValue.Item2 != null)
+                return _serializableValue.Item2;
             else
                 return default;
         }
 
         public void Set<T>(T value)
         {
-            if (typeof(T) != Type)
+            if (typeof(T) != _type.Value)
                 throw new ArgumentException($"Given argument \"{typeof(T).Name}\" did not match the current type of the Any.");
 
-            if (_type == PropertyType.UnityObject)
+            if (_propertyType == PropertyType.UnityObject)
             {
                 SetUnityObjValue((UnityEngine.Object)(object)value);
                 _cSharpObjValue = null;
             }
             else
             {
-                SetObjValue(value);
-                _unityObjValue = null;
+                SetCSharpObjValue(value);
+                _serializableValue.SetItem2(null);
             }
         }
 
-        private void SetObjValue<T>(T value) => _cSharpObjValue = value;
-        private void SetUnityObjValue(UnityEngine.Object value) => _unityObjValue = value;
+        private void SetCSharpObjValue<T>(T value) => _cSharpObjValue = value;
+        private void SetUnityObjValue(UnityEngine.Object value) => _serializableValue.SetItem2(value);
 
-        public static object GetDefault(Type type)
+        public static object GetDefault(System.Type type)
         {
-            Type thisType = typeof(Any);
+            System.Type thisType = typeof(Any);
             MethodInfo method = thisType.GetMethod("GetDefaultGeneric", BindingFlags.NonPublic | BindingFlags.Static);
             method = method.MakeGenericMethod(type);
             object val = method.Invoke(null, null);
@@ -117,13 +108,13 @@ namespace Types.Miscellaneous
         {
             if (obj is Any any)
             {
-                if (_type == PropertyType.UnityObject)
-                    if (_unityObjValue != null)
-                        return _unityObjValue.Equals(any._unityObjValue);
+                if (_propertyType == PropertyType.UnityObject)
+                    if (_serializableValue.Item2 != null)
+                        return _serializableValue.Item2.Equals(any._serializableValue.Item2);
                     else
                         return obj is null;
                 else
-                    return Equals(_cSharpObjValue, any._cSharpObjValue);
+                    return Equals(_serializableValue.Item1, any._serializableValue.Item1);
             }
             else
             {
@@ -131,18 +122,18 @@ namespace Types.Miscellaneous
             }
         }
 
-        public readonly override int GetHashCode() => HashCode.Combine(_type, _typeName, _cSharpObjValue, _unityObjValue);
-
-        public static Any FromValue<T>(T value) => new(typeof(T), value);
+        public readonly override int GetHashCode() => HashCode.Combine(_type, _propertyType, _serializableValue);
 
         public void OnBeforeSerialize()
         {
-            _cSharpStringValue = JsonConvert.SerializeObject(_cSharpObjValue);
+            _serializableValue.SetItem1(JsonConvert.SerializeObject(_cSharpObjValue));
         }
 
         public void OnAfterDeserialize()
         {
-            _cSharpObjValue = JsonConvert.DeserializeObject(_cSharpStringValue ?? string.Empty);
+            _cSharpObjValue = JsonConvert.DeserializeObject(_serializableValue.Item1 ?? string.Empty);
         }
+
+        public static Any FromValue<T>(T value) => new(typeof(T), value);
     }
 }

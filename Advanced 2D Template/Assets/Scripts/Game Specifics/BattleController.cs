@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattleController : Types.SingletonBehaviour<BattleController>
 {
@@ -16,12 +15,6 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     [SerializeField] private List<Transform> _enemySpots;
     public List<Transform> EnemySpots => _playerSpots;
 
-    [SerializeField] private Button _cardTemplate;
-    [SerializeField] private Button _maskTemplate;
-
-    [SerializeField] private LayoutGroup _cards;
-    [SerializeField] private LayoutGroup _masks;
-
     private readonly List<IBattleEntity> _entities = new();
 
     private IEnumerable<IBattleEntity> GetFromType(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type);
@@ -29,7 +22,11 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
     private void Start()
     {
-        BattleSetup setup = new(new List<Stats>() { new() }, SceneController.Instance.GetSceneParameter<List<EntityStats>>("Stats"));
+        BattleSetup setup = new
+        (
+            SaveDataController.Instance.CurrentData.Stats,
+            SceneController.Instance.GetSceneParameter<List<EntityStats>>("EnemyStats")
+        );
 
         StartBattle(setup);
     }
@@ -77,18 +74,9 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
     public IEnumerator DoTurn(IBattleEntity entity)
     {
-        entity.InitAttack(entity.GetCards());
+        entity.InitAction(this);
 
-        var attack = entity.ChooseAttack(entity.GetCards());
+        var attack = entity.ChooseAction(this);
         yield return attack.Item1;
-        var attackAsCard = attack.Item2.Invoke();
-
-        entity.InitTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
-
-        var target = entity.ChooseTarget(GetFromType((IBattleEntity.Type)((int)entity.GetEntityType() * -1)));
-        yield return target.Item1;
-        var targetAsEntity = target.Item2.Invoke();
-
-        targetAsEntity.ReceiveAttack(entity.Attack(attackAsCard, targetAsEntity));
     }
 }

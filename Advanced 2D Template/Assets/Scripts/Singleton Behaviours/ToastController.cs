@@ -7,7 +7,7 @@ namespace SingletonBehaviours
         [SerializeField] private GameObject _toastPrefab;
         private GameObject _currentToast;
 
-        public void PopupBottomLeft(string text)
+        public void Spawn(string text)
         {
             if (_currentToast)
                 Destroy(_currentToast);

@@ -1,20 +1,15 @@
-using UnityEngine;
 using MonoBehaviours.Dialogue;
-using Types;
 using Types.Dialogue;
 
 namespace SingletonBehaviours
 {
-    public class DialogueController : SingletonBehaviour<DialogueController>
+    public class DialogueController : SpawnableController<DialogueAsset>
     {
-        [SerializeField] private DialogueInstance _prefab;
+        protected override bool TakeAwayFocus() => true;
 
-        public void StartDialogue(DialogueAsset dialogue)
+        protected override void SetUp(DialogueAsset t)
         {
-            Canvas canvas = GameObject.FindGameObjectWithTag("Main Canvas").GetComponent<Canvas>();
-
-            var instance = Instantiate(_prefab, canvas.transform);
-            instance.Setup(dialogue.Value);
+            _templateInstance.GetComponent<DialogueInstance>().Setup(t.Value);
         }
     }
 }

@@ -31,14 +31,6 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
         }
     }
 
-    private void OnDisable()
-    {
-        if (!SaveDataController.Instance.CurrentData.InteractStates.ContainsKey(name))
-            SaveDataController.Instance.CurrentData.InteractStates.Add(name, default);
-
-        SaveDataController.Instance.CurrentData.InteractStates[name] = new(_anim ? _anim.GetCurrentAnimatorStateInfo(0).fullPathHash : 0, _interactsLeft);
-    }
-
     public void Interact(Transform user, PlayerMovement player)
     {
         if (_interactCount.HasValue && _interactsLeft <= 0)
@@ -48,6 +40,12 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
 
         _onInteract[difference].Invoke(player);
         --_interactsLeft;
+
+        if (!SaveDataController.Instance.CurrentData.InteractStates.ContainsKey(name))
+            SaveDataController.Instance.CurrentData.InteractStates.Add(name, default);
+
+        // TODO: FIX ANIMATION
+        SaveDataController.Instance.CurrentData.InteractStates[name] = new(_anim ? _anim.GetCurrentAnimatorStateInfo(0).fullPathHash : 0, _interactsLeft);
     }
 
     public bool CanInteract(Transform user)

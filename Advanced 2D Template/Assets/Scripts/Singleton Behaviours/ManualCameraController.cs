@@ -70,7 +70,7 @@ namespace MonoBehaviours
 
         public void Snap()
         {
-            Types.Wrappers.Serializable<Types.Miscellaneous.Picture> picture = new(default, Helpers.SerializationHelper.GetPath<Types.Miscellaneous.Picture>(), DateTime.Now.ToUniversalTime().ToString("U"), "", new string[] { }, new Types.Miscellaneous.Tuple<string, string>[] { });
+            Types.Wrappers.Serializable<Types.Miscellaneous.Picture> picture = new(default, DateTime.Now.ToUniversalTime().ToString("U"), "", new string[] { }, new Types.Miscellaneous.Tuple<string, string>[] { });
             picture.Save();
 
             picture.CreateIcon(_cam);

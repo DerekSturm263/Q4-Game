@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
-public abstract class BattleEntity : Selectable, IBattleEntity
+public abstract class BattleEntity : Selectable, IBattleEntity, ISubmitHandler
 {
     [SerializeField] private IBattleEntity.Type _type;
 
@@ -27,28 +26,11 @@ public abstract class BattleEntity : Selectable, IBattleEntity
     public string GetName() => name;
 
     public IBattleEntity.Type GetEntityType() => _type;
-    public List<Card> GetCards() => _currentStats.Cards;
 
-    public abstract void InitAttack(IEnumerable<Card> options);
-    public abstract (CustomYieldInstruction, Func<Card>) ChooseAttack(IEnumerable<Card> options);
+    public abstract void InitAction(BattleController ctx);
+    public abstract (CustomYieldInstruction, ActionInfo) ChooseAction(BattleController ctx);
 
-    public abstract void InitTarget(IEnumerable<IBattleEntity> options);
-    public abstract (CustomYieldInstruction, Func<IBattleEntity>) ChooseTarget(IEnumerable<IBattleEntity> options);
-
-    public virtual AttackInfo Attack(Card attack, IBattleEntity target)
-    {
-        return new AttackInfo()
-        {
-            attacker = this,
-            defender = target,
-            card = attack
-        };
-    }
-
-    public virtual void ReceiveAttack(AttackInfo info)
-    {
-        info.card.Effect.Invoke(info);
-    }
+    public abstract void OnSubmit(BaseEventData eventData);
 
     public void Die()
     {
