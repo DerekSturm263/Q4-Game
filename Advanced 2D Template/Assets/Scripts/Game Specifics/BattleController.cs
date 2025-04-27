@@ -22,10 +22,24 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
     private void Start()
     {
+        BattleSettings settings = SceneController.Instance.GetSceneParameter<ScriptableObject>("Value") as BattleSettings;
+        List<EntityStats> enemies = new();
+
+        foreach (var enemy in settings.Stats)
+        {
+            int count = Random.Range(enemy.Item2.Min, enemy.Item2.Max + 1);
+
+            for (int i = 0; i < count; ++i)
+            {
+                enemies.Add(enemy.Item1);
+            }
+        }
+
         BattleSetup setup = new
         (
             SaveDataController.Instance.CurrentData.Stats,
-            SceneController.Instance.GetSceneParameter<List<EntityStats>>("EnemyStats")
+            enemies,
+            settings.Environment
         );
 
         StartBattle(setup);

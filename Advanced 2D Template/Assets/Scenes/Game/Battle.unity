@@ -348,7 +348,7 @@ Canvas:
   m_GameObject: {fileID: 36206902}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 507795913}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -537,7 +537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffects: []
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &95180436
@@ -997,7 +998,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffects: []
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &431447873
@@ -4720,7 +4722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffects: []
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &1114856393
@@ -6582,7 +6585,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d7ab1860f58bd439fa35e1a713d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textEffects: []
+  _textEffects:
+  - {fileID: 11400000, guid: a1458db0b1b99cf48adc7e8cb0242a84, type: 2}
   _resetOnTextChange: 0
   _useScaledTime: 0
 --- !u!1 &2084547551

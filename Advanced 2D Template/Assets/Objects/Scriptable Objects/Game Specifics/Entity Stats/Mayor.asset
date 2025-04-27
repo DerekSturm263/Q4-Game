@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ac16cddbbc2584889e3ee901d11e31, type: 3}
   m_Name: Mayor
   m_EditorClassIdentifier: 
-  _description: 
+  _icon: {fileID: 0}
+  _description: Is that... the mayor? Looks like he's been possessed by one of those
+    mask things. Let's take him down!
   _stats:
     _name: ???
-    _health: 20
+    _currentHealth: 0
+    _maxHealth: 0
     _attack: 2
     _defense: 7
-    _cards:
-    - {fileID: 11400000, guid: 4611dca190126bb4ebb14033e9989b9e, type: 2}
-    - {fileID: 11400000, guid: 420a1425dea6c0c48803e49df814a549, type: 2}

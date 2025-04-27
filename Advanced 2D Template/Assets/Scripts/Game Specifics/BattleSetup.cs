@@ -14,27 +14,34 @@ public struct BattleSetup
 
     public readonly IEnumerable<Stats> Entities => Players.Concat(Enemies);
 
-    public BattleSetup(List<Stats> players, List<Stats> enemies)
+    [SerializeField] private BattleEnvironment _environment;
+    public readonly BattleEnvironment Environment => _environment;
+
+    public BattleSetup(List<Stats> players, List<Stats> enemies, BattleEnvironment environment)
     {
         _players = players;
         _enemies = enemies;
+        _environment = environment;
     }
 
-    public BattleSetup(List<EntityStats> players, List<EntityStats> enemies)
+    public BattleSetup(List<EntityStats> players, List<EntityStats> enemies, BattleEnvironment environment)
     {
         _players = players.Select(item => item.Stats).ToList();
         _enemies = enemies.Select(item => item.Stats).ToList();
+        _environment = environment;
     }
 
-    public BattleSetup(List<Stats> players, List<EntityStats> enemies)
+    public BattleSetup(List<Stats> players, List<EntityStats> enemies, BattleEnvironment environment)
     {
         _players = players;
         _enemies = enemies.Select(item => item.Stats).ToList();
+        _environment = environment;
     }
 
-    public BattleSetup(List<EntityStats> players, List<Stats> enemies)
+    public BattleSetup(List<EntityStats> players, List<Stats> enemies, BattleEnvironment environment)
     {
         _players = players.Select(item => item.Stats).ToList();
         _enemies = enemies;
+        _environment = environment;
     }
 }

@@ -9,6 +9,14 @@ namespace Types.Miscellaneous
     {
         [SerializeField] private Dictionary<string, Any> _values;
 
+        public AnyGroup(Any value)
+        {
+            _values = new()
+            {
+                ["Value"] = value
+            };
+        }
+
         public void Set<T>(string name, T value)
         {
             _values ??= new();

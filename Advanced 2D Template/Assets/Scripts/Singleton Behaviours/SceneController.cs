@@ -18,11 +18,13 @@ namespace SingletonBehaviours
 
         private AnyGroup _sceneParameters;
 
+        public void SetSOParameter(ScriptableObject so) => Instance.SetSceneParameters(anyGroup: new(Any.FromValue(so)));
+
         public void SetSceneParameters(AnyGroupAsset any) => Instance.SetSceneParameters(any.Value);
 
-        public void SetSceneParameters(AnyGroup any)
+        public void SetSceneParameters(AnyGroup anyGroup)
         {
-            _sceneParameters = any;
+            _sceneParameters = anyGroup;
         }
 
         public T GetSceneParameter<T>(string key)
