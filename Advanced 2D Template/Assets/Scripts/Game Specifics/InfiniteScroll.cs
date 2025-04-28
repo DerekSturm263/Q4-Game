@@ -14,17 +14,13 @@ public class InfiniteScroll : MonoBehaviour
     [SerializeField] private Range<float> _size;
     [SerializeField] private Range<Vector2> _offset;
 
+    private Vector2 _originalPos;
+
     private void Awake()
     {
-        GetComponent<SpriteRenderer>().sprite = _variations[Random.Range(0, _variations.Length)];
+        _originalPos = transform.position;
 
-        _currentVelocity.x = Random.Range(_velocity.Min.x, _velocity.Max.x);
-        _currentVelocity.y = Random.Range(_velocity.Min.y, _velocity.Max.y);
-
-        transform.position += new Vector3(Random.Range(_offset.Min.x, _offset.Max.x), Random.Range(_offset.Min.y, _offset.Max.y));
-
-        float scale = Random.Range(_size.Min, _size.Max);
-        transform.localScale = new(scale, scale);
+        ResetSettings();
     }
 
     private void Update()
@@ -32,7 +28,24 @@ public class InfiniteScroll : MonoBehaviour
         transform.position += (Vector3)_currentVelocity * Time.deltaTime;
 
         if (transform.position.x < _bounds.min.x)
+        {
+            ResetSettings();
+
             transform.position = new(_bounds.max.x, transform.position.y, transform.position.z);
+        }
+    }
+
+    private void ResetSettings()
+    {
+        GetComponent<SpriteRenderer>().sprite = _variations[Random.Range(0, _variations.Length)];
+
+        _currentVelocity.x = Random.Range(_velocity.Min.x, _velocity.Max.x);
+        _currentVelocity.y = Random.Range(_velocity.Min.y, _velocity.Max.y);
+
+        transform.position = _originalPos + new Vector2(Random.Range(_offset.Min.x, _offset.Max.x), Random.Range(_offset.Min.y, _offset.Max.y));
+
+        float scale = Random.Range(_size.Min, _size.Max);
+        transform.localScale = new(scale, scale);
     }
 
     private void OnDrawGizmosSelected()

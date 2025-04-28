@@ -19,6 +19,11 @@ MonoBehaviour:
       _maxHealth: 20
       _attack: 5
       _defense: 3
+    - _name: Oogie 2
+      _currentHealth: 20
+      _maxHealth: 20
+      _attack: 5
+      _defense: 3
     _items: []
     _mask: {fileID: 0}
     _storyData: []
@@ -28,4 +33,116 @@ MonoBehaviour:
       _kvps: []
     _time: 0
     _interactStates:
-      _kvps: []
+      _kvps:
+      - _item1: Fountain
+        _item2:
+          _item1: 533628429
+          _item2: 0
+      - _item1: Chest 1
+        _item2:
+          _item1: -606987374
+          _item2: 1
+      - _item1: City Hall Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Marina's House Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Kate's House Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Todd's House Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Oogie's House Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Rachel's House Sign
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Battle Zone
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Item Shop
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Card Crafter
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Restful Inn
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: ???
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Gerald
+        _item2:
+          _item1: -740709447
+          _item2: 0
+      - _item1: Anissa
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Franklin
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Rachel
+        _item2:
+          _item1: -740709447
+          _item2: 0
+      - _item1: Todd
+        _item2:
+          _item1: -740709447
+          _item2: 0
+      - _item1: Roger
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Michael
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Marina
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Kate
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Miranda
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Sam
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Denise
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Nolan
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: James
+        _item2:
+          _item1: 0
+          _item2: 0
+      - _item1: Mayor
+        _item2:
+          _item1: -740709447
+          _item2: 0

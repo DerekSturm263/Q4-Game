@@ -21,6 +21,8 @@ public abstract class BattleEntity : Selectable, IBattleEntity, ISubmitHandler
 
         if (_stats)
             _currentStats = _stats.Stats;
+
+        _anim.SetFloat("Speed", 1);
     }
 
     public string GetName() => name;
