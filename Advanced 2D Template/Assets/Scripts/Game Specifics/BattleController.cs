@@ -23,6 +23,10 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     private void Start()
     {
         BattleSettings settings = SceneController.Instance.GetSceneParameter<ScriptableObject>("Value") as BattleSettings;
+
+        if (!settings)
+            settings = BattleSettings.CreateTest();
+
         List<EntityStats> enemies = new();
 
         foreach (var enemy in settings.Stats)
@@ -74,6 +78,9 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
             return player;
         }));
 
+        foreach (var spot in _playerSpots.Where(item => item.childCount == 0))
+            spot.gameObject.SetActive(false);
+
         int enemyIndex = 0;
         _entities.AddRange(setup.Enemies.Select(item =>
         {
@@ -84,6 +91,9 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
             return enemy;
         }));
+
+        foreach (var spot in _enemySpots.Where(item => item.childCount == 0))
+            spot.gameObject.SetActive(false);
     }
 
     public IEnumerator DoTurn(IBattleEntity entity)

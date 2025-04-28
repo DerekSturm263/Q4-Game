@@ -14,6 +14,21 @@ public struct Stats
     [SerializeField] private float _maxHealth;
     public readonly float MaxHealth => _maxHealth;
 
+    [SerializeField] private float _attack;
+    public readonly float Attack => _attack;
+
+    [SerializeField] private float _defense;
+    public readonly float Defense => _defense;
+
+    public Stats(string name, float health, float attack, float defense)
+    {
+        _name = name;
+        _currentHealth = health;
+        _maxHealth = health;
+        _attack = attack;
+        _defense = defense;
+    }
+
     public ActionInfo.HealthChangeResult ModifyHealth(float delta)
     {
         _currentHealth += delta;
@@ -23,10 +38,4 @@ public struct Stats
 
         return _currentHealth <= 0 ? ActionInfo.HealthChangeResult.Dead : ActionInfo.HealthChangeResult.None;
     }
-
-    [SerializeField] private float _attack;
-    public readonly float Attack => _attack;
-
-    [SerializeField] private float _defense;
-    public readonly float Defense => _defense;
 }

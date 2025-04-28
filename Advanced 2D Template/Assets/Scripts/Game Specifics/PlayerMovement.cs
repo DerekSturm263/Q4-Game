@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : EntityMovement
+public class PlayerMovement : EntityMovement, ISavable
 {
     [SerializeField] private Caster2D _interactCast;
     [SerializeField] private float _castOffset;
@@ -93,8 +93,6 @@ public class PlayerMovement : EntityMovement
             }
         }
 
-        SaveDataController.Instance.CurrentData.SetPosition(transform.position);
-
         base.Update();
     }
 
@@ -169,5 +167,10 @@ public class PlayerMovement : EntityMovement
     private void OnDrawGizmos()
     {
         _interactCast.Draw(transform, InteractOffset);
+    }
+
+    public void Save()
+    {
+        SaveDataController.Instance.CurrentData.SetPosition(transform.position);
     }
 }

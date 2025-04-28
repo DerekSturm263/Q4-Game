@@ -27,12 +27,15 @@ namespace Types.Miscellaneous
 
         public readonly bool TryGet<T>(string name, out T value)
         {
+            value = default;
+
+            if (_values is null)
+                return false;
+
             bool doReturn = _values.TryGetValue(name, out Any anyValue);
 
             if (doReturn)
                 value = anyValue.Get<T>();
-            else
-                value = default;
 
             return doReturn;
         }

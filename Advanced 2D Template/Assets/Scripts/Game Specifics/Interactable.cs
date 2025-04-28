@@ -2,7 +2,7 @@ using SingletonBehaviours;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
+public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>, ISavable
 {
     private Animator _anim;
 
@@ -43,9 +43,6 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
 
         if (!SaveDataController.Instance.CurrentData.InteractStates.ContainsKey(name))
             SaveDataController.Instance.CurrentData.InteractStates.Add(name, default);
-
-        // TODO: FIX ANIMATION
-        SaveDataController.Instance.CurrentData.InteractStates[name] = new(_anim ? _anim.GetCurrentAnimatorStateInfo(0).fullPathHash : 0, _interactsLeft);
     }
 
     public bool CanInteract(Transform user)
@@ -53,5 +50,10 @@ public class Interactable : MonoBehaviour, IInteractable<PlayerMovement>
         Vector2 difference = user.transform.position - transform.position;
 
         return (!_interactCount.HasValue || _interactsLeft > 0) && _onInteract[difference].GetPersistentEventCount() > 0;
+    }
+
+    public void Save()
+    {
+        SaveDataController.Instance.CurrentData.InteractStates[name] = new(_anim ? _anim.GetCurrentAnimatorStateInfo(0).fullPathHash : 0, _interactsLeft);
     }
 }

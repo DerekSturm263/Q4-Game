@@ -27,12 +27,12 @@ namespace SingletonBehaviours
             _sceneParameters = anyGroup;
         }
 
-        public T GetSceneParameter<T>(string key)
+        public T GetSceneParameter<T>(string key, T def = default)
         {
             if (_sceneParameters.TryGet(key, out T value))
                 return value;
 
-            return default;
+            return def;
         }
 
         public void Load(Types.Scene.SceneLoadSettingsAsset settings) => Instance.Load(settings.Value);
@@ -99,6 +99,11 @@ namespace SingletonBehaviours
         private void LoadNoTransition(Types.Scene.SceneLoadSettings settings)
         {
             SceneManager.LoadScene(settings.Scene.Name);
+        }
+
+        public void Reload()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void Quit() => Application.Quit();

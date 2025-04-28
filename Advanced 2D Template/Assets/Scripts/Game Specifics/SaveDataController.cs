@@ -1,7 +1,4 @@
-using Extensions;
 using Helpers;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Types.Miscellaneous;
@@ -22,6 +19,16 @@ namespace SingletonBehaviours
 
         public void Save()
         {
+            var roots = SceneManager.GetActiveScene().GetRootGameObjects();
+            
+            foreach (var root in roots)
+            {
+                foreach (var savable in root.GetComponentsInChildren<ISavable>(true))
+                {
+                    savable.Save();
+                }
+            }
+
             Serializable<SaveData> saveData = new(Instance._currentData, "", "", new string[] { }, new Types.Miscellaneous.Tuple<string, string>[] { });
 
             RenderTextureDescriptor descriptor = new(1024, 512, RenderTextureFormat.ARGB32, 8, 0, RenderTextureReadWrite.sRGB);
@@ -34,7 +41,7 @@ namespace SingletonBehaviours
         public void Load(Serializable<SaveData> saveData)
         {
             Instance._currentData = saveData.Value;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneController.Instance.Reload();
         }
 
         public void Load()
