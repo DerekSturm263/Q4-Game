@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa7f11612bfc77f4f9a1e7631c0e8d06, type: 3}
+  m_Name: Dungeon A
+  m_EditorClassIdentifier: 
+  _dimensions:
+    _min: {x: 0, y: 0}
+    _max: {x: 0, y: 0}
+  _roomCount:
+    _min: 0
+    _max: 0
+  _roomSpacing:
+    _min: 0
+    _max: 0
+  _rooms:
+  - {fileID: 11400000, guid: af9eb91ae84aaed49ace006434c86007, type: 2}
+  - {fileID: 11400000, guid: 5d9697e1d85c2de4aba5834eead13efe, type: 2}
+  - {fileID: 11400000, guid: 2dd9bb059543bec4bba3f5e87bcc7e1a, type: 2}
+  _corridors: {fileID: 11400000, guid: 8887912d45feb2243bcc515c75b134b2, type: 2}
+  _wall: {fileID: 11400000, guid: b0277206183a5a048bac52084cef636c, type: 2}
+  _floor: {fileID: 11400000, guid: 5170fa6a346fab94f9fc31c3598c7fe6, type: 2}
+  _decorations:
+  - {fileID: 11400000, guid: 461d521b5cd398b44aa8a09f8c2563c4, type: 2}
+  - {fileID: 11400000, guid: d2e7aed54b01c5247b1c44ef9b7d75e0, type: 2}
+  - {fileID: 11400000, guid: 6402b422189d8ba4cb54fa98484825a7, type: 2}
+  - {fileID: 11400000, guid: 3d1d77432004dcf44b3c9d9a467d396d, type: 2}

@@ -22,7 +22,7 @@ public class ItemSpawner : MonoBehaviour
 
     public void Spawn()
     {
-        int amount = Random.Range(_multiplier.Min, _multiplier.Max);
+        int amount = Random.Range(_multiplier.Min, _multiplier.Max + 1);
 
         for (int i = 0; i < amount; ++i)
         {
