@@ -16,7 +16,10 @@ public class DungeonSettings : ScriptableObject
     public Range<int> RoomSpacing => _roomSpacing;
 
     [SerializeField] private List<RoomSettings> _rooms;
-    [SerializeField] private CorrdiorSettings _corridors;
+    public List<RoomSettings> Rooms => _rooms;
+
+    [SerializeField] private CorridorSettings _corridors;
+    public CorridorSettings Corridors => _corridors;
 
     [SerializeField] private TileBase _wall;
     public TileBase Wall => _wall;
@@ -28,4 +31,5 @@ public class DungeonSettings : ScriptableObject
     public TileBase Empty => _empty;
 
     [SerializeField] private List<TileBase> _decorations;
+    public List<TileBase> Decorations => _decorations;
 }
