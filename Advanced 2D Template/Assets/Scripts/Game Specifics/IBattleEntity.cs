@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Collections;
 
 public interface IBattleEntity
 {
@@ -12,8 +12,7 @@ public interface IBattleEntity
 
     public Type GetEntityType();
 
-    public void InitAction(BattleController ctx);
-    public (CustomYieldInstruction, ActionInfo) ChooseAction(BattleController ctx);
+    public IEnumerator DoTurn(BattleController ctx);
     
     public ref Stats GetStats();
 

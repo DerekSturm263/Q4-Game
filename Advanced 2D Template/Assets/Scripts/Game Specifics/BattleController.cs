@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BattleController : Types.SingletonBehaviour<BattleController>
 {
@@ -15,7 +16,11 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     [SerializeField] private List<Transform> _enemySpots;
     public List<Transform> EnemySpots => _playerSpots;
 
-    private readonly List<IBattleEntity> _entities = new();
+    [SerializeField] private Light2D _spotlight;
+    [SerializeField] private Vector3 _lightOffset;
+
+    private readonly List<BattleEntity> _entities = new();
+    private BattleEntity _current;
 
     private IEnumerable<IBattleEntity> GetFromType(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type);
     private int GetNumberAlive(IBattleEntity.Type type) => GetFromType(type).Count();
@@ -49,6 +54,11 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         StartBattle(setup);
     }
 
+    private void Update()
+    {
+        _spotlight.transform.position = _current.transform.position + _lightOffset;
+    }
+
     public void StartBattle(BattleSetupAsset setup) => StartBattle(setup.Value);
     public void StartBattle(BattleSetup setup) => StartCoroutine(Battle(setup));
 
@@ -60,7 +70,8 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         {
             foreach (var entity in _entities)
             {
-                yield return DoTurn(entity);
+                _current = entity;
+                yield return entity.DoTurn(this);
             }
         }
     }
@@ -94,13 +105,5 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
         foreach (var spot in _enemySpots.Where(item => item.childCount == 0))
             spot.gameObject.SetActive(false);
-    }
-
-    public IEnumerator DoTurn(IBattleEntity entity)
-    {
-        entity.InitAction(this);
-
-        var attack = entity.ChooseAction(this);
-        yield return attack.Item1;
     }
 }

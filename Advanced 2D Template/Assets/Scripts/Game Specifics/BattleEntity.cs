@@ -1,13 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
-public abstract class BattleEntity : Selectable, IBattleEntity, ISubmitHandler
+public abstract class BattleEntity : Selectable, IBattleEntity, ISubmitHandler, IPointerDownHandler
 {
+    protected static BattlePlayer _current;
+
     [SerializeField] private IBattleEntity.Type _type;
 
-    private Animator _anim;
+    protected Animator _anim;
 
     [SerializeField] private EntityStats _stats;
 
@@ -29,10 +32,16 @@ public abstract class BattleEntity : Selectable, IBattleEntity, ISubmitHandler
 
     public IBattleEntity.Type GetEntityType() => _type;
 
-    public abstract void InitAction(BattleController ctx);
-    public abstract (CustomYieldInstruction, ActionInfo) ChooseAction(BattleController ctx);
+    public abstract IEnumerator DoTurn(BattleController ctx);
 
-    public abstract void OnSubmit(BaseEventData eventData);
+    public void OnSubmit(BaseEventData eventData) => DoSelect(eventData);
+    public override void OnPointerDown(PointerEventData eventData) => DoSelect(eventData);
+
+    public void DoSelect(BaseEventData eventData)
+    {
+        _current.SetTarget(this);
+        Debug.Log($"{name} selected as target");
+    }
 
     public void Die()
     {
