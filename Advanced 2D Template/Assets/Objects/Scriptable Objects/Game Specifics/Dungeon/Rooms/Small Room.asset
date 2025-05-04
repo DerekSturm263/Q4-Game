@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Small Room
   m_EditorClassIdentifier: 
   _dimensions:
-    _min: {x: 0, y: 0}
-    _max: {x: 0, y: 0}
+    _min: {x: 5, y: 5}
+    _max: {x: 10, y: 10}

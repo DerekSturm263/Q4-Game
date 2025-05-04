@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Dungeon A
   m_EditorClassIdentifier: 
   _dimensions:
-    _min: {x: 0, y: 0}
-    _max: {x: 0, y: 0}
+    _min: {x: 80, y: 80}
+    _max: {x: 80, y: 80}
   _roomCount:
-    _min: 0
-    _max: 0
+    _min: 8
+    _max: 12
   _roomSpacing:
     _min: 0
     _max: 0
@@ -27,7 +27,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2dd9bb059543bec4bba3f5e87bcc7e1a, type: 2}
   _corridors: {fileID: 11400000, guid: 8887912d45feb2243bcc515c75b134b2, type: 2}
   _wall: {fileID: 11400000, guid: b0277206183a5a048bac52084cef636c, type: 2}
-  _floor: {fileID: 11400000, guid: 5170fa6a346fab94f9fc31c3598c7fe6, type: 2}
+  _floor: {fileID: 11400000, guid: 138593c89737ea94e88fa1ad296b2263, type: 2}
+  _empty: {fileID: 11400000, guid: 5170fa6a346fab94f9fc31c3598c7fe6, type: 2}
   _decorations:
   - {fileID: 11400000, guid: 461d521b5cd398b44aa8a09f8c2563c4, type: 2}
   - {fileID: 11400000, guid: d2e7aed54b01c5247b1c44ef9b7d75e0, type: 2}
