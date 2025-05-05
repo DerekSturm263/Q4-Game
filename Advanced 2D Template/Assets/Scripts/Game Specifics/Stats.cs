@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -20,18 +21,22 @@ public struct Stats
     [SerializeField] private float _defense;
     public readonly float Defense => _defense;
 
-    public Stats(string name, float health, float attack, float defense)
+    [SerializeField] private List<Action> _actions;
+    public readonly List<Action> Actions => _actions;
+
+    public Stats(string name, float health, float attack, float defense, List<Action> actions)
     {
         _name = name;
         _currentHealth = health;
         _maxHealth = health;
         _attack = attack;
         _defense = defense;
+        _actions = actions;
     }
 
-    public ActionInfo.HealthChangeResult ModifyHealth(float delta)
+    public ActionInfo.HealthChangeResult ModifyHealth(float amount)
     {
-        _currentHealth += delta;
+        _currentHealth += amount;
 
         if (_currentHealth > _maxHealth)
             _currentHealth = _maxHealth;

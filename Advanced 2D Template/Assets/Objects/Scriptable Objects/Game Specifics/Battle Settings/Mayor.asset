@@ -17,4 +17,8 @@ MonoBehaviour:
     _item2:
       _min: 1
       _max: 1
+  - _item1: {fileID: 11400000, guid: 2095de231ce909a418f0794b6f76ad42, type: 2}
+    _item2:
+      _min: 1
+      _max: 1
   _environment: {fileID: 11400000, guid: c357afaa17e381c4ca45a0763547f822, type: 2}

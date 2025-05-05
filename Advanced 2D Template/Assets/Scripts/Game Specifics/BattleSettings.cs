@@ -17,7 +17,7 @@ public class BattleSettings : ScriptableObject
 
         settings._stats = new()
         {
-            new(EntityStats.CreateTest(new("Test", 20, 5, 3)), new(1, 2))
+            new(EntityStats.CreateTest(new("Test", 20, 5, 3, new() {  })), new(1, 2))
         };
 
         settings._environment = CreateInstance<BattleEnvironment>();

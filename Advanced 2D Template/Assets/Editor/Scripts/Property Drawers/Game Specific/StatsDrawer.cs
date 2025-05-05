@@ -11,7 +11,8 @@ namespace Types.Miscellaneous
             new string[] { "_currentHealth" },
             new string[] { "_maxHealth" },
             new string[] { "_attack" },
-            new string[] { "_defense" }
+            new string[] { "_defense" },
+            new string[] { "_actions" }
         };
     }
 }

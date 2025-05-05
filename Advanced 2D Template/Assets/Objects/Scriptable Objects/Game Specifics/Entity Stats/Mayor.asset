@@ -17,7 +17,9 @@ MonoBehaviour:
     mask things. Let's take him down!
   _stats:
     _name: ???
-    _currentHealth: 0
-    _maxHealth: 0
+    _currentHealth: 25
+    _maxHealth: 25
     _attack: 2
     _defense: 7
+    _actions:
+    - {fileID: 11400000, guid: db2d2692ad9d04642b400607a8c9ba49, type: 2}

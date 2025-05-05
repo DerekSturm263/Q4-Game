@@ -19,11 +19,6 @@ MonoBehaviour:
       _maxHealth: 20
       _attack: 5
       _defense: 3
-    - _name: Oogie 2
-      _currentHealth: 20
-      _maxHealth: 20
-      _attack: 5
-      _defense: 3
     _items: []
     _mask: {fileID: 0}
     _storyData: []

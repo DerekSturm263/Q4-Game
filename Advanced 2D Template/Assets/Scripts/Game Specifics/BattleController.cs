@@ -2,7 +2,9 @@ using SingletonBehaviours;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Types.Scene;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
 public class BattleController : Types.SingletonBehaviour<BattleController>
@@ -20,10 +22,17 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     [SerializeField] private Vector3 _lightOffset;
 
     private readonly List<BattleEntity> _entities = new();
-    private BattleEntity _current;
 
-    private IEnumerable<IBattleEntity> GetFromType(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type);
-    private int GetNumberAlive(IBattleEntity.Type type) => GetFromType(type).Count();
+    private BattleEntity _current;
+    public BattleEntity Current => _current;
+
+    [SerializeField] private SceneLoadSettings _backToOverworld;
+    public SceneLoadSettings BackToOverworld => _backToOverworld;
+
+    public IEnumerable<IBattleEntity> GetFromType(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type);
+    public IEnumerable<IBattleEntity> GetFromTypeAlive(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type && item.GetStats().IsAlive);
+    private int GetNumberAlive(IBattleEntity.Type type) => GetFromType(type).Count(item => item.GetStats().IsAlive);
+    private bool GetIsTeamAlive(IBattleEntity.Type type) => GetNumberAlive(type) > 0;
 
     private void Start()
     {
@@ -56,7 +65,15 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
 
     private void Update()
     {
-        _spotlight.transform.position = _current.transform.position + _lightOffset;
+        _spotlight.gameObject.SetActive(_current is BattlePlayer);
+
+        if (_current is BattlePlayer)
+        {
+            if (_current.CurrentAction is null)
+                _spotlight.transform.position = _current.transform.position + _lightOffset;
+            else
+                _spotlight.transform.position = EventSystem.current.currentSelectedGameObject.transform.position + _lightOffset;
+        }
     }
 
     public void StartBattle(BattleSetupAsset setup) => StartBattle(setup.Value);
@@ -66,14 +83,19 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     {
         PopulateEntities(setup);
 
-        while (GetNumberAlive(IBattleEntity.Type.Human) > 0 || GetNumberAlive(IBattleEntity.Type.AI) > 0)
+        while (GetIsTeamAlive(IBattleEntity.Type.Human) && GetIsTeamAlive(IBattleEntity.Type.AI))
         {
             foreach (var entity in _entities)
             {
+                if (!entity.GetStats().IsAlive)
+                    continue;
+
                 _current = entity;
                 yield return entity.DoTurn(this);
             }
         }
+
+        SceneController.Instance.Load(_backToOverworld);
     }
 
     public void PopulateEntities(BattleSetup setup)
