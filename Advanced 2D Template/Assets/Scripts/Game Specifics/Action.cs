@@ -1,4 +1,3 @@
-using log4net.Util;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -15,6 +14,7 @@ public class Action : ScriptableObject
     public ActionType Type => _type;
 
     [SerializeField] private float _damage;
+    [SerializeField] private float _attackDelay;
 
     public Func<BattleController, IEnumerator> GetAction()
     {
@@ -28,16 +28,14 @@ public class Action : ScriptableObject
     private IEnumerator SwipeEnumerator(BattleController ctx)
     {
         Vector3 originalPos = ctx.Current.transform.position;
-        Vector3 offset = (ctx.Current.Target.transform.position - originalPos).normalized * 0f;
+        Vector3 offset = (ctx.Current.Target.transform.position - originalPos).normalized * 1.5f;
         for (float t = 0; t < 0.5f; t += Time.deltaTime)
         {
-            ctx.Current.transform.position = Vector3.Lerp(originalPos, ctx.Current.Target.transform.position + offset, t);
+            ctx.Current.transform.position = Vector3.Lerp(originalPos, ctx.Current.Target.transform.position - offset, t * 2);
             yield return new WaitForEndOfFrame();
         }
 
-        float time = UnityEngine.Random.Range(0, 3) / 2f;
-
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(_attackDelay);
 
         ctx.Current.Animator.SetTrigger("Swipe");
 

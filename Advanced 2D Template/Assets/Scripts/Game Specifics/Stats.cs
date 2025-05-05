@@ -8,6 +8,9 @@ public struct Stats
     [SerializeField] private string _name;
     public readonly string Name => _name;
 
+    [SerializeField] private RuntimeAnimatorController _animatorController;
+    public readonly RuntimeAnimatorController AnimatorController => _animatorController;
+
     [SerializeField] private float _currentHealth;
     public readonly float CurrentHealth => _currentHealth;
     public readonly bool IsAlive => _currentHealth > 0;
@@ -24,9 +27,10 @@ public struct Stats
     [SerializeField] private List<Action> _actions;
     public readonly List<Action> Actions => _actions;
 
-    public Stats(string name, float health, float attack, float defense, List<Action> actions)
+    public Stats(string name, RuntimeAnimatorController animatorController, float health, float attack, float defense, List<Action> actions)
     {
         _name = name;
+        _animatorController = animatorController;
         _currentHealth = health;
         _maxHealth = health;
         _attack = attack;

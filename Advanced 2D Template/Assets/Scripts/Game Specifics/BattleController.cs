@@ -29,6 +29,8 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     [SerializeField] private SceneLoadSettings _backToOverworld;
     public SceneLoadSettings BackToOverworld => _backToOverworld;
 
+    private BattleSettings _settings;
+
     public IEnumerable<IBattleEntity> GetFromType(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type);
     public IEnumerable<IBattleEntity> GetFromTypeAlive(IBattleEntity.Type type) => _entities.Where(item => item.GetEntityType() == type && item.GetStats().IsAlive);
     private int GetNumberAlive(IBattleEntity.Type type) => GetFromType(type).Count(item => item.GetStats().IsAlive);
@@ -37,6 +39,7 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
     private void Start()
     {
         BattleSettings settings = SceneController.Instance.GetSceneParameter<ScriptableObject>("Value") as BattleSettings;
+        _settings = settings;
 
         if (!settings)
             settings = BattleSettings.CreateTest();
@@ -71,7 +74,7 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         {
             if (_current.CurrentAction is null)
                 _spotlight.transform.position = _current.transform.position + _lightOffset;
-            else
+            else if (EventSystem.current.currentSelectedGameObject)
                 _spotlight.transform.position = EventSystem.current.currentSelectedGameObject.transform.position + _lightOffset;
         }
     }
@@ -94,6 +97,18 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
                 yield return entity.DoTurn(this);
             }
         }
+
+        foreach (var item in _settings.Rewards)
+        {
+            int amount = Random.Range(item.Item2.Min, item.Item2.Max + 1);
+
+            for (int i = 0; i < amount; ++i)
+            {
+                InventoryController.Instance.AddItem(item.Item1);
+            }
+        }
+
+        _settings.InvokeOnComplete();
 
         SceneController.Instance.Load(_backToOverworld);
     }
@@ -119,6 +134,7 @@ public class BattleController : Types.SingletonBehaviour<BattleController>
         {
             var enemy = Instantiate(_enemyTemplate, _enemySpots[enemyIndex++]);
             enemy.SetStats(item);
+            enemy.GetComponent<Animator>().runtimeAnimatorController = item.AnimatorController;
 
             enemy.name = $"{item.Name} {(char)('A' + enemyIndex - 1)}";
 

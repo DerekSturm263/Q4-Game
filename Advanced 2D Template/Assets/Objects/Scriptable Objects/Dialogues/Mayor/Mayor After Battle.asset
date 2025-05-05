@@ -14,41 +14,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _value:
     _dialogues:
-    - _speaker: Mayor Toadington
+    - _speaker: Mayor
+      _side: 0
       _text: I'm... me again!
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
-      _responses:
-        _kvps: []
-    - _speaker: Mayor Toadington
-      _text: Thank you so much, my dear!
-      _onDialogue:
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:
         _kvps: []
-    - _speaker: Mayor Toadington
+    - _speaker: Mayor
+      _side: 0
+      _text: Thank you so much, my dear!
+      _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
+      _responses:
+        _kvps: []
+    - _speaker: Mayor
+      _side: 0
       _text: I hate to seem ungrateful, but as you may have noticed, the town seems
         a bit empty...
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
-    - _speaker: Mayor Toadington
+    - _speaker: Mayor
+      _side: 0
       _text: That vile <color="red">Villain Name</color> has used the <color="blue">Sacred
         Masks</color> to turn all the townsfolk into monsters!
       _onDialogue:
         m_PersistentCalls:
           m_Calls: []
+      _onDialogueFinish:
+        m_PersistentCalls:
+          m_Calls: []
       _responses:
         _kvps: []
-    - _speaker: Mayor Toadington
+    - _speaker: Mayor
+      _side: 0
       _text: I know this is asking a lot of you, but could you help me bring everyone
         back? All you need to do is <color="blue">battle them</color> and it should
         do the trick!
       _onDialogue:
+        m_PersistentCalls:
+          m_Calls: []
+      _onDialogueFinish:
         m_PersistentCalls:
           m_Calls: []
       _responses:
@@ -63,4 +83,17 @@ MonoBehaviour:
               m_Calls: []
     _onDialogueEnd:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 394373337924564761, guid: e466ae4ac68e55045b57ddb302bc9954, type: 3}
+          m_TargetAssemblyTypeName: SingletonBehaviours.SaveStateController, GameSpecific
+          m_MethodName: AddState
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: TalkedToMayor
+            m_BoolArgument: 0
+          m_CallState: 2
+    _ignoreEffects: 0

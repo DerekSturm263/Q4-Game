@@ -8,6 +8,7 @@ namespace Types.Miscellaneous
         public override string[][] GetPropertyNames() => new string[][]
         {
             new string[] { "_name" },
+            new string[] { "_animatorController" },
             new string[] { "_currentHealth" },
             new string[] { "_maxHealth" },
             new string[] { "_attack" },

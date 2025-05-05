@@ -1435,6 +1435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 567812642}
   - component: {fileID: 567812643}
+  - component: {fileID: 567812644}
   m_Layer: 0
   m_Name: Battle Controller
   m_TagString: Untagged
@@ -1491,6 +1492,51 @@ MonoBehaviour:
     _loadParameters:
       m_LoadSceneMode: 0
       m_LocalPhysicsMode: 0
+--- !u!114 &567812644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567812641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1828ac118e4935d4894a4f568028a93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onAwake:
+    m_PersistentCalls:
+      m_Calls: []
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onFixedUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDestroy:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8920474452100919199, guid: 2dcf5f218060e6c4bb0ae70c7fb080a4, type: 3}
+        m_TargetAssemblyTypeName: SingletonBehaviours.SaveDataController, GameSpecific
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &654777203
 GameObject:
   m_ObjectHideFlags: 0

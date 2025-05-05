@@ -37,6 +37,25 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
     flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: -4401278233548254854, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - time: 0.083333336
+      value: {fileID: -3961943441218304860, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - time: 0.16666667
+      value: {fileID: -3971054747215606170, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - time: 0.25
+      value: {fileID: -3085704882113689838, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - time: 0.33333334
+      value: {fileID: -1291151350434278681, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - time: 0.41666666
+      value: {fileID: 3900908742570395801, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    attribute: m_Sprite
+    path: Player
+    classID: 114
+    script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+    flags: 2
   m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
@@ -53,7 +72,22 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
       isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 2679471955
+      attribute: 2015549526
+      script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
+    - {fileID: -4401278233548254854, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - {fileID: -3961943441218304860, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - {fileID: -3971054747215606170, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - {fileID: -3085704882113689838, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - {fileID: -1291151350434278681, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
+    - {fileID: 3900908742570395801, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
     - {fileID: -4401278233548254854, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
     - {fileID: -3961943441218304860, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}
     - {fileID: -3971054747215606170, guid: 00eb4817d2b841f4cb30673ddbc01543, type: 3}

@@ -1,3 +1,4 @@
+using Extensions;
 using SingletonBehaviours;
 using Types.Casting;
 using Unity.Cinemachine;
@@ -68,7 +69,7 @@ public class PlayerMovement : EntityMovement, ISavable
 
         var hit = _interactCast.GetHitInfo(transform, InteractOffset);
 
-        if (_canInteract && hit.HasValue && hit.Value.transform.TryGetComponent(out Interactable interactable) && interactable.CanInteract(transform))
+        if (_canInteract && hit.HasValue && hit.Value.transform.TryGetEnabledComponent(out Interactable interactable) && interactable.CanInteract(transform))
         {
             _mood.SetType(Mood.Type.Interact);
 
@@ -138,7 +139,7 @@ public class PlayerMovement : EntityMovement, ISavable
 
         var hit = _interactCast.GetHitInfo(transform, InteractOffset);
 
-        if (hit.HasValue && hit.Value.transform.TryGetComponent(out IInteractable<PlayerMovement> onInteract))
+        if (hit.HasValue && hit.Value.transform.TryGetEnabledComponent(out Interactable onInteract))
         {
             onInteract.Interact(transform, this);
             _anim.SetTrigger(onInteract.GetInteractType());

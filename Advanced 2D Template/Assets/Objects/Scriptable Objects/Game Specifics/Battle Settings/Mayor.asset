@@ -17,8 +17,20 @@ MonoBehaviour:
     _item2:
       _min: 1
       _max: 1
-  - _item1: {fileID: 11400000, guid: 2095de231ce909a418f0794b6f76ad42, type: 2}
-    _item2:
-      _min: 1
-      _max: 1
   _environment: {fileID: 11400000, guid: c357afaa17e381c4ca45a0763547f822, type: 2}
+  _rewards: []
+  _onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 394373337924564761, guid: e466ae4ac68e55045b57ddb302bc9954, type: 3}
+        m_TargetAssemblyTypeName: SingletonBehaviours.SaveStateController, GameSpecific
+        m_MethodName: AddState
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: HasBeatMayor
+          m_BoolArgument: 0
+        m_CallState: 2

@@ -221,5 +221,28 @@ namespace Extensions
             System.IO.File.WriteAllBytes(filePath, renderBytes);
             Debug.Log("Screenshot taken!");
         }
+
+        public static T GetEnabledComponent<T>(this GameObject go) where T : MonoBehaviour
+        {
+            return go.GetComponents<T>().First(item => item.enabled);
+        }
+
+        public static bool TryGetEnabledComponent<T>(this GameObject go, out T component) where T : MonoBehaviour
+        {
+            var components = go.GetComponents<T>().Where(item => item.enabled);
+            component = components.FirstOrDefault();
+
+            return components.Count() > 0;
+        }
+
+        public static T GetEnabledComponent<T>(this Transform go) where T : MonoBehaviour
+        {
+            return go.gameObject.GetEnabledComponent<T>();
+        }
+
+        public static bool TryGetEnabledComponent<T>(this Transform go, out T component) where T : MonoBehaviour
+        {
+            return go.gameObject.TryGetEnabledComponent(out component);
+        }
     }
 }

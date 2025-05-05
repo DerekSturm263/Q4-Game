@@ -18,3 +18,11 @@ MonoBehaviour:
       _min: 1
       _max: 2
   _environment: {fileID: 11400000, guid: 57cf7b80383c29548bda1e9dfea968bd, type: 2}
+  _rewards:
+  - _item1: {fileID: 11400000, guid: 92f024a5c502fab498a5685e52f1c3d5, type: 2}
+    _item2:
+      _min: 1
+      _max: 3
+  _onComplete:
+    m_PersistentCalls:
+      m_Calls: []
