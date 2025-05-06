@@ -24,10 +24,10 @@ public struct Stats
     [SerializeField] private float _defense;
     public readonly float Defense => _defense;
 
-    [SerializeField] private List<Action> _actions;
-    public readonly List<Action> Actions => _actions;
+    [SerializeField] private List<BattleAction> _actions;
+    public readonly List<BattleAction> Actions => _actions;
 
-    public Stats(string name, RuntimeAnimatorController animatorController, float health, float attack, float defense, List<Action> actions)
+    public Stats(string name, RuntimeAnimatorController animatorController, float health, float attack, float defense, List<BattleAction> actions)
     {
         _name = name;
         _animatorController = animatorController;

@@ -11,7 +11,7 @@ public struct ActionInfo
     public IBattleEntity user;
     public IBattleEntity target;
 
-    public Action action;
+    public BattleAction action;
 
     public HealthChangeResult result;
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b673a968d6dbcf7439fa66c98180fdbe, type: 3}
+  m_Name: Racoon Battle
+  m_EditorClassIdentifier: 
+  _stats:
+  - _item1: {fileID: 11400000, guid: 7fbcb17bcbe8f6c439cb7000e3ccf511, type: 2}
+    _item2:
+      _min: 1
+      _max: 2
+  _environment: {fileID: 11400000, guid: 57cf7b80383c29548bda1e9dfea968bd, type: 2}
+  _rewards:
+  - _item1: {fileID: 11400000, guid: 92f024a5c502fab498a5685e52f1c3d5, type: 2}
+    _item2:
+      _min: 1
+      _max: 3
+  _onComplete:
+    m_PersistentCalls:
+      m_Calls: []

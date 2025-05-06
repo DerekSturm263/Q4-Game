@@ -52,12 +52,14 @@ public class BattlePlayer : BattleEntity
 
         _currentAction = null;
         _target = null;
+        EventSystem.current.SetSelectedGameObject(null);
 
         yield return new WaitUntil(() => _currentAction is not null);
         yield return _currentAction.Invoke(ctx);
 
         _currentAction = null;
         _target = null;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void JumpSelect()
@@ -108,80 +110,8 @@ public class BattlePlayer : BattleEntity
         _isJumping = false;
     }
 
-    private IEnumerator MoveTowards(Vector3 position, float length, float speed)
-    {
-        Vector3 originalPos = transform.position;
-        for (float t = 0; t < length; t += Time.deltaTime * speed)
-        {
-            transform.position = Vector3.Lerp(originalPos, position, t * (1 / length));
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    public void Hop() => _currentAction = HopEnumerator;
-    private IEnumerator HopEnumerator(BattleController ctx)
-    {
-        EventSystem.current.SetSelectedGameObject((ctx.GetFromTypeAlive(IBattleEntity.Type.AI).ElementAt(0) as BattleEntity).gameObject);
-        yield return new WaitUntil(() => _target);
-
-        _anim.SetFloat("Direction", 1);
-
-        Vector3 originalPos = transform.position;
-        Vector3 offset = (_target.transform.position - originalPos).normalized * 3f;
-        yield return MoveTowards(_target.transform.position - offset, 0.5f, 1);
-
-        _anim.SetFloat("Direction", 0);
-
-        yield return new WaitForSeconds(0.25f);
-
-        _anim.SetTrigger("Hop");
-
-        yield return new WaitForSeconds(0.41f);
-
-        Vector3 originalPos2 = transform.position;
-        for (float t = 0; t < 1f; t += Time.deltaTime)
-        {
-            Vector2 position = new
-            (
-                Mathf.Lerp(originalPos2.x, _target.transform.position.x, t),
-                originalPos2.y + Mathf.Sin(t * Mathf.PI) * 3
-            );
-            transform.position = position;
-
-            yield return new WaitForEndOfFrame();
-
-            /*if ()
-            {
-                float strength = 0;
-            }*/
-        }
-
-        _target.TakeDamage(5);
-
-        yield return new WaitForSeconds(0.5f);
-        
-        _anim.SetFloat("Direction", -1);
-
-        Vector3 originalPos3 = transform.position;
-        for (float t = 0; t < 0.5f; t += Time.deltaTime)
-        {
-            transform.position = Vector3.Lerp(originalPos3, originalPos, t * 2);
-            yield return new WaitForEndOfFrame();
-        }
-
-        _anim.SetFloat("Direction", 0);
-    }
-
-    public void Tongue() => _currentAction = TongueEnumerator;
-    private IEnumerator TongueEnumerator(BattleController ctx)
-    {
-        EventSystem.current.SetSelectedGameObject((ctx.GetFromTypeAlive(IBattleEntity.Type.AI).ElementAt(0) as BattleEntity).gameObject);
-        yield return new WaitUntil(() => _target);
-
-        _anim.SetTrigger("Tongue");
-
-        _target.TakeDamage(5);
-    }
+    public void Hop() => _currentAction = _currentStats.Actions[0].DoAction;
+    public void Tongue() => _currentAction = _currentStats.Actions[1].DoAction;
 
     public void Item() => _currentAction = ItemEnumerator;
     private IEnumerator ItemEnumerator(BattleController ctx)

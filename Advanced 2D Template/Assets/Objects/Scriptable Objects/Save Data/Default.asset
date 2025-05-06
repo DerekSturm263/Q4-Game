@@ -15,10 +15,14 @@ MonoBehaviour:
   _value:
     _stats:
     - _name: Oogie
+      _animatorController: {fileID: 9100000, guid: d1d7c1362aeb498418955b7a8b08f11a, type: 2}
       _currentHealth: 20
       _maxHealth: 20
       _attack: 5
       _defense: 3
+      _actions:
+      - {fileID: 11400000, guid: 4768caaf71c62d040ae530701683e5df, type: 2}
+      - {fileID: 11400000, guid: dc8b4fd5fd1984741b65dc3fa2ee4328, type: 2}
     _items: []
     _mask: {fileID: 0}
     _storyData: []
