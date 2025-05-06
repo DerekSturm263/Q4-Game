@@ -89,7 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackName: Swipe
   _delay: 0.25
-  _damage: 5
+  _damage: 3
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

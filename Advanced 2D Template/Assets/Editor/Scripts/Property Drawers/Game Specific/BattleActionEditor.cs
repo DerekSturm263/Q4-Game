@@ -1,3 +1,4 @@
+using Types.Miscellaneous;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -31,13 +32,29 @@ public class BattleActionEditor : UnityEditor.Editor
     private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
     {
         var editor = CreateEditorWithContext(new Object[] { (target as BattleAction).Events[index] }, target as BattleAction);
+        var property = editor.serializedObject.GetIterator();
 
-        editor.OnInspectorGUI();
+        editor.serializedObject.Update();
+
+        bool enterChildren = true;
+        while (property.NextVisible(enterChildren))
+        {
+            EditorGUI.PropertyField(rect, property, true);
+            enterChildren = false;
+            
+            rect.y += EditorGUIUtility.singleLineHeight;
+        }
+
+        editor.serializedObject.ApplyModifiedProperties();
     }
 
     private float ElementHeight(int index)
     {
-        return EditorGUIUtility.singleLineHeight * 5;
+        var editor = CreateEditorWithContext(new Object[] { (target as BattleAction).Events[index] }, target as BattleAction);
+        var property = editor.serializedObject.GetIterator();
+        property.NextVisible(true);
+
+        return EditorGUIUtility.singleLineHeight * (property.CountRemaining() + 1) + EditorGUIUtility.singleLineHeight * 0.5f;
     }
 
     private void Add(ReorderableList list)
@@ -53,6 +70,7 @@ public class BattleActionEditor : UnityEditor.Editor
             DestroyImmediate((target as BattleAction).Events[index], true);
         }
 
+        EditorUtility.SetDirty(target);
         AssetDatabase.SaveAssets();
         
         foreach (var index in list.selectedIndices)
